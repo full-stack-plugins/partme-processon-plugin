@@ -2,7 +2,7 @@
 
 Date: 2026-09-12
 
-Status: Approved in chat; awaiting written-spec review
+Status: Approved in chat and written-spec review
 
 Target: `/Users/wandl/workspaces/workspace-partme-ai/codex-processon-plugin`
 
@@ -48,7 +48,7 @@ flowchart LR
     O --> Q[Quality review]
     Q -->|Pass| F[Deliver result]
     Q -->|Revise| P
-    T[PROCESSON_MCP_TOKEN] -. runtime only .-> S
+    T[PROCESSON_MCP_AUTHORIZATION] -. runtime only .-> S
 ```
 
 ## 4. Plugin Package
@@ -101,7 +101,7 @@ https://smart-hd.processon.com/mcp
 Contract constraints:
 
 - Transport: Streamable HTTP.
-- Authentication: `Authorization: Bearer ${PROCESSON_MCP_TOKEN}`.
+- Authentication: Codex `env_http_headers` maps `Authorization` to `PROCESSON_MCP_AUTHORIZATION`; the environment value is the complete `Bearer <token>` header value.
 - Maximum documented MCP version: `2025-06-18`.
 - Documented rate limit: 600 requests per token per minute.
 - Current tools:
@@ -202,7 +202,7 @@ The plugin must preserve content correctness over decorative novelty.
 
 | Condition | Required behavior |
 |---|---|
-| Missing token | Explain how to provide `PROCESSON_MCP_TOKEN`; do not start generation |
+| Missing token | Explain how to provide `PROCESSON_MCP_AUTHORIZATION="Bearer <token>"`; do not start generation |
 | 401 | Do not retry; report invalid or expired token without displaying it |
 | 407 | Respect rate limiting and retry with bounded exponential backoff and jitter |
 | Connection failure | Retry only transient failures, with a strict attempt cap |
