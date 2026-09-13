@@ -24,7 +24,7 @@ flowchart LR
 - 路由 Skill：选择唯一能力路径和官方 MCP 工具。
 - 能力 Skills：只建立拓扑或信息层级，不直接调用外部服务。
 - Prompt Skill：形成六段式 ProcessOn 生成 Prompt。
-- 远程 MCP：通过 Streamable HTTP 暴露 `generate_diagram` 与 `generate_diagram_dsl`。
+- 远程 MCP：页面公开 `generate_diagram` 与 `generate_diagram_dsl`；实时发现还暴露 `generate_chart`，存在时优先用于获得可编辑源文件链接。
 - 审查 Skill：检查实际产物证据，最多允许一次修正。
 
 ## 信任边界
@@ -37,4 +37,4 @@ flowchart LR
 
 ## 扩展原则
 
-只有实时工具发现证明新 MCP 契约后才增加能力。浏览器 AI SDK 的方法只作为产品背景，不会被描述成当前插件工具。
+路由优先使用实时发现的 `generate_chart`，缺失时回退到页面公开的 `generate_diagram`，可复用结构使用 `generate_diagram_dsl`。只有实时工具发现证明新 MCP 契约后才增加能力。浏览器 AI SDK 的方法只作为产品背景，不会被描述成当前插件工具。

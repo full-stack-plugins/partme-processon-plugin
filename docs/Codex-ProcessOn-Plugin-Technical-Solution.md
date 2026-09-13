@@ -43,4 +43,4 @@ Python standard-library tests validate JSON contracts, asset provenance/dimensio
 
 ## Operational limits
 
-The current MCP has two prompt-only tools. Existing-document mutation, account administration, attachment upload, and SDK editor lifecycle operations are outside the default plugin contract.
+The MCP page documents two prompt-only tools, while live discovery on 2026-09-13 returned a third prompt-only tool, `generate_chart`. The plugin prefers that live tool for editable links and retains the documented fallback. Existing-document mutation, account administration, attachment upload, and SDK editor lifecycle operations remain outside the default plugin contract.

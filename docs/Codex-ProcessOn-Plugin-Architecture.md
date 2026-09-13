@@ -24,7 +24,7 @@ flowchart LR
 - Router: selects one capability path and one official MCP tool.
 - Capability Skills: build topology or information hierarchy without calling external services.
 - Prompt architect: produces a six-section ProcessOn-ready prompt.
-- Remote MCP: exposes `generate_diagram` and `generate_diagram_dsl` over Streamable HTTP.
+- Remote MCP: the page documents `generate_diagram` and `generate_diagram_dsl`; live discovery also exposes `generate_chart`, which is preferred for editable source links when available.
 - Review: checks actual artifact evidence and permits at most one correction.
 
 ## Trust boundaries
@@ -37,4 +37,4 @@ User content and the optimized prompt are sent to ProcessOn only when generation
 
 ## Extensibility
 
-New ProcessOn capabilities are added only after live tool discovery proves a supported MCP contract. Browser SDK methods remain documented context, not implied plugin tools.
+The router prefers live-discovered `generate_chart`, falls back to documented `generate_diagram`, and uses `generate_diagram_dsl` for reusable structure. New ProcessOn capabilities are added only after live tool discovery proves a supported MCP contract. Browser SDK methods remain documented context, not implied plugin tools.
