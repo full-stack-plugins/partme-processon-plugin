@@ -1,6 +1,6 @@
 {
   "name": "codex-processon-plugin",
-  "version": "0.1.0+codex.20260913070106",
+  "version": "0.1.0+codex.20260913070632",
   "description": "Create polished, editable ProcessOn diagrams, mind maps, and infographics from Codex.",
   "author": {
     "name": "Full Stack Skills / PartMe.AI",
@@ -20,7 +20,7 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "Codex ProcessOn",
+    "displayName": "ProcessOn",
     "shortDescription": "Design polished, editable ProcessOn diagrams",
     "longDescription": "Operate ProcessOn from Codex to create professional flowcharts, swimlanes, UML, architecture and ER diagrams, mind maps, timelines, organization charts, and structured infographics with a built-in quality review workflow.",
     "developerName": "Full Stack Skills / PartMe.AI",

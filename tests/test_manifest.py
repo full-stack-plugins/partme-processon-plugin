@@ -44,6 +44,14 @@ class ManifestContractTest(unittest.TestCase):
         )
         self.assertEqual("main", entry["source"]["ref"])
 
+    def test_plugin_uses_official_processon_name_and_icons(self):
+        plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+        interface = plugin["interface"]
+        self.assertEqual("ProcessOn", interface["displayName"])
+        self.assertEqual("./assets/logo.png", interface["logo"])
+        self.assertEqual("./assets/logo-dark.png", interface["logoDark"])
+        self.assertEqual("./assets/composer-icon.png", interface["composerIcon"])
+
 
 if __name__ == "__main__":
     unittest.main()
