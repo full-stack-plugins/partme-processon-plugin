@@ -1,0 +1,47 @@
+{
+  "name": "codex-processon-plugin",
+  "version": "0.1.0",
+  "description": "Create polished, editable ProcessOn diagrams, mind maps, and infographics from Codex.",
+  "author": {
+    "name": "Full Stack Skills / PartMe.AI",
+    "url": "https://github.com/partme-ai"
+  },
+  "homepage": "https://github.com/partme-ai/codex-processon-plugin",
+  "repository": "https://github.com/partme-ai/codex-processon-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "processon",
+    "diagram",
+    "mind-map",
+    "infographic",
+    "mcp",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Codex ProcessOn",
+    "shortDescription": "Design polished, editable ProcessOn diagrams",
+    "longDescription": "Operate ProcessOn from Codex to create professional flowcharts, swimlanes, UML, architecture and ER diagrams, mind maps, timelines, organization charts, and structured infographics with a built-in quality review workflow.",
+    "developerName": "Full Stack Skills / PartMe.AI",
+    "category": "Creativity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://smart.processon.com",
+    "privacyPolicyURL": "https://github.com/partme-ai/codex-processon-plugin/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/partme-ai/codex-processon-plugin/blob/main/TERMS.md",
+    "defaultPrompt": [
+      "Create a polished system architecture diagram in ProcessOn",
+      "Turn this workflow into a clear cross-functional swimlane",
+      "Make an editable mind map or infographic from this content"
+    ],
+    "brandColor": "#2F80ED",
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo-dark.png",
+    "screenshots": []
+  }
+}

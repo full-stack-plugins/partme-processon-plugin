@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "processon": {
+      "type": "http",
+      "url": "https://smart-hd.processon.com/mcp",
+      "env_http_headers": {
+        "Authorization": "PROCESSON_MCP_AUTHORIZATION"
+      }
+    }
+  }
+}
