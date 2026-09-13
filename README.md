@@ -45,6 +45,8 @@ The router selects one diagram family, models the relationships, enriches the Pr
 - Documented rate limit: 600 requests per token per minute
 - Current tools: `generate_diagram`, `generate_diagram_dsl`
 
+Live discovery on 2026-09-13 also returned an undocumented `generate_chart` alias. The plugin keeps the two page-documented tools as its stable routing contract.
+
 The AI SDK exposes broader browser integration capabilities, but this plugin does not claim MCP operations that are not actually advertised by the server.
 
 ## Development

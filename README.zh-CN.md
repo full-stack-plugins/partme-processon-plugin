@@ -45,6 +45,8 @@ export PROCESSON_MCP_AUTHORIZATION="Bearer <你的-processon-token>"
 - 文档声明的限流：每 Token 每分钟 600 次
 - 当前工具：`generate_diagram`、`generate_diagram_dsl`
 
+2026-09-13 实时工具发现还返回了页面未列出的 `generate_chart` 别名；插件仍以页面公开的两个工具作为稳定路由契约。
+
 AI SDK 还提供浏览器侧的创建、更新、导出和实例管理能力，但本插件不会把未被 MCP 实际暴露的能力描述成可用工具。
 
 ## 开发验证

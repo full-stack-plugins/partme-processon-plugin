@@ -83,6 +83,23 @@ def tool_names(payload: dict) -> list[str]:
     return [tool["name"] for tool in tools if isinstance(tool, dict) and tool.get("name")]
 
 
+def ensure_tool_success(payload: dict) -> None:
+    """Reject protocol and business-level tool failures with safe messages."""
+    if "error" in payload:
+        raise McpSmokeError("ProcessOn tool returned a JSON-RPC error")
+    result = payload.get("result", {})
+    texts = [
+        item.get("text", "")
+        for item in result.get("content", [])
+        if isinstance(item, dict) and item.get("type") == "text"
+    ]
+    normalized = " ".join(texts).strip().lower()
+    if normalized in {"token is invalid", "invalid token", "token invalid"}:
+        raise McpSmokeError("ProcessOn authentication failed (business response)")
+    if result.get("isError") is True:
+        raise McpSmokeError("ProcessOn tool reported a business error")
+
+
 def _request(
     endpoint: str,
     authorization: str,
@@ -201,8 +218,7 @@ def call_tool(
         timeout,
         session_id=session_id,
     )
-    if "error" in payload:
-        raise McpSmokeError(f"ProcessOn {name} returned a JSON-RPC error")
+    ensure_tool_success(payload)
     return payload
 
 

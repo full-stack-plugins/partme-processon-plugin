@@ -79,6 +79,12 @@ class DocumentationTest(unittest.TestCase):
             self.assertTrue((ROOT / "docs" / f"{stem}.md").is_file())
             self.assertTrue((ROOT / "docs" / f"{stem}.zh_CN.md").is_file())
 
+    def test_index_distinguishes_live_tool_discovery_from_page_docs(self):
+        text = (ROOT / "docs/ProcessOn-Documentation-Index.zh_CN.md").read_text()
+        self.assertIn("实时发现差异", text)
+        self.assertIn("generate_chart", text)
+        self.assertIn("页面未列出", text)
+
 
 if __name__ == "__main__":
     unittest.main()

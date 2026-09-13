@@ -2,7 +2,9 @@ import json
 import unittest
 
 from scripts.mcp_smoke_test import (
+    McpSmokeError,
     encode_rpc,
+    ensure_tool_success,
     parse_streamable_response,
     redact,
     tool_names,
@@ -44,6 +46,18 @@ class McpSmokeUnitTest(unittest.TestCase):
             {"generate_diagram", "generate_diagram_dsl"},
             set(tool_names(payload)),
         )
+
+    def test_business_authentication_failure_is_rejected(self):
+        payload = {
+            "jsonrpc": "2.0",
+            "id": 3,
+            "result": {
+                "content": [{"type": "text", "text": "token is Invalid"}],
+                "isError": False,
+            },
+        }
+        with self.assertRaisesRegex(McpSmokeError, "authentication failed"):
+            ensure_tool_success(payload)
 
 
 if __name__ == "__main__":
