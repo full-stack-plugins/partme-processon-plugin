@@ -472,7 +472,7 @@ Run:
 
 ```bash
 python3 -m unittest tests.test_docs -v
-rg -n "TBD|TODO|FIXME|PLACEHOLDER" README.md README.zh-CN.md docs --glob '*.md'
+rg -n "TBD|TODO|FIXME|PLACEHOLDER" README.md README.zh-CN.md docs --glob '*.md' --glob '!docs/superpowers/**'
 git diff --check
 ```
 
