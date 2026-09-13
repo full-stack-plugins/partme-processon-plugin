@@ -73,7 +73,7 @@
 - Consumes: approved design spec and Codex compatibility manifest schema.
 - Produces: plugin identity `codex-processon-plugin`; MCP server key `processon`; environment variable `PROCESSON_MCP_AUTHORIZATION`.
 
-- [ ] **Step 1: Write failing manifest contract tests**
+- [x] **Step 1: Write failing manifest contract tests**
 
 ```python
 import json
@@ -110,13 +110,13 @@ class ManifestContractTest(unittest.TestCase):
         self.assertEqual("Creativity", entry["category"])
 ```
 
-- [ ] **Step 2: Run the tests and verify the missing files fail**
+- [x] **Step 2: Run the tests and verify the missing files fail**
 
 Run: `python3 -m unittest tests.test_manifest -v`
 
 Expected: FAIL with `FileNotFoundError` for `.codex-plugin/plugin.json`.
 
-- [ ] **Step 3: Scaffold the compatibility package and fill exact metadata**
+- [x] **Step 3: Scaffold the compatibility package and fill exact metadata**
 
 Run the local `plugin-creator` scaffold without overwriting the approved spec:
 
@@ -145,7 +145,7 @@ Then use `apply_patch` to set the manifest to version `0.1.0`, category `Creativ
 
 Create the marketplace with name `partme-ai-processon`, display name `PartMe.AI ProcessOn`, an `AVAILABLE`/`ON_USE` Creativity entry, and a Git URL source `https://github.com/partme-ai/codex-processon-plugin.git` on `main`, matching the established standalone sibling-plugin convention. Add `.DS_Store`, `__pycache__/`, `*.pyc`, `.pytest_cache/`, `.agents/cache/`, and `artifacts/acceptance/` to `.gitignore`.
 
-- [ ] **Step 4: Run manifest tests and plugin validator**
+- [x] **Step 4: Run manifest tests and plugin validator**
 
 Run:
 
@@ -156,7 +156,7 @@ python3 /Users/wandl/.codex/skills/.system/plugin-creator/scripts/validate_plugi
 
 Expected: both manifest tests PASS; plugin validation may still report the not-yet-created declared asset files, which is the explicit red state carried into Task 2.
 
-- [ ] **Step 5: Commit the package contract**
+- [x] **Step 5: Commit the package contract**
 
 ```bash
 git add .codex-plugin/plugin.json .mcp.json .agents/plugins/marketplace.json .gitignore tests/test_manifest.py
@@ -179,7 +179,7 @@ git commit -m "feat: define processon plugin package contract"
 - Consumes: `/Users/wandl/Downloads/logo_white.svg` and manifest asset paths from Task 1.
 - Produces: deterministic transparent PNGs at 512x512, 512x512, and 64x64 while preserving the original SVG bytes at `assets/logo.svg`.
 
-- [ ] **Step 1: Write failing provenance and image tests**
+- [x] **Step 1: Write failing provenance and image tests**
 
 ```python
 import hashlib
@@ -212,13 +212,13 @@ class AssetContractTest(unittest.TestCase):
         self.assertEqual((64, 64), png_size(ROOT / "assets/composer-icon.png"))
 ```
 
-- [ ] **Step 2: Run the asset tests and verify they fail**
+- [x] **Step 2: Run the asset tests and verify they fail**
 
 Run: `python3 -m unittest tests.test_assets -v`
 
 Expected: FAIL because `assets/logo.svg` and PNG derivatives do not exist.
 
-- [ ] **Step 3: Implement deterministic asset generation**
+- [x] **Step 3: Implement deterministic asset generation**
 
 Implement `scripts/generate_assets.py` with the exact public signatures `validate_svg(source: Path) -> tuple[int, int]`, `copy_source_svg(source: Path, destination: Path) -> None`, `render_square_png(source: Path, destination: Path, size: int, background: str) -> None`, and `generate_assets(source: Path, assets_dir: Path) -> None`.
 
@@ -230,7 +230,7 @@ Run:
 python3 scripts/generate_assets.py /Users/wandl/Downloads/logo_white.svg assets
 ```
 
-- [ ] **Step 4: Verify assets and plugin validation pass**
+- [x] **Step 4: Verify assets and plugin validation pass**
 
 Run:
 
@@ -241,7 +241,7 @@ python3 /Users/wandl/.codex/skills/.system/plugin-creator/scripts/validate_plugi
 
 Expected: all tests PASS and validator prints a successful result.
 
-- [ ] **Step 5: Commit the brand assets**
+- [x] **Step 5: Commit the brand assets**
 
 ```bash
 git add assets scripts/generate_assets.py tests/test_assets.py
@@ -262,7 +262,7 @@ git commit -m "feat: add approved processon brand assets"
 - Consumes: MCP tool names from Task 1.
 - Produces: route labels `diagram`, `mindmap`, `infographic`; generation modes `visual` and `dsl`; review verdicts `PASS` and `REVISE_ONCE`.
 
-- [ ] **Step 1: Write failing router and safety tests**
+- [x] **Step 1: Write failing router and safety tests**
 
 ```python
 import unittest
@@ -305,13 +305,13 @@ class SkillContractTest(unittest.TestCase):
         self.assertIn("PROCESSON_MCP_AUTHORIZATION", combined)
 ```
 
-- [ ] **Step 2: Run the tests and verify missing Skills fail**
+- [x] **Step 2: Run the tests and verify missing Skills fail**
 
 Run: `python3 -m unittest tests.test_skills -v`
 
 Expected: FAIL with `FileNotFoundError` for `skills/codex-processon-use/SKILL.md`.
 
-- [ ] **Step 3: Implement the three orchestration Skills**
+- [x] **Step 3: Implement the three orchestration Skills**
 
 Write complete frontmatter and instructions. The router must select one route, ask only structure-changing questions, call the prompt Skill, choose `generate_diagram` by default or `generate_diagram_dsl` for DSL/review/debug requests, invoke review, permit one `REVISE_ONCE`, and deliver accessible results. The prompt Skill must emit a structured prompt with `Intent`, `Content`, `Relationships`, `Layout`, `Visual system`, and `Constraints`. The review Skill must score semantic completeness, relationship correctness, visual hierarchy, readability, layout fit, consistency, and editability, and output one of:
 
@@ -320,7 +320,7 @@ PASS
 REVISE_ONCE: <specific defects and corrected prompt constraints>
 ```
 
-- [ ] **Step 4: Validate the three Skills**
+- [x] **Step 4: Validate the three Skills**
 
 Run:
 
@@ -333,7 +333,7 @@ done
 
 Expected: tests and all three Skill validators PASS.
 
-- [ ] **Step 5: Commit orchestration Skills**
+- [x] **Step 5: Commit orchestration Skills**
 
 ```bash
 git add skills/codex-processon-use skills/codex-processon-prompt skills/codex-processon-review tests/test_skills.py
@@ -354,7 +354,7 @@ git commit -m "feat: add processon routing and quality workflow"
 - Consumes: structured prompt contract from `codex-processon-prompt`.
 - Produces: diagram-specific structure models and constraints consumed by the router and review Skills.
 
-- [ ] **Step 1: Add failing coverage tests for supported families**
+- [x] **Step 1: Add failing coverage tests for supported families**
 
 ```python
     def test_diagram_skill_covers_professional_families(self):
@@ -373,17 +373,17 @@ git commit -m "feat: add processon routing and quality workflow"
             self.assertIn(value, text.lower())
 ```
 
-- [ ] **Step 2: Run the focused tests and verify failure**
+- [x] **Step 2: Run the focused tests and verify failure**
 
 Run: `python3 -m unittest tests.test_skills.SkillContractTest.test_diagram_skill_covers_professional_families tests.test_skills.SkillContractTest.test_mindmap_skill_defines_seven_structures tests.test_skills.SkillContractTest.test_infographic_skill_maps_relationships_to_layout -v`
 
 Expected: FAIL because the three capability Skills do not exist.
 
-- [ ] **Step 3: Implement all three capability Skills**
+- [x] **Step 3: Implement all three capability Skills**
 
 Each Skill must define triggers, required input model, default decisions, diagram-specific notation, prompt constraints, error boundaries, and handoff to prompt/review. Preserve these exact mind-map structure identifiers and explain that the current MCP exposes a natural-language `prompt`, so identifiers become prompt constraints rather than invented MCP parameters.
 
-- [ ] **Step 4: Validate all six Skills**
+- [x] **Step 4: Validate all six Skills**
 
 Run:
 
@@ -396,7 +396,7 @@ done
 
 Expected: all Skill tests and six validators PASS.
 
-- [ ] **Step 5: Commit capability Skills**
+- [x] **Step 5: Commit capability Skills**
 
 ```bash
 git add skills/codex-processon-diagram skills/codex-processon-mindmap skills/codex-processon-infographic tests/test_skills.py
@@ -421,7 +421,7 @@ git commit -m "feat: add professional processon diagram skills"
 - Consumes: upstream documentation inventory and implemented package/Skill behavior.
 - Produces: auditable documentation index and user-facing installation/usage contract.
 
-- [ ] **Step 1: Write failing documentation coverage tests**
+- [x] **Step 1: Write failing documentation coverage tests**
 
 ```python
 import unittest
@@ -452,21 +452,21 @@ class DocumentationTest(unittest.TestCase):
             self.assertIn("Bearer ", text)
 ```
 
-- [ ] **Step 2: Run documentation tests and verify failure**
+- [x] **Step 2: Run documentation tests and verify failure**
 
 Run: `python3 -m unittest tests.test_docs -v`
 
 Expected: FAIL because the documentation index and READMEs do not exist.
 
-- [ ] **Step 3: Write the complete documentation index**
+- [x] **Step 3: Write the complete documentation index**
 
 List every visible AI page entry under Overview, Quick Start, Complete Examples, API Reference, FAQ, and Best Practices; every visible MCP entry from Token application through version log; and the visible DSL groups for common syntax, style syntax, infographic, organization, pyramid, and timeline. Record source URLs and the 2026-09-12 observation date. Summarize contracts without copying long source passages.
 
-- [ ] **Step 4: Write bilingual architecture, solution, and README documents**
+- [x] **Step 4: Write bilingual architecture, solution, and README documents**
 
 Include Mermaid component and sequence diagrams, trust boundary, routing matrix, quality gate, install steps, environment configuration, at least twelve copyable diagram requests, error table, MCP constraints, test commands, privacy statement, and current upstream limitations. Ensure the documents describe only implemented behavior.
 
-- [ ] **Step 5: Run documentation tests and link checks**
+- [x] **Step 5: Run documentation tests and link checks**
 
 Run:
 
@@ -478,7 +478,7 @@ git diff --check
 
 Expected: documentation tests PASS; `rg` produces no output; diff check exits successfully.
 
-- [ ] **Step 6: Commit documentation**
+- [x] **Step 6: Commit documentation**
 
 ```bash
 git add README.md README.zh-CN.md docs tests/test_docs.py
@@ -504,7 +504,7 @@ git commit -m "docs: document processon plugin and upstream contracts"
 - Consumes: package files, runtime `PROCESSON_MCP_AUTHORIZATION`, MCP endpoint.
 - Produces: `validate_distribution() -> list[str]`; redacted smoke-test JSON with initialized protocol version, discovered tool names, and optional generation result metadata.
 
-- [ ] **Step 1: Write failing security and MCP parsing tests**
+- [x] **Step 1: Write failing security and MCP parsing tests**
 
 ```python
 import unittest
@@ -525,23 +525,23 @@ class McpSmokeUnitTest(unittest.TestCase):
 
 `tests/test_security.py` must walk repository files excluding `.git`, reject the supplied test-token literal, reject `Authorization: Bearer` followed by a non-placeholder value, and assert `.mcp.json` uses `env_http_headers` rather than a literal `headers` object.
 
-- [ ] **Step 2: Run focused tests and verify imports fail**
+- [x] **Step 2: Run focused tests and verify imports fail**
 
 Run: `python3 -m unittest tests.test_security tests.test_mcp_smoke -v`
 
 Expected: FAIL with `ModuleNotFoundError: scripts.mcp_smoke_test`.
 
-- [ ] **Step 3: Implement a bounded, redacted Streamable HTTP client**
+- [x] **Step 3: Implement a bounded, redacted Streamable HTTP client**
 
 Implement the exact public signatures `redact(value: str) -> str`, `encode_rpc(method: str, params: dict, request_id: int) -> bytes`, `parse_streamable_response(content_type: str, body: bytes) -> dict`, `tool_names(payload: dict) -> list[str]`, `initialize(endpoint: str, authorization: str, timeout: float = 30.0) -> tuple[str, dict]`, `list_tools(endpoint: str, authorization: str, session_id: str, timeout: float = 30.0) -> dict`, and `call_tool(endpoint: str, authorization: str, session_id: str, name: str, prompt: str, timeout: float = 180.0) -> dict` using Python standard-library HTTP primitives and JSON parsing.
 
 Use JSON-RPC `2.0`, initialize with protocol version `2025-06-18`, send `notifications/initialized`, preserve the server session header, accept JSON or SSE-framed JSON responses, cap retryable 407/429/5xx attempts at three with exponential backoff and jitter, never retry 401, and print only redacted summaries.
 
-- [ ] **Step 4: Implement distribution validation and policy files**
+- [x] **Step 4: Implement distribution validation and policy files**
 
 `validate_distribution()` must verify required files, parse JSON, validate manifest-to-file references, validate all six Skills, check PNG signatures/dimensions, check documentation headings, and scan secrets. Return an error list and exit nonzero when it is nonempty. Use Apache-2.0 policy files matching the sibling PartMe.AI plugin convention and disclose that prompts are sent to ProcessOn.
 
-- [ ] **Step 5: Run all offline tests and validators**
+- [x] **Step 5: Run all offline tests and validators**
 
 Run:
 
@@ -554,7 +554,7 @@ git diff --check
 
 Expected: all tests PASS; both validators succeed; diff check is clean.
 
-- [ ] **Step 6: Commit validation and policy files**
+- [x] **Step 6: Commit validation and policy files**
 
 ```bash
 git add scripts/validate_distribution.py scripts/mcp_smoke_test.py tests/test_security.py tests/test_mcp_smoke.py PRIVACY.md TERMS.md LICENSE NOTICE THIRD_PARTY_NOTICES.md
@@ -573,7 +573,7 @@ git commit -m "test: add processon distribution and mcp validation"
 - Consumes: runtime-only `PROCESSON_MCP_AUTHORIZATION`, `scripts/mcp_smoke_test.py`, installed plugin.
 - Produces: verified initialization evidence, tool inventory, and three visually inspected ProcessOn artifacts without persisting the credential.
 
-- [ ] **Step 1: Confirm the repository contains no credential before live testing**
+- [x] **Step 1: Confirm the repository contains no credential before live testing**
 
 Run:
 
@@ -584,37 +584,37 @@ git grep -n -I -E 'Bearer[[:space:]]+[A-Za-z0-9+/=_-]{20,}' -- . ':!docs/superpo
 
 Expected: security tests PASS and `git grep` produces no credential match.
 
-- [ ] **Step 2: Run MCP initialization and tool discovery with a process-scoped environment value**
+- [x] **Step 2: Run MCP initialization and tool discovery with a process-scoped environment value**
 
 Launch the smoke client with the user-provided token supplied only through the current process environment as the complete `Bearer TOKEN_VALUE` value. Do not place the value in shell history, a file, command output, or the plan. The client reads `PROCESSON_MCP_AUTHORIZATION` and prints only protocol version and tool names.
 
 Expected: initialization succeeds with a compatible protocol and `tools/list` contains both `generate_diagram` and `generate_diagram_dsl`.
 
-- [ ] **Step 3: Generate the Agent Harness architecture acceptance diagram**
+- [x] **Step 3: Generate the Agent Harness architecture acceptance diagram**
 
 Call `generate_diagram` with a Chinese prompt requiring orchestration, memory, tool gateway, retry/rollback, guardrails, eval pipeline, observability, deployment, trust boundaries, and labeled data/control flows. Require a restrained dark-blue/teal system, clear layers, minimal line crossings, and readable labels.
 
 Expected: accessible ProcessOn result; visual review records PASS for content, hierarchy, boundaries, connectors, contrast, and editability.
 
-- [ ] **Step 4: Generate the cross-functional swimlane acceptance diagram**
+- [x] **Step 4: Generate the cross-functional swimlane acceptance diagram**
 
 Call `generate_diagram` with a Chinese prompt for an AI-feature delivery workflow across Product, AI Engineering, Backend, QA, and Operations, including review decisions, model-evaluation failure loop, deployment approval, monitoring, and rollback.
 
 Expected: accessible ProcessOn result; lanes, decisions, exception paths, start/end, and reading direction visibly pass review.
 
-- [ ] **Step 5: Generate the structured infographic acceptance diagram**
+- [x] **Step 5: Generate the structured infographic acceptance diagram**
 
 Call `generate_diagram` with a Chinese prompt for a polished four-quadrant Agent production-readiness infographic covering Quality, Safety, Reliability, and Operations, with restrained color coding, concise metrics, and one center title.
 
 Expected: accessible ProcessOn result; grouping, hierarchy, density, contrast, and content completeness visibly pass review.
 
-- [ ] **Step 6: Verify DSL generation separately**
+- [x] **Step 6: Verify DSL generation separately**
 
 Call `generate_diagram_dsl` for a compact three-layer architecture. Verify the response contains nonempty DSL and that it can be opened or rendered through the returned ProcessOn workflow.
 
 Expected: nonempty reusable DSL and an accessible editor/render result.
 
-- [ ] **Step 7: Record redacted acceptance metadata and rerun the full suite**
+- [x] **Step 7: Record redacted acceptance metadata and rerun the full suite**
 
 Write only result URLs/IDs, diagram categories, timestamps, verdicts, and redacted error codes to the gitignored acceptance summary. Never record request headers or the token.
 
@@ -641,7 +641,7 @@ Expected: all tests and validators PASS; only gitignored runtime artifacts remai
 - Consumes: validated repository, repository marketplace, live MCP evidence.
 - Produces: Codex-visible installed plugin and requirement-by-requirement completion evidence.
 
-- [ ] **Step 1: Inspect available plugin CLI commands before choosing the install path**
+- [x] **Step 1: Inspect available plugin CLI commands before choosing the install path**
 
 Run:
 
@@ -653,23 +653,23 @@ codex plugin list
 
 Expected: command output establishes the current supported local marketplace and plugin-install syntax; do not infer syntax from older documentation.
 
-- [ ] **Step 2: Add the repository marketplace and install the plugin using the current CLI syntax**
+- [x] **Step 2: Add the repository marketplace and install the plugin using the current CLI syntax**
 
 Use the exact local marketplace root and plugin identifier reported as supported by Step 1. If the repository marketplace's Git URL source requires a published remote that does not yet exist, use a temporary local marketplace source pointing at the approved repository for acceptance without changing the committed distributable marketplace. Do not edit global configuration by hand.
 
 Expected: `codex plugin list` shows `codex-processon-plugin` installed from a local source.
 
-- [ ] **Step 3: Verify Codex loads Skills and MCP tools in a fresh task**
+- [x] **Step 3: Verify Codex loads Skills and MCP tools in a fresh task**
 
 Start a fresh Codex task, invoke a ProcessOn diagram request, and verify the router Skill and ProcessOn MCP tools are available. Pass authentication through the environment or supported credential UI without storing it in the repository.
 
 Expected: the fresh task identifies the router and can call the two ProcessOn tools.
 
-- [ ] **Step 4: Perform the completion audit**
+- [x] **Step 4: Perform the completion audit**
 
 Inspect every explicit requirement in the design spec against files, test output, plugin validator output, installed plugin state, discovered tools, and the three acceptance diagrams. Classify each as proven, contradicted, weak, or missing; fix any contradicted or missing item and repeat validation.
 
-- [ ] **Step 5: Commit any verified installation fixes and record final Git evidence**
+- [x] **Step 5: Commit any verified installation fixes and record final Git evidence**
 
 If installation required a correction, inspect `git diff --name-only`, add only the exact corrected files from `.codex-plugin/plugin.json`, `.mcp.json`, or `.agents/plugins/marketplace.json`, and commit them with `git commit -m "fix: complete codex processon installation"`. If no installation fix was necessary, do not create an empty commit.
 
