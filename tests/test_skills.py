@@ -69,6 +69,11 @@ class SkillContractTest(unittest.TestCase):
         for value in ("comparison", "cycle", "matrix", "ring", "staircase", "radial"):
             self.assertIn(value, text.lower())
 
+    def test_architecture_defaults_to_blocks_not_class_tables(self):
+        text = self.read_skill("codex-processon-diagram").lower()
+        self.assertIn("architecture block diagram", text)
+        self.assertIn("do not use uml class tables", text)
+
 
 if __name__ == "__main__":
     unittest.main()
