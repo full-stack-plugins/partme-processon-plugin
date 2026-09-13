@@ -74,6 +74,12 @@ class SkillContractTest(unittest.TestCase):
         self.assertIn("architecture block diagram", text)
         self.assertIn("do not use uml class tables", text)
 
+    def test_router_prefers_editable_live_tool_with_documented_fallback(self):
+        text = self.read_skill("codex-processon-use")
+        self.assertIn("generate_chart", text)
+        self.assertIn("prefer", text.lower())
+        self.assertIn("fall back", text.lower())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -239,10 +239,10 @@
 
 ### 实时发现差异
 
-2026-09-13 使用 MCP `initialize` 与 `tools/list` 实测发现三个工具：`generate_chart`、`generate_diagram`、`generate_diagram_dsl`。其中 `generate_chart` 在上述 MCP 页面“工具列表”和“接口说明”中页面未列出；其在线 schema 与 `generate_diagram` 都是必填 `prompt`，并描述为返回 Base64 图片。插件仍以页面已文档化的两个工具作为稳定路由契约，同时允许 Codex 在运行时看到服务器实际发布的额外工具。
+2026-09-13 使用 MCP `initialize` 与 `tools/list` 实测发现三个工具：`generate_chart`、`generate_diagram`、`generate_diagram_dsl`。其中 `generate_chart` 在上述 MCP 页面“工具列表”和“接口说明”中页面未列出；其在线 schema 与 `generate_diagram` 都是必填 `prompt`。实测 `generate_chart` 返回图片 URL 和可编辑 ProcessOn 源文件 URL，而 `generate_diagram` 返回静态对象存储图片 URL。插件在运行时存在 `generate_chart` 时优先使用它；若服务器未发布该工具，则回退到页面已文档化的 `generate_diagram`。
 
 同次实测中，初始化和工具发现成功，但生成调用对测试凭证返回业务文本 `token is Invalid`。这证明传输和工具发现可用，但不构成生成能力验收；必须用有效的新 Token 完成三图测试后才能宣称端到端通过。
 
 ## 插件采用范围
 
-插件稳定路由只依赖 MCP 页面公开的两个工具。AI SDK 文档用于理解 ProcessOn 的完整产品能力和结果语义，不代表当前 MCP 已暴露 SDK 的更新、导出、实例管理或视觉编辑方法。任何未来扩展都必须以当时实际发现的 MCP 工具为准。
+插件保留对 MCP 页面公开工具的兼容回退，同时按实时工具发现选择更适合可编辑交付的能力。AI SDK 文档用于理解 ProcessOn 的完整产品能力和结果语义，不代表当前 MCP 已暴露 SDK 的更新、导出、实例管理或视觉编辑方法。任何未来扩展都必须以当时实际发现的 MCP 工具为准。

@@ -19,6 +19,9 @@ PROTOCOL_VERSION = "2025-06-18"
 DEFAULT_ENDPOINT = "https://smart-hd.processon.com/mcp"
 SESSION_HEADER = "Mcp-Session-Id"
 AUTHORIZATION_ENV = "PROCESSON_MCP_AUTHORIZATION"
+SUPPORTED_TOOLS = frozenset(
+    {"generate_chart", "generate_diagram", "generate_diagram_dsl"}
+)
 BEARER_PATTERN = re.compile(r"(?i)^Bearer\s+.+$")
 
 
@@ -203,7 +206,7 @@ def call_tool(
     timeout: float = 180.0,
 ) -> dict:
     """Call one documented ProcessOn prompt-only tool."""
-    if name not in {"generate_diagram", "generate_diagram_dsl"}:
+    if name not in SUPPORTED_TOOLS:
         raise ValueError(f"unsupported ProcessOn tool: {name}")
     if not prompt.strip():
         raise ValueError("prompt must not be empty")
@@ -226,7 +229,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--endpoint", default=DEFAULT_ENDPOINT)
     parser.add_argument("--list-tools", action="store_true")
-    parser.add_argument("--call", choices=("generate_diagram", "generate_diagram_dsl"))
+    parser.add_argument("--call", choices=tuple(sorted(SUPPORTED_TOOLS)))
     parser.add_argument("--prompt")
     parser.add_argument("--timeout", type=float, default=30.0)
     args = parser.parse_args()

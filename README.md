@@ -8,7 +8,7 @@ Create polished, editable ProcessOn diagrams from Codex through ProcessOn's offi
 - ProcessOn mind maps, right-oriented logic maps, fishbone analysis, WBS trees, and tree tables.
 - ProcessOn comparison, cycle, ring, matrix, staircase, pyramid, and radial infographics.
 - Bounded quality review for semantic correctness, relationships, hierarchy, readability, consistency, and editability.
-- Direct access to `generate_diagram` and `generate_diagram_dsl` on the official ProcessOn MCP server.
+- Direct access to the official ProcessOn MCP tools. The router prefers live-discovered `generate_chart` for editable source links, falls back to documented `generate_diagram`, and uses `generate_diagram_dsl` for reusable structure.
 
 ## Authentication
 

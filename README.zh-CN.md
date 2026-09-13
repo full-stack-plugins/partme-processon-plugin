@@ -8,7 +8,7 @@
 - ProcessOn 思维导图、向右逻辑图、鱼骨图、WBS 树和树形表格。
 - ProcessOn 对比、循环、环形、矩阵、阶梯、金字塔和射线信息图。
 - 检查语义、关系、视觉层级、可读性、一致性与可编辑性的有界质量审查。
-- 直接调用官方 MCP 的 `generate_diagram` 与 `generate_diagram_dsl`。
+- 直接调用 ProcessOn 官方 MCP：优先使用实时发现且能返回可编辑源文件链接的 `generate_chart`，缺失时回退到页面公开的 `generate_diagram`，结构复用使用 `generate_diagram_dsl`。
 
 ## 认证
 
