@@ -15,6 +15,10 @@ from typing import Any, TextIO
 PROTOCOL_VERSION = "2025-06-18"
 DEFAULT_ENDPOINT = "https://smart-hd.processon.com/mcp"
 SESSION_HEADER = "Mcp-Session-Id"
+# Generation outlasts a read-only round trip and cannot be replayed, so writes
+# get the same budget the diagnostic smoke client uses for tools/call.
+GENERATION_TIMEOUT = 180.0
+READ_TIMEOUT = 30.0
 
 
 class ProxyError(RuntimeError):
@@ -119,11 +123,18 @@ def tool_names(payload: Mapping[str, Any]) -> list[str]:
 class ProcessOnTransport:
     """Forward one JSON-RPC request to ProcessOn with safe session state."""
 
-    def __init__(self, endpoint: str, provider: object, timeout: float = 30.0) -> None:
+    def __init__(
+        self,
+        endpoint: str,
+        provider: object,
+        timeout: float = READ_TIMEOUT,
+        write_timeout: float = GENERATION_TIMEOUT,
+    ) -> None:
         _validate_endpoint(endpoint)
         self.endpoint = endpoint
         self.provider = provider
         self.timeout = timeout
+        self.write_timeout = write_timeout
         self.session_id: str | None = None
         self._opener = urllib.request.build_opener(_NoRedirect())
 
@@ -180,7 +191,7 @@ class ProcessOnTransport:
         upstream = urllib.request.Request(
             self.endpoint, data=body, headers=headers, method="POST"
         )
-        with self._opener.open(upstream, timeout=self.timeout) as response:
+        with self._opener.open(upstream, timeout=self._timeout_for(request)) as response:
             response_body = response.read()
             session_id = response.headers.get(SESSION_HEADER)
             if session_id:
@@ -195,6 +206,9 @@ class ProcessOnTransport:
             return parse_streamable_messages(
                 response.headers.get("Content-Type", "application/json"), response_body
             )
+
+    def _timeout_for(self, request: Mapping[str, Any]) -> float:
+        return self.write_timeout if is_write_like(request) else self.timeout
 
     @staticmethod
     def _raise_upstream_failure(request: Mapping[str, Any]) -> None:

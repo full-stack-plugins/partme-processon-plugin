@@ -1,6 +1,7 @@
 import io
 import json
 import threading
+import time
 import unittest
 import urllib.error
 from collections import deque
@@ -9,6 +10,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from processon_harness.mcp_proxy import (
     ProcessOnProxy,
     ProcessOnTransport,
+    ProxyError,
     is_write_like,
     parse_streamable_messages,
     run_stdio,
@@ -39,6 +41,8 @@ class FixtureHandler(BaseHTTPRequestHandler):
         body = self.rfile.read(length)
         request = json.loads(body)
         self.server.received.append((dict(self.headers.items()), request))
+        if self.server.delays:
+            time.sleep(self.server.delays.popleft())
         status, headers, response = self.server.responses.popleft()
         self.send_response(status)
         for name, value in headers.items():
@@ -53,9 +57,10 @@ class FixtureHandler(BaseHTTPRequestHandler):
 
 
 class ProxyFixture:
-    def __init__(self, responses):
+    def __init__(self, responses, delays=None):
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), FixtureHandler)
         self.server.responses = deque(responses)
+        self.server.delays = deque(delays or [])
         self.server.received = []
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
 
@@ -196,13 +201,51 @@ class TransportTest(unittest.TestCase):
         self.assertEqual(1, len(fixture.server.received))
         self.assertIn("UNKNOWN_WRITE_RESULT", json.dumps(messages))
 
+    def test_write_like_request_gets_the_generation_timeout(self):
+        # A real ProcessOn generation was observed to take 12.0s, 27.3s, and to
+        # exceed 30s for the same prompt. The short read timeout must not abort
+        # the write path, which cannot be safely replayed.
+        provider = RotatingProvider(["synthetic-token"])
+        responses = [
+            json_response({"jsonrpc": "2.0", "id": 6, "result": {"content": []}})
+        ]
+        with ProxyFixture(responses, delays=[0.6]) as (fixture, endpoint):
+            transport = ProcessOnTransport(
+                endpoint, provider, timeout=0.2, write_timeout=2.0
+            )
+            messages = transport.send(
+                {
+                    "jsonrpc": "2.0",
+                    "id": 6,
+                    "method": "tools/call",
+                    "params": {"name": "generate_diagram_dsl", "arguments": {}},
+                }
+            )
+        self.assertEqual(1, len(fixture.server.received))
+        self.assertEqual(1, len(messages))
+        self.assertIn("result", messages[0])
+
+    def test_read_request_keeps_the_short_timeout(self):
+        provider = RotatingProvider(["synthetic-token"])
+        responses = [
+            json_response({"jsonrpc": "2.0", "id": 7, "result": {"tools": []}})
+        ]
+        with ProxyFixture(responses, delays=[0.6]) as (_, endpoint):
+            transport = ProcessOnTransport(
+                endpoint, provider, timeout=0.2, write_timeout=2.0
+            )
+            with self.assertRaises(ProxyError) as caught:
+                transport.send(
+                    {"jsonrpc": "2.0", "id": 7, "method": "tools/list", "params": {}}
+                )
+        self.assertEqual("PROCESSON_UPSTREAM_ERROR", caught.exception.data_code)
+
     def test_missing_credential_returns_setup_required(self):
         proxy = ProcessOnProxy(ProcessOnTransport("http://127.0.0.1:9/mcp", RotatingProvider([])))
         messages = proxy.handle_line(
             '{"jsonrpc":"2.0","id":5,"method":"tools/list","params":{}}'
         )
         self.assertIn("PROCESSON_SETUP_REQUIRED", json.dumps(messages))
-
     def test_non_loopback_http_endpoint_is_rejected(self):
         with self.assertRaises(ValueError):
             ProcessOnTransport("http://example.com/mcp", RotatingProvider(["x"]))
