@@ -23,15 +23,18 @@ ASSETS = ROOT / "assets" / "setup"
 
 
 class SetupPageTest(unittest.TestCase):
-    def test_page_matches_stitch_source_with_processon_content(self):
+    def test_page_matches_the_single_card_processon_reference(self):
         html = (ASSETS / "index.html").read_text(encoding="utf-8")
-        self.assertEqual(1, html.count('class="setup-card"'))
-        self.assertEqual(3, html.count('class="setup-step"'))
-        self.assertIn('class="brand"', html)
+        self.assertEqual(1, html.count('class="install-card"'))
+        self.assertEqual(1, html.count('class="install-module"'))
+        self.assertIn('class="brand-lockup"', html)
+        self.assertIn("仅需一个 Token，即可在任意 Agent 中使用 ProcessOn", html)
         self.assertIn('href="https://smart.processon.com/user"', html)
         self.assertEqual(1, html.count('type="password"'))
-        self.assertIn('id="launch"', html)
-        self.assertIn("<details", html)
+        self.assertEqual(3, html.count("<li>"))
+        self.assertNotIn('id="launch"', html)
+        self.assertNotIn("<details", html)
+        self.assertNotIn('class="setup-step"', html)
         self.assertNotIn("画布CLI", html)
         self.assertNotIn('value="', html)
 
@@ -43,14 +46,15 @@ class SetupPageTest(unittest.TestCase):
         self.assertNotIn("https://fonts", html)
         self.assertIn("finally", script)
         self.assertIn('tokenInput.value = ""', script)
-        self.assertIn("launch.disabled=!ok", script)
+        self.assertNotIn("launch", script)
 
-    def test_page_adds_only_compact_layout_overrides_to_stitch_styles(self):
+    def test_page_uses_reference_card_dimensions_without_desktop_scroll(self):
         css = (ASSETS / "styles.css").read_text(encoding="utf-8")
-        self.assertIn("main{padding:3vh 0 24px}", css)
-        self.assertIn(".setup-card{padding:22px 36px}", css)
-        self.assertIn(".setup-step{padding:11px 0}", css)
-        self.assertIn("@media(max-height:700px)", css)
+        self.assertIn("overflow: hidden", css)
+        self.assertIn("width: 800px", css)
+        self.assertIn("border-radius: 24px", css)
+        self.assertIn("@media (max-width: 720px)", css)
+        self.assertNotIn("transform: rotate(45deg)", css)
 
 
 class SetupCliTest(unittest.TestCase):

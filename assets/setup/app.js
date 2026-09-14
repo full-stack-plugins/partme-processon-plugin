@@ -1,4 +1,35 @@
-const card=document.querySelector(".setup-card");const tokenInput=document.querySelector("#token");const save=document.querySelector("#save");const launch=document.querySelector("#launch");const status=document.querySelector("#status");const csrf=card.dataset.csrf;
-async function post(path,body){const response=await fetch(path,{method:"POST",headers:{"Content-Type":"application/json","X-CSRF-Token":csrf},body:JSON.stringify(body)});return response.ok}
-save.addEventListener("click",async()=>{const token=tokenInput.value.trim();if(!token){status.textContent="请先填写 Token。";return}save.disabled=true;try{const ok=await post("/api/credentials",{token});tokenInput.value = "";status.textContent=ok?"保存成功，可以打开 Codex。":"保存失败，请检查后重试。";launch.disabled=!ok}catch{tokenInput.value = "";status.textContent="保存失败，请确认本地设置页仍在运行。"}finally{tokenInput.value = "";save.disabled=false}});
-launch.addEventListener("click",async()=>{launch.disabled=true;const ok=await post("/api/launch",{});status.textContent=ok?"Codex 已启动。":"无法自动启动，请手动打开 Codex。";if(!ok)launch.disabled=false});
+const tokenInput = document.querySelector("#token");
+const saveButton = document.querySelector("#save");
+const statusLine = document.querySelector("#status");
+const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+saveButton.addEventListener("click", async () => {
+  if (!tokenInput.value.trim()) {
+    statusLine.className = "status error";
+    statusLine.textContent = "请先粘贴 ProcessOn Token。";
+    tokenInput.focus();
+    return;
+  }
+  saveButton.disabled = true;
+  statusLine.className = "status pending";
+  statusLine.textContent = "正在安全保存…";
+  try {
+    const response = await fetch("/api/credentials", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json", "X-CSRF-Token": csrfToken },
+      body: JSON.stringify({ token: tokenInput.value }),
+    });
+    const result = await response.json();
+    if (!response.ok || result.ok !== true) throw new Error();
+    statusLine.className = "status success";
+    statusLine.textContent = "保存成功，请重新打开 Codex 开始使用。";
+  } catch {
+    statusLine.className = "status error";
+    statusLine.textContent = "保存失败，请检查 Token 后重试。";
+  } finally {
+    tokenInput.value = "";
+    saveButton.disabled = false;
+    tokenInput.focus();
+  }
+});

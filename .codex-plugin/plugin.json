@@ -1,6 +1,6 @@
 {
   "name": "codex-processon-plugin",
-  "version": "0.1.0+codex.20260914041323",
+  "version": "0.1.0+codex.20260914042250",
   "description": "Create polished, editable ProcessOn diagrams, mind maps, and infographics from Codex.",
   "author": {
     "name": "Full Stack Skills / PartMe.AI",
@@ -40,7 +40,7 @@
     ],
     "brandColor": "#2F80ED",
     "composerIcon": "./assets/composer-icon.png",
-    "logo": "./assets/logo.png",
+    "logo": "./assets/logo-light.png",
     "logoDark": "./assets/logo-dark.png",
     "screenshots": [
       "./assets/processon-hero.png"

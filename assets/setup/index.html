@@ -1,8 +1,38 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ProcessOn 设置</title><link rel="stylesheet" href="/styles.css"></head>
-<body><main><div class="brand"><img src="/logo.png" alt="ProcessOn" width="122" height="35"> <span>Setup</span></div><h1>三步完成首次设置</h1><p class="subtitle">保存你的 ProcessOn Token，即可在 Codex 中开始设计</p>
-<section class="setup-card" data-csrf="__CSRF_TOKEN__">
-<div class="setup-step"><b>1　获取 Token</b><a href="https://smart.processon.com/user" target="_blank" rel="noreferrer">打开 ProcessOn 用户中心</a><p>创建并复制 Token，请勿发送到聊天。</p></div>
-<div class="setup-step"><b>2　保存到本机</b><div class="input-row"><input id="token" type="password" autocomplete="off" placeholder="粘贴 ProcessOn Token"><button id="save">保存</button></div><p id="status" aria-live="polite">Token 只保存在当前用户的本机配置中。</p></div>
-<div class="setup-step"><b>3　打开 Codex</b><button id="launch" disabled>打开 Codex</button><p>保存成功后重新打开 Codex，并只读列出 ProcessOn 工具。</p></div>
-<details><summary>高级设置</summary><p>高级用户可使用 PROCESSON_MCP_TOKEN 环境变量或运行配置器的 run 命令。</p></details>
-</section></main><script src="/app.js"></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="__CSRF_TOKEN__">
+    <title>ProcessOn MCP 设置</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main>
+      <div class="brand-lockup">
+        <img src="/logo-light.png" alt="ProcessOn" width="180" height="52">
+        <i aria-hidden="true"></i>
+        <span>MCP</span>
+      </div>
+      <h1>仅需一个 Token，即可在任意 Agent 中使用 ProcessOn</h1>
+      <p class="subtitle">安全保存一次，之后直接在 Codex 中完成专业图表创作</p>
+
+      <section class="install-card" aria-label="ProcessOn MCP Token 设置">
+        <div class="install-module">
+          <h2><span aria-hidden="true">◇</span> ProcessOn MCP</h2>
+          <div class="input-row">
+            <input id="token" name="token" type="password" autocomplete="off" spellcheck="false" placeholder="粘贴 ProcessOn Token" aria-describedby="status">
+            <button id="save" type="button">保存</button>
+          </div>
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+          <ul>
+            <li>在 <a href="https://smart.processon.com/user" target="_blank" rel="noreferrer">ProcessOn 用户中心</a> 创建并复制 Token，请勿发送到聊天</li>
+            <li>保存后重新打开 Codex，插件会自动完成登录与授权</li>
+            <li>让 Agent 创建流程图、架构图、思维导图和信息图，并获得可编辑结果</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

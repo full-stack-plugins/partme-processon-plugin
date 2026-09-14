@@ -91,6 +91,7 @@ class _SetupHandler(BaseHTTPRequestHandler):
             "/styles.css": ("text/css; charset=utf-8", "styles.css"),
             "/app.js": ("text/javascript; charset=utf-8", "app.js"),
             "/logo.png": ("image/png", "../logo.png"),
+            "/logo-light.png": ("image/png", "../logo-light.png"),
         }
         if self.path in {"/", "/index.html"}:
             text = (SETUP_ASSETS / "index.html").read_text(encoding="utf-8")

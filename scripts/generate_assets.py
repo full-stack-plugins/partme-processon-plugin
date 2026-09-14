@@ -115,6 +115,36 @@ def render_composer_icon(source: Path, destination: Path) -> None:
         )
 
 
+def render_light_wordmark(source: Path, destination: Path) -> None:
+    """Render a light-surface wordmark with dark Process and the official On mark."""
+    rsvg = shutil.which("rsvg-convert")
+    magick = shutil.which("magick")
+    if not rsvg or not magick:
+        raise RuntimeError("Light wordmark generation requires rsvg-convert and ImageMagick")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="processon-light-logo-") as temp_dir:
+        rendered = Path(temp_dir) / "wordmark.png"
+        left = Path(temp_dir) / "process.png"
+        subprocess.run(
+            [rsvg, "--width", "873", "--height", "250", "--output", str(rendered), str(source)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        subprocess.run(
+            [magick, str(rendered), "-crop", "623x250+0+0", "+repage", "-fill", "#111111", "-colorize", "100", str(left)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        subprocess.run(
+            [magick, str(rendered), str(left), "-geometry", "+0+0", "-composite", "-strip", str(destination)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+
 def generate_assets(source: Path, assets_dir: Path) -> None:
     """Copy the approved vector and generate all manifest PNG assets."""
     validate_svg(source)
@@ -122,6 +152,7 @@ def generate_assets(source: Path, assets_dir: Path) -> None:
     copy_source_svg(source, vector)
     render_wordmark_png(vector, assets_dir / "logo.png", "#2F80ED")
     render_wordmark_png(vector, assets_dir / "logo-dark.png", "none")
+    render_light_wordmark(vector, assets_dir / "logo-light.png")
     render_composer_icon(vector, assets_dir / "composer-icon.png")
 
 

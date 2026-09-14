@@ -27,6 +27,7 @@ REQUIRED_FILES = (
     ".mcp.json",
     ".agents/plugins/marketplace.json",
     "assets/logo.svg",
+    "assets/logo-light.png",
     "assets/logo.png",
     "assets/logo-dark.png",
     "assets/composer-icon.png",
@@ -163,6 +164,7 @@ def validate_distribution(root: Path = ROOT) -> list[str]:
             errors.append("marketplace must contain exactly the ProcessOn plugin")
 
     expected_pngs = {
+        "assets/logo-light.png": (873, 250),
         "assets/logo.png": (873, 250),
         "assets/logo-dark.png": (873, 250),
         "assets/composer-icon.png": (64, 64),

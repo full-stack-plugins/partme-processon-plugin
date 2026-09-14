@@ -50,7 +50,7 @@ class ManifestContractTest(unittest.TestCase):
         plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
         interface = plugin["interface"]
         self.assertEqual("ProcessOn", interface["displayName"])
-        self.assertEqual("./assets/logo.png", interface["logo"])
+        self.assertEqual("./assets/logo-light.png", interface["logo"])
         self.assertEqual("./assets/logo-dark.png", interface["logoDark"])
         self.assertEqual("./assets/composer-icon.png", interface["composerIcon"])
         self.assertEqual(
