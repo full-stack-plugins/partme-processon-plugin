@@ -101,6 +101,17 @@ flowchart LR
 | `codex-processon-prompt` | 六段式 ProcessOn Prompt：意图、内容、关系、布局、视觉系统、约束 |
 | `codex-processon-review` | 语义、关系、视觉、可读性、一致性和可编辑性审查 |
 
+### 组件职责
+
+| 组件 | 负责 | 不负责 |
+|---|---|---|
+| `scripts/processon_mcp_proxy.py` | 已安装的 stdio 入口点 | 凭据存储 |
+| `processon_harness/mcp_proxy.py` | JSON-RPC 帧、Streamable HTTP 传输、会话处理与错误分类 | 凭据持久化 |
+| `processon_harness/secrets.py` | Token 规范化、查找优先级、受限的原子存储 | 传输 |
+| `scripts/processon_setup.py` | 回环设置页、隐藏终端设置与状态检查 | 图表生成 |
+| `assets/setup/` | 通过回环提供的三步页面资源 | 业务逻辑 |
+| `skills/`（7 个） | 路由、建模、Prompt 构造、审查与设置指令 | 运行时强制 |
+
 ## 能力矩阵
 
 | 能力 | 输入 | 输出 | 证据/状态 |
@@ -131,9 +142,15 @@ flowchart LR
 
 以上均为已记录真实在线验收产物的仓库本地副本，不是示意图；源图与远程产物生命周期仍由 ProcessOn 管理。
 
-## 快速开始
+## 安装
 
-### 1. 安装 marketplace 与插件
+### 前置条件
+
+- `PATH` 上有 Python 3 与 `python3`。
+- 一个 ProcessOn 账号，以及来自 <https://smart.processon.com/user> 的 Token。
+- 不需要 API Key 文件、不需要 npm 依赖、也不需要任何外部服务账号。
+
+### 从插件市场安装
 
 推荐方式——添加本项目 GitHub 仓库、固定 `main`，然后安装 ProcessOn：
 
@@ -177,7 +194,9 @@ codex plugin marketplace upgrade partme-ai-processon
 codex plugin add codex-processon-plugin@partme-ai-processon
 ```
 
-### 2. 完成一次本地设置
+## 快速开始
+
+### 1. 完成一次本地设置
 
 提出任意 ProcessOn 制图需求。凭证缺失，或刷新一次后仍被拒绝时，本地 MCP 代理会自动打开设置页；10 分钟冷却机制避免连续弹窗。按顺序完成三步：
 
@@ -246,7 +265,7 @@ CI 等受控进程可以通过 `PROCESSON_MCP_TOKEN` 提供原始 Token。这不
 PROCESSON_MCP_TOKEN="raw-token-from-secret-manager" codex
 ```
 
-### 3. 生成第一张图
+### 2. 生成第一张图
 
 ```text
 使用 ProcessOn 生成一张分层 Agent Harness 架构图。
@@ -396,14 +415,33 @@ python3 -m venv .venv
 ```bash
 .venv/bin/python -m unittest discover -s tests -p 'test_*.py' -v
 .venv/bin/python scripts/validate_distribution.py
-.venv/bin/python /Users/wandl/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
+.venv/bin/python <plugin-creator>/scripts/validate_plugin.py .
 git diff --check
 ```
 
-前两条命令属于仓库自身。最后一条插件校验器路径来自本机 Codex 开发工具，其他机器上的位置可能不同。
+前两条命令属于仓库自身。最后一条插件校验器来自本机 Codex 开发工具，请把 `<plugin-creator>` 替换为你本机的实际路径。
+
+## 兼容性
+
+| 插件版本 | 宿主 | 运行环境 | 传输 | 状态 |
+|---|---|---|---|---|
+| `0.1.0+codex.<cachebuster>` | Codex CLI（实测于 `0.154.0-alpha.6.2`）或 ChatGPT 桌面应用 | `PATH` 上的 Python 3 | 本地 stdio 代理转发到 Streamable HTTP | 本地已验证，含一次经授权的真实生成 |
+| `0.1.0` | 任何支持内联请求头的 MCP Client | — | 直接 HTTPS 并内联 `Authorization` 头 | 上游文档示例，不是 Codex 插件配置 |
+
+协商协议为 `2025-06-18`。ProcessOn 文档声明每个 Token 每分钟最多 600 次请求，端点为 `https://smart-hd.processon.com/mcp`。
+
+## 数据与状态
+
+| 数据 | 位置 | 生命周期 | 是否含秘密 |
+|---|---|---|---|
+| 凭证文件 | `~/.config/processon/credentials.json`，或 `%APPDATA%\processon\credentials.json` | 直到你轮换或删除 | 是：原始 Token；目录权限 `0700`，文件权限 `0600` |
+| 设置页资源 | 包内的 `assets/setup/` | 随插件版本化 | 否 |
+| 上游会话 ID | 代理进程内存中 | 进程生命周期 | 否 |
+| 生成的图表 | ProcessOn 自身服务 | 由 ProcessOn 持有 | 否 |
+
+插件不保留运行台账：每次生成都是一次经由代理的无状态请求-响应。
 
 ## 文档导航
-
 - [ProcessOn AI、DSL 与 MCP 文档索引](docs/ProcessOn-Documentation-Index.zh_CN.md)
 - [Architecture](docs/Codex-ProcessOn-Plugin-Architecture.md) · [架构中文版](docs/Codex-ProcessOn-Plugin-Architecture.zh_CN.md)
 - [Technical solution](docs/Codex-ProcessOn-Plugin-Technical-Solution.md) · [技术方案中文版](docs/Codex-ProcessOn-Plugin-Technical-Solution.zh_CN.md)
@@ -411,6 +449,10 @@ git diff --check
 - [已完成实施计划](docs/superpowers/plans/2026-09-12-codex-processon-plugin.md)
 - [本地凭证设置设计](docs/superpowers/specs/2026-09-14-processon-local-credential-setup-design.md)
 - [本地凭证设置实施计划](docs/superpowers/plans/2026-09-14-processon-local-credential-setup.md)
+
+## 贡献与支持
+
+功能问题请提交到 <https://github.com/partme-ai/codex-processon-plugin/issues>。提交变更前，请说明你验证所用的 Codex 宿主版本、是否改动 MCP 工具契约或凭据处理，以及由哪些测试覆盖。涉及安全的敏感问题请私下报告，不要创建公开 Issue。
 
 ## 许可证与支持
 

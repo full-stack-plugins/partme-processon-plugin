@@ -101,6 +101,17 @@ flowchart LR
 | `codex-processon-prompt` | Six-part ProcessOn prompt: intent, content, relationships, layout, visual system, constraints |
 | `codex-processon-review` | Semantic, relationship, visual, readability, consistency, and editability review |
 
+### Component responsibilities
+
+| Component | Owns | Does not own |
+|---|---|---|
+| `scripts/processon_mcp_proxy.py` | The installed stdio entry point | Credential storage |
+| `processon_harness/mcp_proxy.py` | JSON-RPC framing, Streamable HTTP transport, session handling, the error taxonomy | Credential persistence |
+| `processon_harness/secrets.py` | Token normalization, lookup priority, restricted atomic storage | Transport |
+| `scripts/processon_setup.py` | The loopback setup page, hidden terminal setup, and the status check | Diagram generation |
+| `assets/setup/` | The three-step page assets served over loopback | Business logic |
+| `skills/` (7) | Routing, modelling, prompt construction, review, and setup instructions | Runtime enforcement |
+
 ## Capability matrix
 
 | Capability | Input | Output | Evidence/status |
@@ -131,9 +142,15 @@ The live server exposed `generate_chart`, `generate_diagram`, and `generate_diag
 
 These are repository-local copies of outputs from the recorded live acceptance run, not mockups. Their source diagrams and remote artifact lifecycle remain owned by ProcessOn.
 
-## Quick start
+## Installation
 
-### 1. Install the marketplace and plugin
+### Prerequisites
+
+- Python 3 with `python3` on `PATH`.
+- A ProcessOn account and a Token from <https://smart.processon.com/user>.
+- No API key file, no npm dependency, and no external service account.
+
+### From the plugin marketplace
 
 Recommended — add this GitHub repository, pin `main`, then install ProcessOn:
 
@@ -177,7 +194,9 @@ codex plugin marketplace upgrade partme-ai-processon
 codex plugin add codex-processon-plugin@partme-ai-processon
 ```
 
-### 2. Complete the one-time local setup
+## Quick start
+
+### 1. Complete the one-time local setup
 
 Request any ProcessOn diagram. If the credential is missing or still rejected after one refresh, the local MCP proxy automatically opens the setup page. A 10-minute cooldown prevents repeated windows. Complete its three steps in order:
 
@@ -246,7 +265,7 @@ CI and other controlled process environments may provide the raw Token through `
 PROCESSON_MCP_TOKEN="raw-token-from-secret-manager" codex
 ```
 
-### 3. Generate a diagram
+### 2. Generate a diagram
 
 ```text
 Use ProcessOn to create a layered Agent Harness architecture diagram.
@@ -400,14 +419,33 @@ Run the complete local gate:
 ```bash
 .venv/bin/python -m unittest discover -s tests -p 'test_*.py' -v
 .venv/bin/python scripts/validate_distribution.py
-.venv/bin/python /Users/wandl/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
+.venv/bin/python <plugin-creator>/scripts/validate_plugin.py .
 git diff --check
 ```
 
-The first two commands are repository-owned. The final plugin validator path is a local Codex development-tool path and may differ on another machine.
+The first two commands are repository-owned. The final plugin validator belongs to the local Codex development tools; substitute your own path for `<plugin-creator>`.
+
+## Compatibility
+
+| Plugin version | Host | Runtime | Transport | Status |
+|---|---|---|---|---|
+| `0.1.0+codex.<cachebuster>` | Codex CLI (verified on `0.154.0-alpha.6.2`) or ChatGPT desktop app | Python 3 on `PATH` | Local stdio proxy to Streamable HTTP | Verified locally, including one authorized live generation |
+| `0.1.0` | any MCP client that supports inline headers | — | Direct HTTPS with an inline `Authorization` header | Documented upstream example, not the Codex plugin configuration |
+
+The negotiated protocol is `2025-06-18`. ProcessOn documents a limit of 600 requests per token per minute, and the endpoint is exactly `https://smart-hd.processon.com/mcp`.
+
+## Data and state
+
+| Data | Location | Lifecycle | Secrets |
+|---|---|---|---|
+| Credential file | `~/.config/processon/credentials.json`, or `%APPDATA%\processon\credentials.json` | Until you rotate or delete it | Yes: the raw Token; directory mode `0700`, file mode `0600` |
+| Setup page assets | `assets/setup/` inside the package | Versioned with the plugin | No |
+| Upstream session id | In memory inside the proxy process | Process lifetime | No |
+| Generated diagrams | ProcessOn's own service | Owned by ProcessOn | No |
+
+The plugin keeps no run ledger: each generation is a stateless request-response cycle through the proxy.
 
 ## Documentation
-
 - [ProcessOn AI, DSL, and MCP documentation index](docs/ProcessOn-Documentation-Index.zh_CN.md)
 - [Architecture](docs/Codex-ProcessOn-Plugin-Architecture.md) · [架构中文版](docs/Codex-ProcessOn-Plugin-Architecture.zh_CN.md)
 - [Technical solution](docs/Codex-ProcessOn-Plugin-Technical-Solution.md) · [技术方案中文版](docs/Codex-ProcessOn-Plugin-Technical-Solution.zh_CN.md)
@@ -415,6 +453,10 @@ The first two commands are repository-owned. The final plugin validator path is 
 - [Completed implementation plan](docs/superpowers/plans/2026-09-12-codex-processon-plugin.md)
 - [Local credential setup design](docs/superpowers/specs/2026-09-14-processon-local-credential-setup-design.md)
 - [Local credential setup implementation plan](docs/superpowers/plans/2026-09-14-processon-local-credential-setup.md)
+
+## Contributing and support
+
+Open functional issues at <https://github.com/partme-ai/codex-processon-plugin/issues>. Before proposing a change, state the Codex host version you verified on, whether it alters the MCP tool contract or the credential handling, and which tests cover it. Report security-sensitive findings privately rather than in a public issue.
 
 ## License and support
 
