@@ -592,11 +592,13 @@ Run `initialize`, `notifications/initialized`, and `tools/list`, then make one e
 
 Executed 2026-09-14. The first authorized call on the published revision was aborted at 30.1s and correctly surfaced `UNKNOWN_WRITE_RESULT` with zero retries; the same request completed in 12.0s and 27.3s when given a longer budget, which identified the 30s read timeout as the defect. The fix was committed locally as `94e3387` with a regression test whose mutation check reproduces the original error. On the fixed revision, `initialize` returned `2025-06-18` with serverInfo `streamable-mcp-server`, `tools/list` returned all three tools, and one authorized `generate_diagram_dsl` call completed with `isError: false` and a usable three-layer definition recorded in `artifacts/acceptance/credential-setup-stdio-dsl.json`.
 
+Two of five otherwise successful `generate_diagram_dsl` calls returned a well-formed but empty payload (`isError: false`, empty text), including a 33.9s call that the old 30s timeout would have aborted. The proxy forwards that empty payload unchanged, so the user gets no artifact and no actionable error. This is recorded as `emptyPayloadFinding` in the acceptance summary and is deliberately **not** fixed here: the behaviour is upstream service variance rather than a reproducible defect, and mapping it to an error changes the plugin's response contract, which is a product decision.
+
 - [x] **Step 5: Report proof levels separately**
 
 Report local tests, local distribution validation, Git commit, remote push, clean installation, MCP discovery, read-only protocol success, and mutating generation success as distinct lines. If any gate is not performed, label it unverified rather than complete.
 
-Executed 2026-09-14 in `artifacts/acceptance/acceptance-summary.json` under `proofLevels`: local tests, both validators, clean installation, MCP discovery, read-only protocol, and mutating generation are `VERIFIED`; remote push is `NOT_PERFORMED` because it needs separate authorization.
+Executed 2026-09-14 in `artifacts/acceptance/acceptance-summary.json` under `proofLevels`: local tests, both validators, clean installation, MCP discovery, read-only protocol, and mutating generation are `VERIFIED`; remote push is `NOT_PERFORMED` because it needs separate authorization. Because the published revision still carries the defect, the verified build is installed locally through the personal marketplace (`codex-processon-plugin@personal`, `0.1.0+codex.20260914112340`); removing the older `codex-processon-plugin@partme-ai-processon` install was required because it kept owning the `processon` MCP name.
 
 ## Plan Self-Review Checklist
 
