@@ -10,7 +10,7 @@
 
 **Spec:** `docs/superpowers/specs/2026-09-14-processon-local-credential-setup-design.md`
 
-**Execution status (2026-09-14):** Tasks 1–7 implemented and locally verified on `main`. Task 8 executed after explicit user authorization: clean-cache installation, MCP discovery, read-only protocol, and one authorized `generate_diagram_dsl` call were all verified, and the acceptance attempt exposed a generation-timeout defect that is fixed locally in `94e3387`. Remote push was deliberately not performed, so the published `main` still carries the defect.
+**Execution status (2026-09-14):** Tasks 1–7 implemented and locally verified on `main`. Task 8 executed after explicit user authorization: clean-cache installation, MCP discovery, read-only protocol, and an authorized `generate_diagram_dsl` call were all verified, and the acceptance attempt exposed a generation-timeout defect that is fixed in `94e3387`. The fix was pushed to `origin/main` (`7014fc1`), and the published revision is installed and re-verified end to end. One upstream behaviour is recorded but not fixed: `generate_diagram_dsl` intermittently returns a successful but empty payload, which needs a product decision before the response contract changes.
 
 ## Global Constraints
 
@@ -572,7 +572,7 @@ Use `superpowers:requesting-code-review` for the completed implementation review
 
 Confirm local HEAD, tracking SHA, remote SHA if already pushed, and the exact cachebuster/version used by the Codex plugin installer. Treat commit, push, marketplace availability, installation, and runtime validation as separate evidence gates.
 
-Executed 2026-09-14: local HEAD, `origin/main` ref, and the authoritative `git ls-remote` all returned `1a1681f`; the committed cachebuster was `0.1.0+codex.20260914044127`. Push was not performed, so the published revision predates the fix below.
+Executed 2026-09-14: local HEAD, `origin/main` ref, and the authoritative `git ls-remote` all returned `1a1681f` at the start, and the committed cachebuster was `0.1.0+codex.20260914044127`. After the fix below, the three landed on `7014fc1` with `0.1.0+codex.20260914112340`.
 
 - [x] **Step 2: Install from a clean cache and verify installed files**
 
@@ -598,7 +598,7 @@ Two of five otherwise successful `generate_diagram_dsl` calls returned a well-fo
 
 Report local tests, local distribution validation, Git commit, remote push, clean installation, MCP discovery, read-only protocol success, and mutating generation success as distinct lines. If any gate is not performed, label it unverified rather than complete.
 
-Executed 2026-09-14 in `artifacts/acceptance/acceptance-summary.json` under `proofLevels`: local tests, both validators, clean installation, MCP discovery, read-only protocol, and mutating generation are `VERIFIED`; remote push is `NOT_PERFORMED` because it needs separate authorization. Because the published revision still carries the defect, the verified build is installed locally through the personal marketplace (`codex-processon-plugin@personal`, `0.1.0+codex.20260914112340`); removing the older `codex-processon-plugin@partme-ai-processon` install was required because it kept owning the `processon` MCP name.
+Executed 2026-09-14 in `artifacts/acceptance/acceptance-summary.json` under `proofLevels`: local tests, both validators, Git commit, remote push, clean installation, MCP discovery, read-only protocol, and mutating generation are all `VERIFIED`. The fix was pushed as `7014fc1`, and the published revision (`codex-processon-plugin@partme-ai-processon`, `0.1.0+codex.20260914112340`) is installed, enabled, and re-verified with a fresh Codex generation call. The temporary local marketplace entry was retired and `~/.agents/plugins/marketplace.json` restored byte-for-byte.
 
 ## Plan Self-Review Checklist
 
