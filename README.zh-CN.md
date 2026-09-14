@@ -50,6 +50,8 @@
      可编辑 ProcessOn 源文件 / 图片 URL / 可复用 DSL
 ```
 
+## 状态与版本
+
 | 项目属性 | 已验证值 |
 |:---|:---|
 | 插件 ID | `codex-processon-plugin` |

@@ -50,6 +50,8 @@ Natural-language request / approved source material
      Editable ProcessOn source / image URL / reusable DSL
 ```
 
+## Status and version
+
 | Property | Verified value |
 |:---|:---|
 | Plugin ID | `codex-processon-plugin` |
