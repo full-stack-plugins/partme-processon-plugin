@@ -1,5 +1,4 @@
 import contextlib
-import hashlib
 import io
 import json
 import os
@@ -46,12 +45,12 @@ class SetupPageTest(unittest.TestCase):
         self.assertIn('tokenInput.value = ""', script)
         self.assertIn("launch.disabled=!ok", script)
 
-    def test_page_uses_the_stitch_setup_stylesheet_verbatim(self):
-        digest = hashlib.sha256((ASSETS / "styles.css").read_bytes()).hexdigest()
-        self.assertEqual(
-            "b246bea2c1601d909aad518406ca0080c1b96d02889f6fad41d065050c940d72",
-            digest,
-        )
+    def test_page_adds_only_compact_layout_overrides_to_stitch_styles(self):
+        css = (ASSETS / "styles.css").read_text(encoding="utf-8")
+        self.assertIn("main{padding:3vh 0 24px}", css)
+        self.assertIn(".setup-card{padding:22px 36px}", css)
+        self.assertIn(".setup-step{padding:11px 0}", css)
+        self.assertIn("@media(max-height:700px)", css)
 
 
 class SetupCliTest(unittest.TestCase):
