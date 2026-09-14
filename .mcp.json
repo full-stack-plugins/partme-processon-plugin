@@ -1,11 +1,10 @@
 {
   "mcpServers": {
     "processon": {
-      "type": "http",
-      "url": "https://smart-hd.processon.com/mcp",
-      "env_http_headers": {
-        "Authorization": "PROCESSON_MCP_AUTHORIZATION"
-      }
+      "type": "stdio",
+      "command": "python3",
+      "args": ["scripts/processon_mcp_proxy.py"],
+      "cwd": "."
     }
   }
 }

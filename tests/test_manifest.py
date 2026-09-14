@@ -16,13 +16,15 @@ class ManifestContractTest(unittest.TestCase):
         self.assertEqual("./.mcp.json", plugin["mcpServers"])
 
         server = mcp["mcpServers"]["processon"]
-        self.assertEqual("http", server["type"])
-        self.assertEqual("https://smart-hd.processon.com/mcp", server["url"])
         self.assertEqual(
-            "PROCESSON_MCP_AUTHORIZATION",
-            server["env_http_headers"]["Authorization"],
+            {
+                "type": "stdio",
+                "command": "python3",
+                "args": ["scripts/processon_mcp_proxy.py"],
+                "cwd": ".",
+            },
+            server,
         )
-        self.assertNotIn("headers", server)
 
     def test_marketplace_exposes_installable_creativity_plugin(self):
         marketplace = json.loads(

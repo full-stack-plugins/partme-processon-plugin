@@ -9,13 +9,15 @@ REAL_BEARER = re.compile(r"Bearer\s+(?!<|TOKEN_VALUE|test-secret-value)[A-Za-z0-
 
 
 class SecurityContractTest(unittest.TestCase):
-    def test_mcp_uses_environment_backed_header(self):
+    def test_mcp_contains_only_a_secret_free_stdio_command(self):
         server = json.loads((ROOT / ".mcp.json").read_text())["mcpServers"]["processon"]
-        self.assertNotIn("headers", server)
         self.assertEqual(
-            {"Authorization": "PROCESSON_MCP_AUTHORIZATION"},
-            server["env_http_headers"],
+            {"type", "command", "args", "cwd"},
+            set(server),
         )
+        serialized = json.dumps(server).lower()
+        for forbidden in ("authorization", "token", "secret", "password"):
+            self.assertNotIn(forbidden, serialized)
 
     def test_repository_contains_no_literal_bearer_credential(self):
         violations = []

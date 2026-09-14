@@ -29,6 +29,14 @@ REQUIRED_FILES = (
     "assets/logo.png",
     "assets/logo-dark.png",
     "assets/composer-icon.png",
+    "assets/setup/index.html",
+    "assets/setup/styles.css",
+    "assets/setup/app.js",
+    "processon_harness/__init__.py",
+    "processon_harness/secrets.py",
+    "processon_harness/mcp_proxy.py",
+    "scripts/processon_mcp_proxy.py",
+    "scripts/processon_setup.py",
     "README.md",
     "README.zh-CN.md",
     "docs/ProcessOn-Documentation-Index.zh_CN.md",
@@ -140,14 +148,14 @@ def validate_distribution(root: Path = ROOT) -> list[str]:
                 errors.append(f"invalid manifest asset reference: {key}")
     if mcp:
         server = mcp.get("mcpServers", {}).get("processon", {})
-        if server.get("url") != "https://smart-hd.processon.com/mcp":
-            errors.append("ProcessOn MCP endpoint mismatch")
-        if server.get("env_http_headers") != {
-            "Authorization": "PROCESSON_MCP_AUTHORIZATION"
-        }:
-            errors.append("ProcessOn authorization must use env_http_headers")
-        if "headers" in server:
-            errors.append("ProcessOn MCP must not contain literal headers")
+        expected_server = {
+            "type": "stdio",
+            "command": "python3",
+            "args": ["scripts/processon_mcp_proxy.py"],
+            "cwd": ".",
+        }
+        if server != expected_server:
+            errors.append("ProcessOn MCP must use the local secret-free stdio proxy")
     if marketplace:
         entries = marketplace.get("plugins", [])
         if len(entries) != 1 or entries[0].get("name") != "codex-processon-plugin":
