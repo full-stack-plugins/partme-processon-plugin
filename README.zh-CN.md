@@ -57,7 +57,7 @@
 | 插件 ID | `codex-processon-plugin` |
 | 显示名称 | ProcessOn |
 | 当前候选版本 | `0.1.0+codex.20260914224756` |
-| 最近一次已安装包验收 | `0.1.0+codex.20260914112340` |
+| 最近一次已安装包验收 | `0.1.0+codex.20260914224756` |
 | 已测试宿主 | Codex CLI `0.154.0-alpha.6.2` |
 | 插件清单 | `.codex-plugin/plugin.json` |
 | MCP 配置 | `.mcp.json` |
