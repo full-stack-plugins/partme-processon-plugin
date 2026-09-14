@@ -14,6 +14,12 @@ import urllib.error
 import urllib.request
 from typing import Any
 
+from processon_harness.mcp_proxy import (
+    business_authentication_failed,
+    parse_streamable_messages,
+    tool_names,
+)
+
 
 PROTOCOL_VERSION = "2025-06-18"
 DEFAULT_ENDPOINT = "https://smart-hd.processon.com/mcp"
@@ -59,31 +65,10 @@ def encode_rpc(method: str, params: dict, request_id: int | None) -> bytes:
 
 def parse_streamable_response(content_type: str, body: bytes) -> dict:
     """Parse either application/json or SSE-framed Streamable HTTP JSON."""
-    text = body.decode("utf-8")
-    if "text/event-stream" not in content_type.lower():
-        payload = json.loads(text)
-        if not isinstance(payload, dict):
-            raise McpSmokeError("MCP response must be a JSON object")
-        return payload
-
-    events = []
-    for line in text.splitlines():
-        if not line.startswith("data:"):
-            continue
-        data = line[5:].strip()
-        if data and data != "[DONE]":
-            candidate = json.loads(data)
-            if isinstance(candidate, dict):
-                events.append(candidate)
-    if not events:
-        raise McpSmokeError("MCP event stream contained no JSON-RPC message")
-    return events[-1]
-
-
-def tool_names(payload: dict) -> list[str]:
-    """Return valid tool names from a tools/list response."""
-    tools = payload.get("result", {}).get("tools", [])
-    return [tool["name"] for tool in tools if isinstance(tool, dict) and tool.get("name")]
+    try:
+        return parse_streamable_messages(content_type, body)[-1]
+    except RuntimeError as exc:
+        raise McpSmokeError("ProcessOn returned an invalid MCP response") from exc
 
 
 def ensure_tool_success(payload: dict) -> None:
@@ -91,13 +76,7 @@ def ensure_tool_success(payload: dict) -> None:
     if "error" in payload:
         raise McpSmokeError("ProcessOn tool returned a JSON-RPC error")
     result = payload.get("result", {})
-    texts = [
-        item.get("text", "")
-        for item in result.get("content", [])
-        if isinstance(item, dict) and item.get("type") == "text"
-    ]
-    normalized = " ".join(texts).strip().lower()
-    if normalized in {"token is invalid", "invalid token", "token invalid"}:
+    if business_authentication_failed([payload]):
         raise McpSmokeError("ProcessOn authentication failed (business response)")
     if result.get("isError") is True:
         raise McpSmokeError("ProcessOn tool reported a business error")
