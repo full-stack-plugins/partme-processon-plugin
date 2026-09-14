@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="__CSRF_TOKEN__">
+    <title>ProcessOn · Codex 首次设置</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="setup-card" aria-labelledby="setup-title">
+        <header>
+          <img src="/logo.png" alt="ProcessOn" width="56" height="56">
+          <div>
+            <p class="eyebrow">CODEX × PROCESSON</p>
+            <h1 id="setup-title">连接你的 ProcessOn</h1>
+            <p>Token 只保存在当前用户的本地受限配置中。</p>
+          </div>
+        </header>
+        <ol class="steps">
+          <li>
+            <span class="step-number">1</span>
+            <div><strong>获取 Token</strong><p>前往 <a href="https://smart.processon.com/user" target="_blank" rel="noreferrer">ProcessOn 用户中心</a> 创建或复制 Token。</p></div>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <div class="step-content">
+              <label for="token"><strong>保存到本机</strong></label>
+              <p>粘贴后点击保存。页面不会显示或回传已保存的 Token。</p>
+              <div class="input-row">
+                <input id="token" name="token" type="password" autocomplete="off" spellcheck="false" placeholder="粘贴 ProcessOn Token" aria-describedby="status">
+                <button id="save" type="button">保存 Token</button>
+              </div>
+              <p id="status" class="status" role="status" aria-live="polite"></p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <div><strong>开始使用</strong><p>保存成功后重新打开 Codex，再次提出你的制图需求。</p></div>
+          </li>
+        </ol>
+      </section>
+    </main>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
