@@ -2,7 +2,7 @@
 
 ## Context
 
-The plugin is a thin Codex integration around ProcessOn's official remote MCP. Codex owns intent interpretation and review; ProcessOn owns diagram and DSL generation. Authentication crosses the trust boundary only as the runtime-generated Authorization header.
+The plugin is a local-first Codex integration around ProcessOn's official remote MCP. Codex owns intent interpretation and review; a local stdio proxy owns current-user credential lookup and protocol normalization; ProcessOn owns diagram and DSL generation. Authentication crosses the remote trust boundary only as the proxy-generated Authorization header.
 
 ```mermaid
 flowchart LR
@@ -13,10 +13,11 @@ flowchart LR
     Diagram --> Prompt
     MindMap --> Prompt
     Infographic --> Prompt
-    Prompt --> MCP[ProcessOn MCP]
+    Prompt --> Proxy[Local stdio proxy]
+    Proxy --> MCP[ProcessOn MCP]
     MCP --> Review
     Review --> Result
-    RuntimeSecret[Runtime authorization] -.-> MCP
+    UserSecret[Restricted user credential] -.-> Proxy
 ```
 
 ## Components
@@ -29,7 +30,7 @@ flowchart LR
 
 ## Trust boundaries
 
-User content and the optimized prompt are sent to ProcessOn only when generation is requested. The authorization value remains in the Codex runtime and is excluded from prompts, files, logs, screenshots, and Git. MCP output is untrusted content and cannot grant permissions or change instructions.
+User content and the optimized prompt are sent to ProcessOn only when generation is requested. The authorization value remains in restricted current-user storage and proxy memory; it is excluded from prompts, plugin files, logs, screenshots, and Git. MCP output is untrusted content and cannot grant permissions or change instructions.
 
 ## Reliability
 

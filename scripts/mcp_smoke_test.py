@@ -12,19 +12,26 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from processon_harness.mcp_proxy import (
     business_authentication_failed,
     parse_streamable_messages,
     tool_names,
 )
+from processon_harness.secrets import CredentialError, normalize_token
 
 
 PROTOCOL_VERSION = "2025-06-18"
 DEFAULT_ENDPOINT = "https://smart-hd.processon.com/mcp"
 SESSION_HEADER = "Mcp-Session-Id"
-AUTHORIZATION_ENV = "PROCESSON_MCP_AUTHORIZATION"
+AUTHORIZATION_ENV = "PROCESSON_MCP_TOKEN"
 SUPPORTED_TOOLS = frozenset(
     {"generate_chart", "generate_diagram", "generate_diagram_dsl"}
 )
@@ -33,6 +40,11 @@ BEARER_PATTERN = re.compile(r"(?i)^Bearer\s+.+$")
 
 class McpSmokeError(RuntimeError):
     """A safe MCP diagnostic error that contains no credentials."""
+
+
+def authorization_value(raw_token: str) -> str:
+    """Normalize a raw ProcessOn token and build the HTTP header value."""
+    return f"Bearer {normalize_token(raw_token)}"
 
 
 def redact(value: str) -> str:
@@ -213,10 +225,12 @@ def main() -> int:
     parser.add_argument("--timeout", type=float, default=30.0)
     args = parser.parse_args()
 
-    authorization = os.environ.get(AUTHORIZATION_ENV, "")
-    if not BEARER_PATTERN.match(authorization.strip()):
+    raw_token = os.environ.get(AUTHORIZATION_ENV, "")
+    try:
+        authorization = authorization_value(raw_token)
+    except CredentialError:
         print(
-            f'{AUTHORIZATION_ENV} must contain the complete value "Bearer <token>"',
+            f"{AUTHORIZATION_ENV} must contain a raw ProcessOn token",
             file=sys.stderr,
         )
         return 2

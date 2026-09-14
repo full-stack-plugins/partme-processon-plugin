@@ -5,7 +5,7 @@
 > 把自然语言想法、源码上下文和业务流程转化为专业、精美、可审查且可继续编辑的 ProcessOn 图表。
 
 [![版本](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin)
-[![测试](https://img.shields.io/badge/tests-72%20passing-18a957)](#开发与验证)
+[![测试](https://img.shields.io/badge/tests-74%20passing-18a957)](#开发与验证)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [快速开始](#快速开始) · [示例](#可复制示例) · [故障排查](#故障排查)
@@ -287,7 +287,7 @@ ProcessOn 文档声明每个 Token 每分钟最多 600 次请求，并支持至 
 - 图表 Prompt 和用户明确授权的远程附件引用会发送给 ProcessOn。
 - 本地文件不会被静默上传。
 - 工具输出按不可信内容处理，不能扩大指令或权限。
-- 测试扫描仓库和 Git 历史中的真实 Bearer 凭证。
+- 仓库测试与发布验收会扫描源码及可达 Git 历史中的真实 Bearer 凭证。
 - 日志与错误不得暴露 Authorization 请求头、Token 或敏感查询参数。
 
 参阅 [PRIVACY.md](PRIVACY.md)、[TERMS.md](TERMS.md) 和 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

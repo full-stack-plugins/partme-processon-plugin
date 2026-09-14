@@ -214,24 +214,26 @@
 
 - 2026-03-21，版本 1.0.0：MCP Server 初版。
 
-### MCP 当前连接契约
+### MCP 官方连接契约与插件适配
+
+ProcessOn 页面提供的通用 MCP Client 配置使用远程 HTTP 与内联 Authorization 请求头。`codex-processon-plugin` 不把真实 Token 写入版本化配置；已安装插件使用以下本地 stdio 入口：
 
 ```json
 {
   "mcpServers": {
     "processon": {
-      "type": "http",
-      "url": "https://smart-hd.processon.com/mcp",
-      "env_http_headers": {
-        "Authorization": "PROCESSON_MCP_AUTHORIZATION"
-      }
+      "type": "stdio",
+      "command": "python3",
+      "args": ["scripts/processon_mcp_proxy.py"],
+      "cwd": "."
     }
   }
 }
 ```
 
-- Streamable HTTP。
-- `PROCESSON_MCP_AUTHORIZATION` 的值是完整的 `Bearer <token>`。
+- 插件内部链路为本地 stdio → 官方 Streamable HTTP。
+- 普通用户通过本地三步页面把原始 Token 保存到当前用户受限配置；代理添加 `Bearer` 前缀。
+- `PROCESSON_MCP_TOKEN` 仅作为受控自动化进程的高级覆盖项。
 - 最高支持 MCP Version `2025-06-18` 及之前版本。
 - 每个 Token 每分钟最多 600 次请求。
 - 401 表示 Token 无效、过期或未提供；不得盲目重试。

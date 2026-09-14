@@ -5,7 +5,7 @@
 > Turn natural-language ideas, source context, and business workflows into polished ProcessOn diagrams that remain reviewable and editable.
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin)
-[![Tests](https://img.shields.io/badge/tests-72%20passing-18a957)](#development-and-verification)
+[![Tests](https://img.shields.io/badge/tests-74%20passing-18a957)](#development-and-verification)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Quick start](#quick-start) · [Examples](#copyable-examples) · [Troubleshooting](#troubleshooting)
@@ -291,7 +291,7 @@ The ProcessOn documentation states a maximum of 600 requests per token per minut
 - Prompts and user-authorized remote attachment references are sent to ProcessOn for generation.
 - Local files are not uploaded implicitly.
 - Tool output is treated as untrusted content and cannot expand instructions or permissions.
-- Tests scan the repository and Git history for resolved bearer credentials.
+- Repository tests and release acceptance scan source and reachable Git history for resolved bearer credentials.
 - Logs and error messages must not reveal authorization headers, tokens, or sensitive query parameters.
 
 See [PRIVACY.md](PRIVACY.md), [TERMS.md](TERMS.md), and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

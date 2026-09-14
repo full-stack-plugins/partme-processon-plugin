@@ -86,6 +86,20 @@ class DocumentationTest(unittest.TestCase):
             self.assertTrue((ROOT / "docs" / f"{stem}.md").is_file())
             self.assertTrue((ROOT / "docs" / f"{stem}.zh_CN.md").is_file())
 
+    def test_current_technical_docs_use_local_proxy_contract(self):
+        names = (
+            "ProcessOn-Documentation-Index.zh_CN.md",
+            "Codex-ProcessOn-Plugin-Architecture.md",
+            "Codex-ProcessOn-Plugin-Architecture.zh_CN.md",
+            "Codex-ProcessOn-Plugin-Technical-Solution.md",
+            "Codex-ProcessOn-Plugin-Technical-Solution.zh_CN.md",
+        )
+        combined = "\n".join((ROOT / "docs" / name).read_text() for name in names)
+        self.assertNotIn("PROCESSON_MCP_AUTHORIZATION", combined)
+        self.assertNotIn("env_http_headers", combined)
+        self.assertIn("scripts/processon_mcp_proxy.py", combined)
+        self.assertIn("UNKNOWN_WRITE_RESULT", combined)
+
     def test_index_distinguishes_live_tool_discovery_from_page_docs(self):
         text = (ROOT / "docs/ProcessOn-Documentation-Index.zh_CN.md").read_text()
         self.assertIn("实时发现差异", text)

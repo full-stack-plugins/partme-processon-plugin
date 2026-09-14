@@ -2,6 +2,7 @@ import json
 import unittest
 
 from scripts.mcp_smoke_test import (
+    AUTHORIZATION_ENV,
     McpSmokeError,
     SUPPORTED_TOOLS,
     encode_rpc,
@@ -9,10 +10,16 @@ from scripts.mcp_smoke_test import (
     parse_streamable_response,
     redact,
     tool_names,
+    authorization_value,
 )
 
 
 class McpSmokeUnitTest(unittest.TestCase):
+    def test_smoke_client_uses_raw_token_contract(self):
+        self.assertEqual("PROCESSON_MCP_TOKEN", AUTHORIZATION_ENV)
+        self.assertEqual("Bearer raw-synthetic", authorization_value("raw-synthetic"))
+        self.assertEqual("Bearer raw-synthetic", authorization_value("Bearer raw-synthetic"))
+
     def test_redact_removes_bearer_secret(self):
         self.assertEqual("Bearer ***", redact("Bearer test-secret-value"))
 

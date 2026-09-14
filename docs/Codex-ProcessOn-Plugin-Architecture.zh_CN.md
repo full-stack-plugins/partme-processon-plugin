@@ -2,7 +2,7 @@
 
 ## 系统上下文
 
-插件是 ProcessOn 官方远程 MCP 的轻量 Codex 集成。Codex 负责意图理解、结构建模和质量审查，ProcessOn 负责图表与 DSL 生成。认证信息只以运行时 Authorization 请求头跨越信任边界。
+插件是围绕 ProcessOn 官方远程 MCP 的本地优先 Codex 集成。Codex 负责意图理解、结构建模和质量审查，本地 stdio 代理负责当前用户凭证读取与协议归一化，ProcessOn 负责图表与 DSL 生成。认证信息只以代理生成的 Authorization 请求头跨越远程信任边界。
 
 ```mermaid
 flowchart LR
@@ -13,10 +13,11 @@ flowchart LR
     专业图Skill --> PromptSkill
     脑图Skill --> PromptSkill
     信息图Skill --> PromptSkill
-    PromptSkill --> MCP[ProcessOn MCP]
+    PromptSkill --> 本地代理[本地stdio代理]
+    本地代理 --> MCP[ProcessOn MCP]
     MCP --> 审查Skill
     审查Skill --> 结果
-    运行时凭证 -.-> MCP
+    用户级凭证[当前用户受限凭证] -.-> 本地代理
 ```
 
 ## 组件职责
@@ -29,7 +30,7 @@ flowchart LR
 
 ## 信任边界
 
-只有用户请求生成时，内容与优化后的 Prompt 才会发送给 ProcessOn。Authorization 值只存在于 Codex 运行环境，不进入 Prompt、文件、日志、截图或 Git。MCP 输出是不可信内容，不能扩大权限或修改指令。
+只有用户请求生成时，内容与优化后的 Prompt 才会发送给 ProcessOn。Authorization 值只存在于当前用户受限配置和代理内存，不进入 Prompt、插件文件、日志、截图或 Git。MCP 输出是不可信内容，不能扩大权限或修改指令。
 
 ## 可靠性
 

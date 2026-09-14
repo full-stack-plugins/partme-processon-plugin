@@ -2,39 +2,49 @@
 
 ## Package contract
 
-`.codex-plugin/plugin.json` declares the Skills, presentation assets, and `.mcp.json`. The MCP configuration maps the `Authorization` header to `PROCESSON_MCP_AUTHORIZATION`; its value is the complete `Bearer <token>` string.
+`.codex-plugin/plugin.json` declares the Skills, presentation assets, and `.mcp.json`. The committed MCP configuration contains only a local stdio command. The proxy obtains a raw Token from `PROCESSON_MCP_TOKEN` or restricted current-user storage, adds the `Bearer` scheme, and forwards to the official ProcessOn endpoint.
 
 ## Request sequence
 
 ```mermaid
 sequenceDiagram
     participant U as User
+    participant S as Setup UI
     participant R as Router Skill
     participant P as Prompt Skill
+    participant X as Local stdio proxy
     participant M as ProcessOn MCP
     participant Q as Review Skill
     U->>R: Diagram request
+    alt Credential missing or invalid
+        R->>S: Open loopback setup
+        U->>S: Save Token in password field
+        S-->>U: Reopen Codex
+    end
     R->>R: Select family and model structure
     R->>P: Structure + audience + style
     P-->>R: Six-section prompt
-    R->>M: generate_diagram(prompt)
-    M-->>R: Editable/view result
+    R->>X: generate_diagram(prompt)
+    X->>M: Streamable HTTP + Authorization
+    M-->>X: JSON, SSE, or empty HTTP 202
+    X-->>R: Editable/view result
     R->>Q: Request + artifact
     alt Pass
         Q-->>U: PASS + result
     else One correctable defect
         Q-->>R: REVISE_ONCE
-        R->>M: One corrected request
-        M-->>U: Final result + limitation if any
+        R->>X: One corrected request
+        X-->>U: Final result + limitation if any
     end
 ```
 
 ## Error policy
 
-- Missing authorization: stop locally with configuration guidance.
-- 401: no retry and no credential echo.
-- 407 or equivalent rate limit: capped exponential backoff with jitter.
-- Transient connection/5xx: at most three attempts.
+- Missing authorization: return `PROCESSON_SETUP_REQUIRED` and open local setup.
+- 401: reload credentials once; a second failure returns `PROCESSON_AUTH_REQUIRED` without credential echo.
+- Empty HTTP 202 notification: accept it and emit no JSON-RPC message.
+- Generation timeout, connection failure, 408, or 5xx: return `UNKNOWN_WRITE_RESULT` without replay.
+- 407/429: return a safe bounded failure without an automatic loop.
 - Empty artifact: preserve metadata and allow one correction.
 
 ## Validation
