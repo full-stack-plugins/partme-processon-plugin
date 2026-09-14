@@ -108,7 +108,9 @@ class DocumentationTest(unittest.TestCase):
 
     def test_readmes_share_marketing_hero_and_delivery_sections(self):
         hero = ROOT / "assets/processon-hero.png"
+        plugin_detail = ROOT / "assets/processon-plugin-detail.png"
         self.assertTrue(hero.is_file())
+        self.assertTrue(plugin_detail.is_file())
         required_english = (
             "At a glance",
             "Architecture and core flow",
@@ -131,6 +133,8 @@ class DocumentationTest(unittest.TestCase):
         chinese = (ROOT / "README.zh-CN.md").read_text()
         self.assertIn("assets/processon-hero.png", "\n".join(english.splitlines()[:12]))
         self.assertIn("assets/processon-hero.png", "\n".join(chinese.splitlines()[:12]))
+        self.assertIn("assets/processon-plugin-detail.png", "\n".join(english.splitlines()[:30]))
+        self.assertIn("assets/processon-plugin-detail.png", "\n".join(chinese.splitlines()[:30]))
         for heading in required_english:
             self.assertIn(heading, english)
         for heading in required_chinese:

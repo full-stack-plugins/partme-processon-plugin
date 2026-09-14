@@ -10,6 +10,12 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Quick start](#quick-start) · [Examples](#copyable-examples) · [Troubleshooting](#troubleshooting)
 
+## ProcessOn in Codex
+
+![ProcessOn plugin details in Codex, including starter prompts, MCP server, and seven Skills](assets/processon-plugin-detail.png)
+
+The installed plugin exposes three ready-to-run prompts, one ProcessOn MCP server, and seven focused Skills directly in Codex.
+
 ## Positioning
 
 `codex-processon-plugin` is a ProcessOn integration for Codex. It combines a secret-free local stdio proxy, the official remote ProcessOn MCP server, and seven focused Agent Skills that configure access, classify the requested visual, model its structure, improve the prompt, choose the best available tool, and review the result before delivery.
@@ -48,7 +54,7 @@ Natural-language request / approved source material
 |:---|:---|
 | Plugin ID | `codex-processon-plugin` |
 | Display name | ProcessOn |
-| Last installed package acceptance | `0.1.0+codex.20260914042636` |
+| Last installed package acceptance | `0.1.0+codex.20260914043608` |
 | Host tested | Codex CLI `0.153.4` |
 | Manifest | `.codex-plugin/plugin.json` |
 | MCP configuration | `.mcp.json` |

@@ -10,6 +10,12 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [快速开始](#快速开始) · [示例](#可复制示例) · [故障排查](#故障排查)
 
+## Codex 中的 ProcessOn
+
+![Codex 中的 ProcessOn 插件详情，包括快捷提示、MCP 服务器和七个 Skill](assets/processon-plugin-detail.png)
+
+安装后，Codex 会直接展示三个可运行提示、一个 ProcessOn MCP 服务器和七个专用 Skill。
+
 ## 项目定位
 
 `codex-processon-plugin` 是面向 Codex 的 ProcessOn 集成。它把无密钥的本地 stdio 代理、ProcessOn 官方远程 MCP 与七个专用 Agent Skills 组合起来：配置访问、识别图形类型、建立结构模型、增强 Prompt、选择当前最佳工具，并在交付前审查真实结果。
@@ -48,7 +54,7 @@
 |:---|:---|
 | 插件 ID | `codex-processon-plugin` |
 | 显示名称 | ProcessOn |
-| 最近一次已安装包验收 | `0.1.0+codex.20260914042636` |
+| 最近一次已安装包验收 | `0.1.0+codex.20260914043608` |
 | 已测试宿主 | Codex CLI `0.153.4` |
 | 插件清单 | `.codex-plugin/plugin.json` |
 | MCP 配置 | `.mcp.json` |
