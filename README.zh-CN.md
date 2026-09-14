@@ -54,7 +54,7 @@
 |:---|:---|
 | 插件 ID | `codex-processon-plugin` |
 | 显示名称 | ProcessOn |
-| 最近一次已安装包验收 | `0.1.0+codex.20260914043608` |
+| 最近一次已安装包验收 | `0.1.0+codex.20260914044127` |
 | 已测试宿主 | Codex CLI `0.153.4` |
 | 插件清单 | `.codex-plugin/plugin.json` |
 | MCP 配置 | `.mcp.json` |
@@ -115,9 +115,9 @@ flowchart LR
 
 <table>
   <tr>
-    <td width="33%"><img src="https://v5hd.processon.com/chart_image/diss/file/full/img?imgId=6aa64844664bfd17d5fdde00&amp;from=po_tool_ai_dissfile" alt="ProcessOn 生成的 Agent Harness 架构图"></td>
-    <td width="33%"><img src="https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/fb800c51-82e5-419c-8b50-c4ca0f47c5c5.png" alt="ProcessOn 生成的 AI delivery 工作流"></td>
-    <td width="33%"><img src="https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/eb01e089-c7b3-4c1d-a3a2-a83323a75964.png" alt="ProcessOn 生成的 AI delivery 就绪度信息图"></td>
+    <td width="33%"><img src="assets/processon-gallery-architecture.png" alt="ProcessOn 生成的 Agent Harness 架构图"></td>
+    <td width="33%"><img src="assets/processon-gallery-workflow.png" alt="ProcessOn 生成的 AI delivery 工作流"></td>
+    <td width="33%"><img src="assets/processon-gallery-infographic.png" alt="ProcessOn 生成的 AI delivery 就绪度信息图"></td>
   </tr>
   <tr>
     <td align="center"><strong>Agent Harness 架构</strong><br>可编辑源文件</td>
@@ -126,7 +126,7 @@ flowchart LR
   </tr>
 </table>
 
-以上均来自已记录的真实在线验收，不是示意图。外部图片的后续可用性由 ProcessOn 管理。
+以上均为已记录真实在线验收产物的仓库本地副本，不是示意图；源图与远程产物生命周期仍由 ProcessOn 管理。
 
 ## 快速开始
 

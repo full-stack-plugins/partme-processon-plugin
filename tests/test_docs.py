@@ -153,12 +153,21 @@ class DocumentationTest(unittest.TestCase):
                 self.assertIn(command, text)
 
     def test_readmes_show_a_visual_result_gallery(self):
+        gallery_assets = (
+            "processon-gallery-architecture.png",
+            "processon-gallery-workflow.png",
+            "processon-gallery-infographic.png",
+        )
+        for asset in gallery_assets:
+            self.assertTrue((ROOT / "assets" / asset).is_file())
         for name in ("README.md", "README.zh-CN.md"):
             text = (ROOT / name).read_text()
             self.assertIn("<img", text)
             self.assertGreaterEqual(text.count("<img"), 3)
             self.assertIn("Agent Harness", text)
             self.assertIn("AI delivery", text)
+            for asset in gallery_assets:
+                self.assertIn(f'src="assets/{asset}"', text)
 
     def test_readmes_distinguish_official_mcp_example_from_installed_stdio_proxy(self):
         for name in ("README.md", "README.zh-CN.md"):
