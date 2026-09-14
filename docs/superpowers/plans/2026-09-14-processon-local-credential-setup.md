@@ -10,7 +10,7 @@
 
 **Spec:** `docs/superpowers/specs/2026-09-14-processon-local-credential-setup-design.md`
 
-**Execution status (2026-09-14):** Tasks 1–7 implemented and locally verified on `main`. Task 8 remains intentionally unexecuted because clean installation, remote publication, and a live generation call require separate explicit authorization.
+**Execution status (2026-09-14):** Tasks 1–7 implemented and locally verified on `main`. Task 8 executed after explicit user authorization: clean-cache installation, MCP discovery, read-only protocol, and one authorized `generate_diagram_dsl` call were all verified, and the acceptance attempt exposed a generation-timeout defect that is fixed locally in `94e3387`. Remote push was deliberately not performed, so the published `main` still carries the defect.
 
 ## Global Constraints
 
@@ -568,25 +568,35 @@ Use `superpowers:requesting-code-review` for the completed implementation review
 **Files:**
 - No source changes unless a live failure produces a reproducible failing regression test.
 
-- [ ] **Step 1: Build or resolve an immutable installation version**
+- [x] **Step 1: Build or resolve an immutable installation version**
 
 Confirm local HEAD, tracking SHA, remote SHA if already pushed, and the exact cachebuster/version used by the Codex plugin installer. Treat commit, push, marketplace availability, installation, and runtime validation as separate evidence gates.
 
-- [ ] **Step 2: Install from a clean cache and verify installed files**
+Executed 2026-09-14: local HEAD, `origin/main` ref, and the authoritative `git ls-remote` all returned `1a1681f`; the committed cachebuster was `0.1.0+codex.20260914044127`. Push was not performed, so the published revision predates the fix below.
+
+- [x] **Step 2: Install from a clean cache and verify installed files**
 
 Install the immutable GitHub revision through the supported Codex marketplace flow. Verify the installed `.mcp.json`, proxy/setup scripts, setup assets, setup Skill, display name, and official icons. Confirm the installed package contains no user credential file or token.
 
-- [ ] **Step 3: Complete the real first-use flow**
+Executed 2026-09-14: `codex plugin remove` emptied the cache and `codex plugin add codex-processon-plugin@partme-ai-processon` reinstalled `0.1.0+codex.20260914044127`. The cache git HEAD equals `1a1681f`, all declared files are present, the display name is `ProcessOn` with the official icons, no credential file exists inside the package, and the resolved token appears in zero package files.
+
+- [x] **Step 3: Complete the real first-use flow**
 
 Have the user enter the ProcessOn Token only in the local password field. Do not copy it into chat, a shell command, test log, or source file. Reopen Codex and start a fresh task so MCP discovery uses the installed stdio configuration.
 
-- [ ] **Step 4: Verify live protocol and one authorized generation call**
+Executed 2026-09-14: the user-level credential file existed from the earlier local setup page, and `python3 scripts/processon_setup.py check` from the installed plugin root reported `ProcessOn credential: configured` without revealing any value. Fresh `codex exec` tasks were started from outside the repository.
+
+- [x] **Step 4: Verify live protocol and one authorized generation call**
 
 Run `initialize`, `notifications/initialized`, and `tools/list`, then make one explicitly authorized `generate_diagram_dsl` call with a harmless prompt. Confirm a valid accessible result without exposing authorization or raw response data that may contain sensitive content. Do not automatically repeat the generation call after an ambiguous failure.
 
-- [ ] **Step 5: Report proof levels separately**
+Executed 2026-09-14. The first authorized call on the published revision was aborted at 30.1s and correctly surfaced `UNKNOWN_WRITE_RESULT` with zero retries; the same request completed in 12.0s and 27.3s when given a longer budget, which identified the 30s read timeout as the defect. The fix was committed locally as `94e3387` with a regression test whose mutation check reproduces the original error. On the fixed revision, `initialize` returned `2025-06-18` with serverInfo `streamable-mcp-server`, `tools/list` returned all three tools, and one authorized `generate_diagram_dsl` call completed with `isError: false` and a usable three-layer definition recorded in `artifacts/acceptance/credential-setup-stdio-dsl.json`.
+
+- [x] **Step 5: Report proof levels separately**
 
 Report local tests, local distribution validation, Git commit, remote push, clean installation, MCP discovery, read-only protocol success, and mutating generation success as distinct lines. If any gate is not performed, label it unverified rather than complete.
+
+Executed 2026-09-14 in `artifacts/acceptance/acceptance-summary.json` under `proofLevels`: local tests, both validators, clean installation, MCP discovery, read-only protocol, and mutating generation are `VERIFIED`; remote push is `NOT_PERFORMED` because it needs separate authorization.
 
 ## Plan Self-Review Checklist
 
