@@ -9,7 +9,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from collections.abc import Mapping
-from typing import Any, TextIO
+from typing import Any, Callable, TextIO
+
+from .setup_trigger import launch_setup_ui_once
 
 
 PROTOCOL_VERSION = "2025-06-18"
@@ -129,18 +131,21 @@ class ProcessOnTransport:
         provider: object,
         timeout: float = READ_TIMEOUT,
         write_timeout: float = GENERATION_TIMEOUT,
+        authentication_required_handler: Callable[[], object] = launch_setup_ui_once,
     ) -> None:
         _validate_endpoint(endpoint)
         self.endpoint = endpoint
         self.provider = provider
         self.timeout = timeout
         self.write_timeout = write_timeout
+        self.authentication_required_handler = authentication_required_handler
         self.session_id: str | None = None
         self._opener = urllib.request.build_opener(_NoRedirect())
 
     def send(self, request: dict[str, Any]) -> list[dict[str, Any]]:
         token = self.provider.get_token()
         if token is None:
+            self._request_authentication()
             raise ProxyError(
                 "PROCESSON_SETUP_REQUIRED", "ProcessOn setup is required"
             )
@@ -153,12 +158,14 @@ class ProcessOnTransport:
                     self.provider.clear_cache()
                     token = self.provider.get_token()
                     if token is None:
+                        self._request_authentication()
                         raise ProxyError(
                             "PROCESSON_AUTH_REQUIRED",
                             "ProcessOn authentication must be configured again",
                         ) from None
                     continue
                 if exc.code == 401:
+                    self._request_authentication()
                     raise ProxyError(
                         "PROCESSON_AUTH_REQUIRED",
                         "ProcessOn authentication must be configured again",
@@ -167,14 +174,23 @@ class ProcessOnTransport:
             except (TimeoutError, socket.timeout, urllib.error.URLError, OSError):
                 self._raise_upstream_failure(request)
             if business_authentication_failed(messages):
+                self._request_authentication()
                 raise ProxyError(
                     "PROCESSON_AUTH_REQUIRED",
                     "ProcessOn authentication must be configured again",
                 )
             return messages
+        self._request_authentication()
         raise ProxyError(
             "PROCESSON_AUTH_REQUIRED", "ProcessOn authentication must be configured again"
         )
+
+    def _request_authentication(self) -> None:
+        """Best-effort local setup launch that never masks the safe proxy error."""
+        try:
+            self.authentication_required_handler()
+        except Exception:
+            pass
 
     def _send_once(self, request: dict[str, Any], token: str) -> list[dict[str, Any]]:
         body = json.dumps(request, ensure_ascii=False, separators=(",", ":")).encode(

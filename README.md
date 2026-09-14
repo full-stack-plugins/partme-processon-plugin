@@ -56,6 +56,7 @@ Natural-language request / approved source material
 |:---|:---|
 | Plugin ID | `codex-processon-plugin` |
 | Display name | ProcessOn |
+| Current candidate | `0.1.0+codex.20260914224756` |
 | Last installed package acceptance | `0.1.0+codex.20260914112340` |
 | Host tested | Codex CLI `0.154.0-alpha.6.2` |
 | Manifest | `.codex-plugin/plugin.json` |
@@ -178,11 +179,11 @@ codex plugin add codex-processon-plugin@partme-ai-processon
 
 ### 2. Complete the one-time local setup
 
-Request any ProcessOn diagram. If no credential is configured, Codex routes to the local setup page. Complete its three steps in order:
+Request any ProcessOn diagram. If the credential is missing or still rejected after one refresh, the local MCP proxy automatically opens the setup page. A 10-minute cooldown prevents repeated windows. Complete its three steps in order:
 
 1. **Open the ProcessOn user center** at <https://smart.processon.com/user> and create or copy your Token.
 2. **Paste and save the Token** in the local password field. It is never rendered back to the page.
-3. **Reopen Codex**, start a new task, and retry the original diagram request.
+3. **Return to Codex** and retry the original diagram request. Reopen Codex only if the current MCP process does not reload the credential.
 
 The Token is stored outside the repository and versioned plugin cache:
 
@@ -193,7 +194,7 @@ The Token is stored outside the repository and versioned plugin cache:
 
 On Unix, the directory is restricted to `0700` and the file to `0600`. Plugin upgrades retain this user-level file.
 
-To open or check setup manually from the installed plugin root:
+If the browser does not open automatically, open it manually from the installed plugin root; `check` never prints the Token:
 
 ```bash
 python3 scripts/processon_setup.py ui

@@ -2,10 +2,12 @@ import io
 import json
 import threading
 import time
+import tempfile
 import unittest
 import urllib.error
 from collections import deque
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 
 from processon_harness.mcp_proxy import (
     ProcessOnProxy,
@@ -157,7 +159,14 @@ class TransportTest(unittest.TestCase):
                 (401, {"Content-Type": "text/plain"}, b"second-private"),
             ]
         ) as (fixture, endpoint):
-            proxy = ProcessOnProxy(ProcessOnTransport(endpoint, provider, timeout=2))
+            proxy = ProcessOnProxy(
+                ProcessOnTransport(
+                    endpoint,
+                    provider,
+                    timeout=2,
+                    authentication_required_handler=lambda: None,
+                )
+            )
             messages = proxy.handle_line(
                 '{"jsonrpc":"2.0","id":8,"method":"initialize","params":{}}'
             )
@@ -166,6 +175,27 @@ class TransportTest(unittest.TestCase):
         self.assertIn("PROCESSON_AUTH_REQUIRED", encoded)
         self.assertNotIn("first-private", encoded)
         self.assertNotIn("second-private", encoded)
+
+    def test_second_401_requests_local_setup_for_token_rotation(self):
+        provider = RotatingProvider(["first-private", "second-private"])
+        with tempfile.TemporaryDirectory() as directory, ProxyFixture(
+            [
+                (401, {"Content-Type": "text/plain"}, b"unauthorized"),
+                (401, {"Content-Type": "text/plain"}, b"unauthorized"),
+            ]
+        ) as (_, endpoint):
+            requested = Path(directory) / "setup-requested"
+            transport = ProcessOnTransport(
+                endpoint,
+                provider,
+                timeout=2,
+                authentication_required_handler=lambda: requested.write_text("requested"),
+            )
+            with self.assertRaises(ProxyError):
+                transport.send(
+                    {"jsonrpc": "2.0", "id": 8, "method": "initialize", "params": {}}
+                )
+            self.assertEqual("requested", requested.read_text())
 
     def test_business_invalid_token_becomes_authentication_error(self):
         provider = RotatingProvider(["private-synthetic"])
@@ -178,7 +208,14 @@ class TransportTest(unittest.TestCase):
             },
         }
         with ProxyFixture([json_response(payload)]) as (_, endpoint):
-            proxy = ProcessOnProxy(ProcessOnTransport(endpoint, provider, timeout=2))
+            proxy = ProcessOnProxy(
+                ProcessOnTransport(
+                    endpoint,
+                    provider,
+                    timeout=2,
+                    authentication_required_handler=lambda: None,
+                )
+            )
             messages = proxy.handle_line(
                 '{"jsonrpc":"2.0","id":3,"method":"tools/call",'
                 '"params":{"name":"generate_chart","arguments":{"prompt":"safe"}}}'
@@ -187,6 +224,37 @@ class TransportTest(unittest.TestCase):
         self.assertIn("PROCESSON_AUTH_REQUIRED", encoded)
         self.assertNotIn("token is Invalid", encoded)
         self.assertNotIn("private-synthetic", encoded)
+
+    def test_business_invalid_token_requests_local_setup(self):
+        provider = RotatingProvider(["private-synthetic"])
+        payload = {
+            "jsonrpc": "2.0",
+            "id": 3,
+            "result": {
+                "isError": True,
+                "content": [{"type": "text", "text": "token is Invalid"}],
+            },
+        }
+        with tempfile.TemporaryDirectory() as directory, ProxyFixture(
+            [json_response(payload)]
+        ) as (_, endpoint):
+            requested = Path(directory) / "setup-requested"
+            transport = ProcessOnTransport(
+                endpoint,
+                provider,
+                timeout=2,
+                authentication_required_handler=lambda: requested.write_text("requested"),
+            )
+            with self.assertRaises(ProxyError):
+                transport.send(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 3,
+                        "method": "tools/call",
+                        "params": {"name": "generate_chart", "arguments": {}},
+                    }
+                )
+            self.assertEqual("requested", requested.read_text())
 
     def test_write_like_server_failure_is_not_retried(self):
         provider = RotatingProvider(["synthetic-token"])
@@ -241,11 +309,31 @@ class TransportTest(unittest.TestCase):
         self.assertEqual("PROCESSON_UPSTREAM_ERROR", caught.exception.data_code)
 
     def test_missing_credential_returns_setup_required(self):
-        proxy = ProcessOnProxy(ProcessOnTransport("http://127.0.0.1:9/mcp", RotatingProvider([])))
+        proxy = ProcessOnProxy(
+            ProcessOnTransport(
+                "http://127.0.0.1:9/mcp",
+                RotatingProvider([]),
+                authentication_required_handler=lambda: None,
+            )
+        )
         messages = proxy.handle_line(
             '{"jsonrpc":"2.0","id":5,"method":"tools/list","params":{}}'
         )
         self.assertIn("PROCESSON_SETUP_REQUIRED", json.dumps(messages))
+
+    def test_missing_credential_requests_local_setup(self):
+        with tempfile.TemporaryDirectory() as directory:
+            requested = Path(directory) / "setup-requested"
+            transport = ProcessOnTransport(
+                "http://127.0.0.1:9/mcp",
+                RotatingProvider([]),
+                authentication_required_handler=lambda: requested.write_text("requested"),
+            )
+            with self.assertRaises(ProxyError):
+                transport.send(
+                    {"jsonrpc": "2.0", "id": 5, "method": "tools/list", "params": {}}
+                )
+            self.assertEqual("requested", requested.read_text())
     def test_non_loopback_http_endpoint_is_rejected(self):
         with self.assertRaises(ValueError):
             ProcessOnTransport("http://example.com/mcp", RotatingProvider(["x"]))

@@ -37,6 +37,7 @@ REQUIRED_FILES = (
     "processon_harness/__init__.py",
     "processon_harness/secrets.py",
     "processon_harness/mcp_proxy.py",
+    "processon_harness/setup_trigger.py",
     "scripts/processon_mcp_proxy.py",
     "scripts/processon_setup.py",
     "README.md",

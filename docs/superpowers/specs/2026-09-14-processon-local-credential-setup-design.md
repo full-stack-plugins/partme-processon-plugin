@@ -18,8 +18,9 @@ The design adapts the proven local credential pattern in `codex-stitch-design-pl
 flowchart TD
     U["First ProcessOn request"] --> C{"Credential available?"}
     C -->|Yes| P["Local stdio MCP proxy"]
-    C -->|No| S["ProcessOn setup Skill"]
-    S --> W["Loopback three-step setup page"]
+    C -->|No| T["MCP proxy launch gate"]
+    T -->|No launch in last 10 minutes| W["Loopback three-step setup page"]
+    T -->|Existing setup window| W
     W --> G["1. Open ProcessOn user center"]
     G --> K["2. Paste token into password field"]
     K --> F["Restricted current-user credential file"]
@@ -31,14 +32,14 @@ flowchart TD
     P --> U
 ```
 
-The committed `.mcp.json` contains no secret. It starts a local stdio proxy from the installed plugin root. The proxy owns credential lookup and HTTP header injection, then forwards JSON-RPC between Codex and the official ProcessOn endpoint.
+The committed `.mcp.json` contains no secret. It starts a local stdio proxy from the installed plugin root. The proxy owns credential lookup, automatic setup-page launch, and HTTP header injection, then forwards JSON-RPC between Codex and the official ProcessOn endpoint. Missing credentials, a terminal HTTP 401 after one refresh, and ProcessOn's business-level invalid-token response enter the same launch gate. Its user-scoped cooldown marker contains only a timestamp.
 
 ## 3. User Experience
 
 ### First use
 
 1. The user requests a ProcessOn diagram.
-2. If no credential is available, the plugin reports that one-time setup is required and opens the local setup page.
+2. If no credential is available, the MCP proxy reports that one-time setup is required and automatically opens the local setup page. Repeated failures within 10 minutes reuse the current page instead of opening another window.
 3. The page presents one card with three steps:
    - Open <https://smart.processon.com/user> and create or copy a personal access token.
    - Paste the token into a password input and save it locally.

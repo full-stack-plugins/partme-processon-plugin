@@ -56,6 +56,7 @@
 |:---|:---|
 | 插件 ID | `codex-processon-plugin` |
 | 显示名称 | ProcessOn |
+| 当前候选版本 | `0.1.0+codex.20260914224756` |
 | 最近一次已安装包验收 | `0.1.0+codex.20260914112340` |
 | 已测试宿主 | Codex CLI `0.154.0-alpha.6.2` |
 | 插件清单 | `.codex-plugin/plugin.json` |
@@ -178,11 +179,11 @@ codex plugin add codex-processon-plugin@partme-ai-processon
 
 ### 2. 完成一次本地设置
 
-提出任意 ProcessOn 制图需求。尚未配置凭证时，Codex 会进入本地设置页。按顺序完成三步：
+提出任意 ProcessOn 制图需求。凭证缺失，或刷新一次后仍被拒绝时，本地 MCP 代理会自动打开设置页；10 分钟冷却机制避免连续弹窗。按顺序完成三步：
 
 1. **打开 ProcessOn 用户中心**：访问 <https://smart.processon.com/user>，创建或复制 Token。
 2. **粘贴并保存 Token**：只在本地密码框输入，页面不会回显已保存内容。
-3. **重新打开 Codex**：新建任务并重试原来的制图需求。
+3. **回到 Codex**：重试原来的制图需求；只有当前 MCP 进程仍未重新加载凭证时才需要重开 Codex。
 
 Token 保存在仓库和版本化插件缓存之外：
 
@@ -193,7 +194,7 @@ Token 保存在仓库和版本化插件缓存之外：
 
 Unix 下目录权限固定为 `0700`、文件权限固定为 `0600`。插件升级会保留这份用户级配置。
 
-也可以在已安装插件根目录手动打开或检查设置：
+如果浏览器没有自动打开，可在已安装插件根目录手动打开；`check` 只检查状态，不输出 Token：
 
 ```bash
 python3 scripts/processon_setup.py ui
