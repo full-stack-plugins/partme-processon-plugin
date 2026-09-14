@@ -2,7 +2,7 @@
 
 Date: 2026-09-14
 
-Status: Approved in chat; awaiting written-spec review
+Status: Approved in chat and confirmed as the implementation specification
 
 Target: `codex-processon-plugin`
 
