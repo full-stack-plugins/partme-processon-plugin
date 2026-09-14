@@ -26,9 +26,12 @@ class SetupPageTest(unittest.TestCase):
     def test_page_has_one_three_step_password_flow(self):
         html = (ASSETS / "index.html").read_text(encoding="utf-8")
         self.assertEqual(1, html.count('class="setup-card"'))
-        self.assertEqual(3, html.count('class="step-number"'))
+        self.assertEqual(3, html.count('class="setup-step"'))
+        self.assertIn('class="brand-lockup"', html)
         self.assertIn('href="https://smart.processon.com/user"', html)
         self.assertEqual(1, html.count('type="password"'))
+        self.assertIn('id="launch"', html)
+        self.assertIn("<details", html)
         self.assertNotIn('value="', html)
 
     def test_page_uses_local_assets_and_clears_input_after_save(self):
@@ -39,6 +42,16 @@ class SetupPageTest(unittest.TestCase):
         self.assertNotIn("https://fonts", html)
         self.assertIn("finally", script)
         self.assertIn('tokenInput.value = ""', script)
+        self.assertIn("launchButton.disabled = false", script)
+
+    def test_page_matches_the_approved_stitch_setup_visual_system(self):
+        css = (ASSETS / "styles.css").read_text(encoding="utf-8")
+        self.assertIn("--processon-blue: #2f80ed", css.lower())
+        self.assertIn("radial-gradient(circle at 38% 48%", css)
+        self.assertIn("radial-gradient(circle at 66% 45%", css)
+        self.assertIn("border-radius: 28px", css)
+        self.assertNotIn(".blueprint-grid", css)
+        self.assertNotIn(".flow-line", css)
 
 
 class SetupCliTest(unittest.TestCase):
@@ -78,7 +91,10 @@ class SetupServerTest(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         path = Path(self.temporary.name) / "processon" / "credentials.json"
         self.provider = UserConfigSecretProvider(path)
-        self.server, self.url = create_setup_server(self.provider)
+        self.launches = []
+        self.server, self.url = create_setup_server(
+            self.provider, launch_codex=lambda: self.launches.append("codex") or True
+        )
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
 
@@ -154,6 +170,17 @@ class SetupServerTest(unittest.TestCase):
                     self.request("/api/credentials", data=body, headers=headers)
                 self.assertEqual(400, caught.exception.code)
                 caught.exception.close()
+
+    def test_launch_requires_same_security_contract_and_opens_codex(self):
+        body = b"{}"
+        headers = {
+            "Content-Type": "application/json",
+            "Origin": self.url.rstrip("/"),
+            "X-CSRF-Token": self.server.csrf_token,
+        }
+        with self.request("/api/launch", data=body, headers=headers) as response:
+            self.assertEqual({"ok": True}, json.loads(response.read()))
+        self.assertEqual(["codex"], self.launches)
 
 
 if __name__ == "__main__":

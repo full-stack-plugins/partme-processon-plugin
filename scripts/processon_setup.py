@@ -104,7 +104,7 @@ class _SetupHandler(BaseHTTPRequestHandler):
         self._json(404, {"ok": False, "error": "Not found"})
 
     def do_POST(self) -> None:
-        if self.path != "/api/credentials":
+        if self.path not in {"/api/credentials", "/api/launch"}:
             self._json(404, {"ok": False, "error": "Not found"})
             return
         if self.headers.get("Origin") != self.server.expected_origin:
@@ -126,18 +126,27 @@ class _SetupHandler(BaseHTTPRequestHandler):
             return
         try:
             payload = json.loads(self.rfile.read(length))
-            token = payload.get("token") if isinstance(payload, dict) else None
-            if not isinstance(token, str):
-                raise CredentialError("Invalid token input")
-            self.server.provider.save_token(token)
+            if not isinstance(payload, dict):
+                raise CredentialError("Invalid request input")
+            if self.path == "/api/credentials":
+                token = payload.get("token")
+                if not isinstance(token, str):
+                    raise CredentialError("Invalid token input")
+                self.server.provider.save_token(token)
         except (CredentialError, UnicodeError, json.JSONDecodeError):
             self._json(400, {"ok": False, "error": "Token could not be saved"})
+            return
+        if self.path == "/api/launch":
+            launched = self.server.launch_codex()
+            payload = {"ok": True} if launched else {"ok": False, "error": "Codex could not be opened"}
+            self._json(200 if launched else 500, payload)
             return
         self._json(200, {"ok": True})
 
 
 def create_setup_server(
     provider: UserConfigSecretProvider,
+    launch_codex: Callable[[], bool] | None = None,
 ) -> tuple[ThreadingHTTPServer, str]:
     """Create a loopback-only setup server on an ephemeral port."""
     import secrets
@@ -145,9 +154,34 @@ def create_setup_server(
     server = ThreadingHTTPServer(("127.0.0.1", 0), _SetupHandler)
     host, port = server.server_address
     server.provider = provider
+    server.launch_codex = _launch_codex if launch_codex is None else launch_codex
     server.csrf_token = secrets.token_urlsafe(32)
     server.expected_origin = f"http://{host}:{port}"
     return server, f"{server.expected_origin}/"
+
+
+def _launch_codex() -> bool:
+    """Open Codex without waiting for the desktop process to exit."""
+    commands = (
+        ["open", "-a", "Codex"] if sys.platform == "darwin" else None,
+        ["cmd", "/c", "start", "", "codex"] if os.name == "nt" else None,
+        ["codex"] if os.name != "nt" else None,
+    )
+    for command in commands:
+        if command is None:
+            continue
+        try:
+            subprocess.Popen(
+                command,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                start_new_session=True,
+            )
+            return True
+        except OSError:
+            continue
+    return False
 
 
 def run_ui(
