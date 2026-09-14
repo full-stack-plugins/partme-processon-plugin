@@ -2,6 +2,7 @@ import contextlib
 import io
 import json
 import os
+import re
 import tempfile
 import threading
 import unittest
@@ -53,6 +54,7 @@ class SetupPageTest(unittest.TestCase):
         self.assertIn("overflow: hidden", css)
         self.assertIn("width: 800px", css)
         self.assertIn("border-radius: 24px", css)
+        self.assertRegex(css, re.compile(r"h1\s*\{[^}]*font-weight:\s*400", re.DOTALL))
         self.assertIn("@media (max-width: 720px)", css)
         self.assertNotIn("transform: rotate(45deg)", css)
 

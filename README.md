@@ -48,7 +48,7 @@ Natural-language request / approved source material
 |:---|:---|
 | Plugin ID | `codex-processon-plugin` |
 | Display name | ProcessOn |
-| Last installed package acceptance | `0.1.0+codex.20260914042250` |
+| Last installed package acceptance | `0.1.0+codex.20260914042636` |
 | Host tested | Codex CLI `0.153.4` |
 | Manifest | `.codex-plugin/plugin.json` |
 | MCP configuration | `.mcp.json` |

@@ -36,7 +36,7 @@ h1 {
   text-align: center;
   font-size: clamp(32px, 3vw, 43px);
   line-height: 1.28;
-  font-weight: 450;
+  font-weight: 400;
   letter-spacing: -.035em;
 }
 .subtitle {
