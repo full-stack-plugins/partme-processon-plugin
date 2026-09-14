@@ -10,6 +10,8 @@
 
 **Spec:** `docs/superpowers/specs/2026-09-14-processon-local-credential-setup-design.md`
 
+**Execution status (2026-09-14):** Tasks 1–7 implemented and locally verified on `main`. Task 8 remains intentionally unexecuted because clean installation, remote publication, and a live generation call require separate explicit authorization.
+
 ## Global Constraints
 
 - The committed `.mcp.json`, repository, Git history, installed plugin files, test output, setup responses, proxy errors, and logs must not contain a resolved ProcessOn Token.
@@ -588,10 +590,10 @@ Report local tests, local distribution validation, Git commit, remote push, clea
 
 ## Plan Self-Review Checklist
 
-- [ ] Every completion criterion in the approved spec maps to at least one task and executable verification step.
-- [ ] The plan contains no unresolved implementation placeholder, omitted branch, or conflicting credential source.
-- [ ] Public function names and constants are consistent across implementation and test steps.
-- [ ] Authentication refresh is the only automatic replay path.
-- [ ] User-global credential files are never read, overwritten, or deleted during synthetic tests.
-- [ ] Existing uncommitted promo/README work remains preserved until its deliberate Task 6 commit.
-- [ ] Publication and installed-runtime proof remain gated behind explicit user authorization.
+- [x] Every completion criterion in the approved spec maps to at least one task and executable verification step.
+- [x] The plan contains no unresolved implementation placeholder, omitted branch, or conflicting credential source.
+- [x] Public function names and constants are consistent across implementation and test steps.
+- [x] Authentication refresh is the only automatic replay path.
+- [x] User-global credential files were never read, overwritten, or deleted during synthetic tests.
+- [x] Existing uncommitted promo/README work was preserved until its deliberate Task 6 commit.
+- [x] Publication and installed-runtime proof remain gated behind explicit user authorization.
