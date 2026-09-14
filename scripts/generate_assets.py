@@ -36,16 +36,13 @@ def copy_source_svg(source: Path, destination: Path) -> None:
         shutil.copyfile(source, destination)
 
 
-def render_square_png(
+def render_wordmark_png(
     source: Path,
     destination: Path,
-    size: int,
     background: str,
 ) -> None:
-    """Render a centered, aspect-preserving SVG on a square color field."""
-    if size <= 0:
-        raise ValueError("PNG size must be positive")
-    validate_svg(source)
+    """Render the complete official wordmark at its native aspect ratio."""
+    width, height = validate_svg(source)
 
     rsvg = shutil.which("rsvg-convert")
     magick = shutil.which("magick")
@@ -56,20 +53,31 @@ def render_square_png(
         )
 
     destination.parent.mkdir(parents=True, exist_ok=True)
-    inner_width = max(1, round(size * 0.86))
     with tempfile.TemporaryDirectory(prefix="processon-assets-") as temp_dir:
         rendered = Path(temp_dir) / "mark.png"
         subprocess.run(
-            [rsvg, "--width", str(inner_width), "--output", str(rendered), str(source)],
+            [
+                rsvg,
+                "--width",
+                str(width),
+                "--height",
+                str(height),
+                "--output",
+                str(rendered),
+                str(source),
+            ],
             check=True,
             capture_output=True,
             text=True,
         )
+        if background == "none":
+            shutil.copyfile(rendered, destination)
+            return
         subprocess.run(
             [
                 magick,
                 "-size",
-                f"{size}x{size}",
+                f"{width}x{height}",
                 f"xc:{background}",
                 str(rendered),
                 "-gravity",
@@ -84,14 +92,37 @@ def render_square_png(
         )
 
 
+def render_composer_icon(source: Path, destination: Path) -> None:
+    """Crop the official square On mark for compact composer surfaces."""
+    rsvg = shutil.which("rsvg-convert")
+    magick = shutil.which("magick")
+    if not rsvg or not magick:
+        raise RuntimeError("Composer icon generation requires rsvg-convert and ImageMagick")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="processon-icon-") as temp_dir:
+        rendered = Path(temp_dir) / "wordmark.png"
+        subprocess.run(
+            [rsvg, "--width", "872", "--height", "250", "--output", str(rendered), str(source)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        subprocess.run(
+            [magick, str(rendered), "-crop", "250x250+622+0", "+repage", "-resize", "64x64", "-strip", str(destination)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+
 def generate_assets(source: Path, assets_dir: Path) -> None:
     """Copy the approved vector and generate all manifest PNG assets."""
     validate_svg(source)
     vector = assets_dir / "logo.svg"
     copy_source_svg(source, vector)
-    render_square_png(vector, assets_dir / "logo.png", 512, "#2F80ED")
-    render_square_png(vector, assets_dir / "logo-dark.png", 512, "#111827")
-    render_square_png(vector, assets_dir / "composer-icon.png", 64, "#2F80ED")
+    render_wordmark_png(vector, assets_dir / "logo.png", "#2F80ED")
+    render_wordmark_png(vector, assets_dir / "logo-dark.png", "none")
+    render_composer_icon(vector, assets_dir / "composer-icon.png")
 
 
 def main() -> int:

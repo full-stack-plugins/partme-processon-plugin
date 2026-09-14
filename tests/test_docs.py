@@ -136,6 +136,26 @@ class DocumentationTest(unittest.TestCase):
         for heading in required_chinese:
             self.assertIn(heading, chinese)
 
+    def test_readmes_use_real_marketplace_install_commands(self):
+        commands = (
+            "codex plugin marketplace add partme-ai/codex-processon-plugin --ref main",
+            "codex plugin marketplace add https://github.com/partme-ai/codex-processon-plugin.git --ref main --sparse .agents/plugins",
+            "codex plugin marketplace add ./codex-processon-plugin",
+            "codex plugin add codex-processon-plugin@partme-ai-processon",
+        )
+        for name in ("README.md", "README.zh-CN.md"):
+            text = (ROOT / name).read_text()
+            for command in commands:
+                self.assertIn(command, text)
+
+    def test_readmes_show_a_visual_result_gallery(self):
+        for name in ("README.md", "README.zh-CN.md"):
+            text = (ROOT / name).read_text()
+            self.assertIn("<img", text)
+            self.assertGreaterEqual(text.count("<img"), 3)
+            self.assertIn("Agent Harness", text)
+            self.assertIn("AI delivery", text)
+
     def test_readmes_distinguish_official_mcp_example_from_installed_stdio_proxy(self):
         for name in ("README.md", "README.zh-CN.md"):
             text = (ROOT / name).read_text()

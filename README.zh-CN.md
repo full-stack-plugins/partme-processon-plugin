@@ -5,7 +5,7 @@
 > 把自然语言想法、源码上下文和业务流程转化为专业、精美、可审查且可继续编辑的 ProcessOn 图表。
 
 [![版本](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin)
-[![测试](https://img.shields.io/badge/tests-76%20passing-18a957)](#开发与验证)
+[![测试](https://img.shields.io/badge/tests-79%20passing-18a957)](#开发与验证)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [快速开始](#快速开始) · [示例](#可复制示例) · [故障排查](#故障排查)
@@ -48,7 +48,7 @@
 |:---|:---|
 | 插件 ID | `codex-processon-plugin` |
 | 显示名称 | ProcessOn |
-| 最近一次已安装包验收 | `0.1.0+codex.20260913070632` |
+| 最近一次已安装包验收 | `0.1.0+codex.20260914041323` |
 | 已测试宿主 | Codex CLI `0.153.4` |
 | 插件清单 | `.codex-plugin/plugin.json` |
 | MCP 配置 | `.mcp.json` |
@@ -105,13 +105,46 @@ flowchart LR
 
 2026-09-13 实时服务发现 `generate_chart`、`generate_diagram`、`generate_diagram_dsl`。公开页面列出后两者。路由优先用 `generate_chart` 获取可编辑源文件 URL，不可用时回退到页面公开工具。
 
+### 真实效果一览
+
+<table>
+  <tr>
+    <td width="33%"><img src="https://v5hd.processon.com/chart_image/diss/file/full/img?imgId=6aa64844664bfd17d5fdde00&amp;from=po_tool_ai_dissfile" alt="ProcessOn 生成的 Agent Harness 架构图"></td>
+    <td width="33%"><img src="https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/fb800c51-82e5-419c-8b50-c4ca0f47c5c5.png" alt="ProcessOn 生成的 AI delivery 工作流"></td>
+    <td width="33%"><img src="https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/eb01e089-c7b3-4c1d-a3a2-a83323a75964.png" alt="ProcessOn 生成的 AI delivery 就绪度信息图"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Agent Harness 架构</strong><br>可编辑源文件</td>
+    <td align="center"><strong>AI delivery 工作流</strong><br>3494×1180 泳道图</td>
+    <td align="center"><strong>生产就绪信息图</strong><br>可用于汇报</td>
+  </tr>
+</table>
+
+以上均来自已记录的真实在线验收，不是示意图。外部图片的后续可用性由 ProcessOn 管理。
+
 ## 快速开始
 
 ### 1. 安装 marketplace 与插件
 
+推荐方式——添加本项目 GitHub 仓库、固定 `main`，然后安装 ProcessOn：
+
 ```bash
-codex plugin marketplace add partme-ai/codex-processon-plugin
+codex plugin marketplace add partme-ai/codex-processon-plugin --ref main
 codex plugin add codex-processon-plugin@partme-ai-processon
+```
+
+Codex 官方支持的其他 marketplace 来源写法：
+
+```bash
+# GitHub 简写，使用仓库默认分支
+codex plugin marketplace add partme-ai/codex-processon-plugin
+
+# 完整 Git URL，仅稀疏检出 marketplace 目录
+codex plugin marketplace add https://github.com/partme-ai/codex-processon-plugin.git --ref main --sparse .agents/plugins
+
+# 本地克隆，适合开发调试
+git clone https://github.com/partme-ai/codex-processon-plugin.git
+codex plugin marketplace add ./codex-processon-plugin
 ```
 
 验证安装：
@@ -127,6 +160,13 @@ codex-processon-plugin@partme-ai-processon  installed, enabled
 ```
 
 安装或升级后请新建 Codex 任务，使新的 Skills 和 MCP 工具进入上下文。
+
+以后刷新 Git marketplace：
+
+```bash
+codex plugin marketplace upgrade partme-ai-processon
+codex plugin add codex-processon-plugin@partme-ai-processon
+```
 
 ### 2. 完成一次本地设置
 
@@ -318,6 +358,19 @@ codex-processon-plugin/
 ├── tests/                           # 清单、Skill、文档、安全和 MCP 测试
 └── docs/                            # 文档索引、架构与技术方案
 ```
+
+### 官方打包规范自检
+
+| OpenAI 打包要求 | 本项目实现 |
+|:---|:---|
+| 稳定插件身份 | `codex-processon-plugin` |
+| 根目录 Skills | `skills/` 中包含七个专用 Skill |
+| 根目录视觉资产 | `assets/` 中包含官方字标、composer 图标和宣传截图 |
+| Marketplace 目录 | `.agents/plugins/marketplace.json`，Git source 固定到 `main` |
+| OpenAI 展示元数据 | `.codex-plugin/plugin.json` 兼容清单 |
+| MCP 运行时 | 无密钥 `.mcp.json` 启动本地 stdio 凭证代理 |
+
+[OpenAI 官方插件打包文档](https://developers.openai.com/plugins/build/plugins)明确说明 `.codex-plugin/plugin.json` 仍作为兼容 fallback 受到支持。本项目有意保留该结构，因为本地 stdio 凭证代理不属于公开提交要求的远程 HTTPS MCP 路径。
 
 ## 开发与验证
 

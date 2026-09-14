@@ -23,9 +23,15 @@ class AssetContractTest(unittest.TestCase):
         )
 
     def test_png_derivatives_have_manifest_dimensions(self):
-        self.assertEqual((512, 512), png_size(ROOT / "assets/logo.png"))
-        self.assertEqual((512, 512), png_size(ROOT / "assets/logo-dark.png"))
+        self.assertEqual((873, 250), png_size(ROOT / "assets/logo.png"))
+        self.assertEqual((873, 250), png_size(ROOT / "assets/logo-dark.png"))
         self.assertEqual((64, 64), png_size(ROOT / "assets/composer-icon.png"))
+
+    def test_setup_uses_the_full_official_wordmark(self):
+        html = (ROOT / "assets/setup/index.html").read_text()
+        self.assertIn('src="/logo.png"', html)
+        self.assertIn('width="122"', html)
+        self.assertIn('height="35"', html)
 
 
 if __name__ == "__main__":

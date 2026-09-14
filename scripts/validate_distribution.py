@@ -163,8 +163,8 @@ def validate_distribution(root: Path = ROOT) -> list[str]:
             errors.append("marketplace must contain exactly the ProcessOn plugin")
 
     expected_pngs = {
-        "assets/logo.png": (512, 512),
-        "assets/logo-dark.png": (512, 512),
+        "assets/logo.png": (873, 250),
+        "assets/logo-dark.png": (873, 250),
         "assets/composer-icon.png": (64, 64),
     }
     for relative, expected in expected_pngs.items():

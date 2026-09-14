@@ -5,7 +5,7 @@
 > Turn natural-language ideas, source context, and business workflows into polished ProcessOn diagrams that remain reviewable and editable.
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin)
-[![Tests](https://img.shields.io/badge/tests-76%20passing-18a957)](#development-and-verification)
+[![Tests](https://img.shields.io/badge/tests-79%20passing-18a957)](#development-and-verification)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Quick start](#quick-start) · [Examples](#copyable-examples) · [Troubleshooting](#troubleshooting)
@@ -48,7 +48,7 @@ Natural-language request / approved source material
 |:---|:---|
 | Plugin ID | `codex-processon-plugin` |
 | Display name | ProcessOn |
-| Last installed package acceptance | `0.1.0+codex.20260913070632` |
+| Last installed package acceptance | `0.1.0+codex.20260914041323` |
 | Host tested | Codex CLI `0.153.4` |
 | Manifest | `.codex-plugin/plugin.json` |
 | MCP configuration | `.mcp.json` |
@@ -105,13 +105,46 @@ flowchart LR
 
 The live server exposed `generate_chart`, `generate_diagram`, and `generate_diagram_dsl` on 2026-09-13. The public documentation listed the latter two. The router prefers `generate_chart` for an editable source-file URL and falls back to the documented tools when necessary.
 
+### See what it produces
+
+<table>
+  <tr>
+    <td width="33%"><img src="https://v5hd.processon.com/chart_image/diss/file/full/img?imgId=6aa64844664bfd17d5fdde00&amp;from=po_tool_ai_dissfile" alt="Agent Harness architecture generated with ProcessOn"></td>
+    <td width="33%"><img src="https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/fb800c51-82e5-419c-8b50-c4ca0f47c5c5.png" alt="AI delivery workflow generated with ProcessOn"></td>
+    <td width="33%"><img src="https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/eb01e089-c7b3-4c1d-a3a2-a83323a75964.png" alt="AI delivery readiness infographic generated with ProcessOn"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Agent Harness architecture</strong><br>Editable source</td>
+    <td align="center"><strong>AI delivery workflow</strong><br>3494×1180 swimlane</td>
+    <td align="center"><strong>Readiness infographic</strong><br>Report-ready visual</td>
+  </tr>
+</table>
+
+These are outputs from the recorded live acceptance run, not mockups. External image availability remains owned by ProcessOn.
+
 ## Quick start
 
 ### 1. Install the marketplace and plugin
 
+Recommended — add this GitHub repository, pin `main`, then install ProcessOn:
+
 ```bash
-codex plugin marketplace add partme-ai/codex-processon-plugin
+codex plugin marketplace add partme-ai/codex-processon-plugin --ref main
 codex plugin add codex-processon-plugin@partme-ai-processon
+```
+
+Alternative marketplace sources supported by Codex:
+
+```bash
+# GitHub shorthand using the repository default branch
+codex plugin marketplace add partme-ai/codex-processon-plugin
+
+# Full Git URL with a sparse checkout of the marketplace catalog
+codex plugin marketplace add https://github.com/partme-ai/codex-processon-plugin.git --ref main --sparse .agents/plugins
+
+# Local clone for development
+git clone https://github.com/partme-ai/codex-processon-plugin.git
+codex plugin marketplace add ./codex-processon-plugin
 ```
 
 Verify installation:
@@ -127,6 +160,13 @@ codex-processon-plugin@partme-ai-processon  installed, enabled
 ```
 
 Start a new Codex task after installation or upgrade so the new Skills and MCP tools are loaded.
+
+To refresh a Git-backed marketplace later:
+
+```bash
+codex plugin marketplace upgrade partme-ai-processon
+codex plugin add codex-processon-plugin@partme-ai-processon
+```
 
 ### 2. Complete the one-time local setup
 
@@ -322,6 +362,19 @@ codex-processon-plugin/
 ├── tests/                           # manifest, Skills, docs, security, and MCP tests
 └── docs/                            # documentation index, architecture, and solution
 ```
+
+### Official packaging self-check
+
+| OpenAI packaging requirement | This repository |
+|:---|:---|
+| Stable plugin identity | `codex-processon-plugin` |
+| Skills under the plugin root | `skills/` with seven focused Skills |
+| Visual assets under the plugin root | Official wordmark, composer icon, hero screenshot under `assets/` |
+| Marketplace catalog | `.agents/plugins/marketplace.json` with Git source pinned to `main` |
+| OpenAI presentation metadata | `.codex-plugin/plugin.json` compatibility manifest |
+| MCP runtime | Secret-free `.mcp.json` starts the local stdio credential proxy |
+
+The [official OpenAI packaging guide](https://developers.openai.com/plugins/build/plugins) states that `.codex-plugin/plugin.json` remains supported as a compatibility fallback. This project deliberately retains that layout because its local stdio credential proxy is not the public remote-HTTPS MCP submission path.
 
 ## Development and verification
 

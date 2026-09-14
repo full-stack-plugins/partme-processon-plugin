@@ -53,6 +53,10 @@ class ManifestContractTest(unittest.TestCase):
         self.assertEqual("./assets/logo.png", interface["logo"])
         self.assertEqual("./assets/logo-dark.png", interface["logoDark"])
         self.assertEqual("./assets/composer-icon.png", interface["composerIcon"])
+        self.assertEqual(
+            ["./assets/processon-hero.png"],
+            interface["screenshots"],
+        )
 
 
 if __name__ == "__main__":
