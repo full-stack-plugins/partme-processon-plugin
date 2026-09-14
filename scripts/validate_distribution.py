@@ -15,6 +15,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_NAMES = (
     "codex-processon-use",
+    "codex-processon-setup",
     "codex-processon-diagram",
     "codex-processon-mindmap",
     "codex-processon-infographic",

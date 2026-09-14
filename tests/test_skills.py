@@ -30,12 +30,46 @@ class SkillContractTest(unittest.TestCase):
             self.read_skill(name)
             for name in (
                 "codex-processon-use",
+                "codex-processon-setup",
                 "codex-processon-prompt",
                 "codex-processon-review",
             )
         )
         self.assertIn("never display", combined.lower())
-        self.assertIn("PROCESSON_MCP_AUTHORIZATION", combined)
+        self.assertNotIn("PROCESSON_MCP_AUTHORIZATION", combined)
+        self.assertNotIn("paste your token into chat", combined.lower())
+
+    def test_setup_skill_routes_all_credential_states(self):
+        setup = self.read_skill("codex-processon-setup")
+        router = self.read_skill("codex-processon-use")
+        for value in ("首次使用", "缺少凭证", "凭证失效", "轮换 Token"):
+            self.assertIn(value, setup)
+        for value in (
+            "PROCESSON_SETUP_REQUIRED",
+            "PROCESSON_AUTH_REQUIRED",
+            "codex-processon-setup",
+        ):
+            self.assertIn(value, router)
+
+    def test_setup_skill_has_progressive_disclosure_resources(self):
+        skill_dir = ROOT / "skills" / "codex-processon-setup"
+        text = (skill_dir / "SKILL.md").read_text()
+        for name in (
+            "workflow.md",
+            "security.md",
+            "anti-patterns.md",
+            "faq-deep.md",
+            "examples.md",
+        ):
+            self.assertTrue((skill_dir / "references" / name).is_file())
+            self.assertIn(name, text)
+
+    def test_setup_skill_never_routes_secrets_into_project_or_shell_files(self):
+        setup_dir = ROOT / "skills" / "codex-processon-setup"
+        combined = "\n".join(path.read_text() for path in setup_dir.rglob("*.md"))
+        prohibited = ("写入 .mcp.json", "写入 .zshrc", "打印 Token 值")
+        for phrase in prohibited:
+            self.assertNotIn(phrase, combined)
 
     def test_diagram_skill_covers_professional_families(self):
         text = self.read_skill("codex-processon-diagram")
