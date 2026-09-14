@@ -1,4 +1,5 @@
 import contextlib
+import hashlib
 import io
 import json
 import os
@@ -23,15 +24,16 @@ ASSETS = ROOT / "assets" / "setup"
 
 
 class SetupPageTest(unittest.TestCase):
-    def test_page_has_one_three_step_password_flow(self):
+    def test_page_matches_stitch_source_with_processon_content(self):
         html = (ASSETS / "index.html").read_text(encoding="utf-8")
         self.assertEqual(1, html.count('class="setup-card"'))
         self.assertEqual(3, html.count('class="setup-step"'))
-        self.assertIn('class="brand-lockup"', html)
+        self.assertIn('class="brand"', html)
         self.assertIn('href="https://smart.processon.com/user"', html)
         self.assertEqual(1, html.count('type="password"'))
         self.assertIn('id="launch"', html)
         self.assertIn("<details", html)
+        self.assertNotIn("画布CLI", html)
         self.assertNotIn('value="', html)
 
     def test_page_uses_local_assets_and_clears_input_after_save(self):
@@ -42,16 +44,14 @@ class SetupPageTest(unittest.TestCase):
         self.assertNotIn("https://fonts", html)
         self.assertIn("finally", script)
         self.assertIn('tokenInput.value = ""', script)
-        self.assertIn("launchButton.disabled = false", script)
+        self.assertIn("launch.disabled=!ok", script)
 
-    def test_page_matches_the_approved_stitch_setup_visual_system(self):
-        css = (ASSETS / "styles.css").read_text(encoding="utf-8")
-        self.assertIn("--processon-blue: #2f80ed", css.lower())
-        self.assertIn("radial-gradient(circle at 38% 48%", css)
-        self.assertIn("radial-gradient(circle at 66% 45%", css)
-        self.assertIn("border-radius: 28px", css)
-        self.assertNotIn(".blueprint-grid", css)
-        self.assertNotIn(".flow-line", css)
+    def test_page_uses_the_stitch_setup_stylesheet_verbatim(self):
+        digest = hashlib.sha256((ASSETS / "styles.css").read_bytes()).hexdigest()
+        self.assertEqual(
+            "b246bea2c1601d909aad518406ca0080c1b96d02889f6fad41d065050c940d72",
+            digest,
+        )
 
 
 class SetupCliTest(unittest.TestCase):
