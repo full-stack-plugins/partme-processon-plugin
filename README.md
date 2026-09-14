@@ -4,8 +4,8 @@
 
 > Turn natural-language ideas, source context, and business workflows into polished ProcessOn diagrams that remain reviewable and editable.
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin)
-[![Tests](https://img.shields.io/badge/tests-79%20passing-18a957)](#development-and-verification)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin/releases/tag/v0.1.0)
+[![Tests](https://img.shields.io/badge/tests-81%20passing-18a957)](#development-and-verification)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Quick start](#quick-start) · [Examples](#copyable-examples) · [Troubleshooting](#troubleshooting)
@@ -54,8 +54,8 @@ Natural-language request / approved source material
 |:---|:---|
 | Plugin ID | `codex-processon-plugin` |
 | Display name | ProcessOn |
-| Last installed package acceptance | `0.1.0+codex.20260914044127` |
-| Host tested | Codex CLI `0.153.4` |
+| Last installed package acceptance | `0.1.0+codex.20260914112340` |
+| Host tested | Codex CLI `0.154.0-alpha.6.2` |
 | Manifest | `.codex-plugin/plugin.json` |
 | MCP configuration | `.mcp.json` |
 | MCP transport | Local stdio → Streamable HTTP |
@@ -305,16 +305,17 @@ four short metrics per quadrant, ample whitespace, and accessible contrast.
 
 ## Verified results
 
-The following artifacts were generated during the live acceptance run on 2026-09-13:
+The following artifacts were generated during live Codex acceptance runs:
 
-| Acceptance case | Observed result | Verdict |
-|:---|:---|:---:|
-| Agent Harness architecture | [Layered editable ProcessOn diagram](https://v5hd.processon.com/chart_image/diss/file/full/img?imgId=6aa64844664bfd17d5fdde00&from=po_tool_ai_dissfile) | PASS |
-| AI delivery swimlane | [3494×1180 rendered diagram](https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/fb800c51-82e5-419c-8b50-c4ca0f47c5c5.png) | PASS |
-| Production-readiness infographic | [536×488 rendered infographic](https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/eb01e089-c7b3-4c1d-a3a2-a83323a75964.png) | PASS |
-| Codex → ProcessOn DSL | `graph TD; A([Start]) --> B[Validate]; B --> C([End])` | PASS |
+| Acceptance case | Date | Observed result | Verdict |
+|:---|:---|:---|:---:|
+| Agent Harness architecture | 2026-09-13 | [Layered editable ProcessOn diagram](https://v5hd.processon.com/chart_image/diss/file/full/img?imgId=6aa64844664bfd17d5fdde00&from=po_tool_ai_dissfile) | PASS |
+| AI delivery swimlane | 2026-09-13 | [3494×1180 rendered diagram](https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/fb800c51-82e5-419c-8b50-c4ca0f47c5c5.png) | PASS |
+| Production-readiness infographic | 2026-09-13 | [536×488 rendered infographic](https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/eb01e089-c7b3-4c1d-a3a2-a83323a75964.png) | PASS |
+| Codex → ProcessOn DSL (pre-stdio) | 2026-09-13 | `graph TD; A([Start]) --> B[Validate]; B --> C([End])` | PASS |
+| Codex → ProcessOn DSL (stdio path) | 2026-09-14 | `arch-data-platform` definition, 751 characters, three-layer architecture (Client / Service / Data) | PASS |
 
-These links prove the recorded acceptance run; availability remains owned by ProcessOn. Automated tests verify the plugin package and contracts, not the continued lifetime of external image URLs.
+These links prove the recorded acceptance runs; availability remains owned by ProcessOn. Automated tests verify the plugin package and contracts, not the continued lifetime of external image URLs. A small fraction of `generate_diagram_dsl` calls return a successful but empty payload — the proxy forwards that unchanged, so the user gets no artifact and no actionable error; the case is documented in `artifacts/acceptance/acceptance-summary.json` under `emptyPayloadFinding` and is intentionally **not** mapped to an error here, because changing the response contract is a product decision.
 
 ## Authentication, retries, and failure semantics
 

@@ -4,8 +4,8 @@
 
 > 把自然语言想法、源码上下文和业务流程转化为专业、精美、可审查且可继续编辑的 ProcessOn 图表。
 
-[![版本](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin)
-[![测试](https://img.shields.io/badge/tests-79%20passing-18a957)](#开发与验证)
+[![版本](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin/releases/tag/v0.1.0)
+[![测试](https://img.shields.io/badge/tests-81%20passing-18a957)](#开发与验证)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [快速开始](#快速开始) · [示例](#可复制示例) · [故障排查](#故障排查)
@@ -54,8 +54,8 @@
 |:---|:---|
 | 插件 ID | `codex-processon-plugin` |
 | 显示名称 | ProcessOn |
-| 最近一次已安装包验收 | `0.1.0+codex.20260914044127` |
-| 已测试宿主 | Codex CLI `0.153.4` |
+| 最近一次已安装包验收 | `0.1.0+codex.20260914112340` |
+| 已测试宿主 | Codex CLI `0.154.0-alpha.6.2` |
 | 插件清单 | `.codex-plugin/plugin.json` |
 | MCP 配置 | `.mcp.json` |
 | MCP 传输 | 本地 stdio → Streamable HTTP |
@@ -301,16 +301,17 @@ Model Gateway、Tool Sandbox 和 Trace Store 的时序图。
 
 ## 已验证成果
 
-以下产物来自 2026-09-13 的真实在线验收：
+以下产物来自真实的 Codex 验收运行：
 
-| 验收场景 | 实际结果 | 结论 |
-|:---|:---|:---:|
-| Agent Harness 架构 | [分层、可编辑 ProcessOn 图](https://v5hd.processon.com/chart_image/diss/file/full/img?imgId=6aa64844664bfd17d5fdde00&from=po_tool_ai_dissfile) | PASS |
-| AI 交付泳道图 | [3494×1180 渲染图](https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/fb800c51-82e5-419c-8b50-c4ca0f47c5c5.png) | PASS |
-| 生产就绪信息图 | [536×488 渲染图](https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/eb01e089-c7b3-4c1d-a3a2-a83323a75964.png) | PASS |
-| Codex → ProcessOn DSL | `graph TD; A([Start]) --> B[Validate]; B --> C([End])` | PASS |
+| 验收场景 | 日期 | 实际结果 | 结论 |
+|:---|:---|:---|:---:|
+| Agent Harness 架构 | 2026-09-13 | [分层、可编辑 ProcessOn 图](https://v5hd.processon.com/chart_image/diss/file/full/img?imgId=6aa64844664bfd17d5fdde00&from=po_tool_ai_dissfile) | PASS |
+| AI 交付泳道图 | 2026-09-13 | [3494×1180 渲染图](https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/fb800c51-82e5-419c-8b50-c4ca0f47c5c5.png) | PASS |
+| 生产就绪信息图 | 2026-09-13 | [536×488 渲染图](https://ai-smart.ks3-cn-beijing.ksyuncs.com/gallery/eb01e089-c7b3-4c1d-a3a2-a83323a75964.png) | PASS |
+| Codex → ProcessOn DSL（stdio 前） | 2026-09-13 | `graph TD; A([Start]) --> B[Validate]; B --> C([End])` | PASS |
+| Codex → ProcessOn DSL（stdio 路径） | 2026-09-14 | `arch-data-platform` 定义，751 字符，三层架构（客户端 / 服务 / 数据） | PASS |
 
-这些链接用于证明当时的真实验收；后续可用性由 ProcessOn 管理。自动化测试验证插件包和契约，不等同于承诺外部图片永久存在。
+这些链接用于证明当时的真实验收；后续可用性由 ProcessOn 管理。自动化测试验证插件包和契约，不等同于承诺外部图片永久存在。少量 `generate_diagram_dsl` 调用会返回"成功但内容为空"——代理会原样透传，用户既无产物也无错误提示；该现象已在 `artifacts/acceptance/acceptance-summary.json` 的 `emptyPayloadFinding` 中记录，此处**有意不**映射为错误，因为改响应契约属于产品决定。
 
 ## 认证、重试与失败语义
 
