@@ -63,10 +63,17 @@ class DocumentationTest(unittest.TestCase):
         for heading in required:
             self.assertIn(heading, text)
 
-    def test_readmes_document_runtime_secret_and_examples(self):
+    def test_readmes_document_local_setup_and_advanced_override(self):
         for name in ("README.md", "README.zh-CN.md"):
             text = (ROOT / name).read_text()
-            self.assertIn("PROCESSON_MCP_AUTHORIZATION", text)
+            self.assertNotIn("PROCESSON_MCP_AUTHORIZATION", text)
+            self.assertIn("PROCESSON_MCP_TOKEN", text)
+            self.assertIn("processon_setup.py ui", text)
+            self.assertIn("processon_setup.py check", text)
+            self.assertIn("~/.config/processon/credentials.json", text)
+            self.assertIn("%APPDATA%", text)
+            self.assertIn("0700", text)
+            self.assertIn("0600", text)
             self.assertIn("Bearer ", text)
             self.assertGreaterEqual(text.count("ProcessOn"), 5)
 
@@ -84,6 +91,68 @@ class DocumentationTest(unittest.TestCase):
         self.assertIn("实时发现差异", text)
         self.assertIn("generate_chart", text)
         self.assertIn("页面未列出", text)
+
+    def test_readmes_share_marketing_hero_and_delivery_sections(self):
+        hero = ROOT / "assets/processon-hero.png"
+        self.assertTrue(hero.is_file())
+        required_english = (
+            "At a glance",
+            "Architecture and core flow",
+            "Capability matrix",
+            "Quick start",
+            "Verified results",
+            "Security and privacy",
+            "Troubleshooting",
+        )
+        required_chinese = (
+            "一眼看懂",
+            "架构与核心流程",
+            "能力矩阵",
+            "快速开始",
+            "已验证成果",
+            "安全与隐私",
+            "故障排查",
+        )
+        english = (ROOT / "README.md").read_text()
+        chinese = (ROOT / "README.zh-CN.md").read_text()
+        self.assertIn("assets/processon-hero.png", "\n".join(english.splitlines()[:12]))
+        self.assertIn("assets/processon-hero.png", "\n".join(chinese.splitlines()[:12]))
+        for heading in required_english:
+            self.assertIn(heading, english)
+        for heading in required_chinese:
+            self.assertIn(heading, chinese)
+
+    def test_readmes_distinguish_official_mcp_example_from_installed_stdio_proxy(self):
+        for name in ("README.md", "README.zh-CN.md"):
+            text = (ROOT / name).read_text()
+            self.assertIn('"smart-mcp"', text)
+            self.assertIn('"Authorization": "Bearer YOUR_MCP_TOKEN"', text)
+            self.assertIn('"type": "stdio"', text)
+            self.assertIn('"args": ["scripts/processon_mcp_proxy.py"]', text)
+            self.assertIn("UNKNOWN_WRITE_RESULT", text)
+            self.assertIn("HTTP 202", text)
+
+    def test_readmes_keep_the_same_three_step_first_use_order(self):
+        english = (ROOT / "README.md").read_text()
+        chinese = (ROOT / "README.zh-CN.md").read_text()
+        english_steps = [
+            english.index("Open the ProcessOn user center"),
+            english.index("Paste and save the Token"),
+            english.index("Reopen Codex"),
+        ]
+        chinese_steps = [
+            chinese.index("打开 ProcessOn 用户中心"),
+            chinese.index("粘贴并保存 Token"),
+            chinese.index("重新打开 Codex"),
+        ]
+        self.assertEqual(sorted(english_steps), english_steps)
+        self.assertEqual(sorted(chinese_steps), chinese_steps)
+
+    def test_privacy_discloses_local_storage_and_official_upstream(self):
+        text = (ROOT / "PRIVACY.md").read_text()
+        self.assertIn("credentials.json", text)
+        self.assertIn("https://smart-hd.processon.com/mcp", text)
+        self.assertIn("Authorization", text)
 
 
 if __name__ == "__main__":
