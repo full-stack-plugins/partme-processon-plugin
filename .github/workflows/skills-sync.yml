@@ -15,11 +15,11 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         # A PAT lets the opened PR trigger CI; without it the PR is still
         # created but checks must be kicked off manually.
         token: ${{ secrets.SKILLS_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
       - name: Vendor skills from pinned sources
@@ -27,7 +27,7 @@ jobs:
       - name: Verify the fresh snapshot
         run: python3 scripts/vendor/skill_vendor.py check
       - name: Open or update the sync PR
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # v6
         with:
           branch: chore/skills-sync
           delete-branch: true
