@@ -335,7 +335,7 @@ Model Gateway、Tool Sandbox 和 Trace Store 的时序图。
 | Codex → ProcessOn DSL（stdio 前） | 2026-09-13 | `graph TD; A([Start]) --> B[Validate]; B --> C([End])` | PASS |
 | Codex → ProcessOn DSL（stdio 路径） | 2026-09-14 | `arch-data-platform` 定义，751 字符，三层架构（客户端 / 服务 / 数据） | PASS |
 
-这些链接用于证明当时的真实验收；后续可用性由 ProcessOn 管理。自动化测试验证插件包和契约，不等同于承诺外部图片永久存在。少量 `generate_diagram_dsl` 调用会返回"成功但内容为空"——代理会原样透传，用户既无产物也无错误提示；该现象已在 `artifacts/acceptance/acceptance-summary.json` 的 `emptyPayloadFinding` 中记录，此处**有意不**映射为错误，因为改响应契约属于产品决定。
+这些链接用于证明当时的真实验收；后续可用性由 ProcessOn 管理。自动化测试验证插件包和契约，不等同于承诺外部图片永久存在。如果生成调用返回无响应的 `202`，或以成功状态返回缺失/为空的工具内容，代理现在会返回 `UNKNOWN_WRITE_RESULT`，不再静默透传空白产物；由于生成不可安全重放，任何下一次尝试前必须先核对 ProcessOn 侧结果。
 
 ## 认证、重试与失败语义
 

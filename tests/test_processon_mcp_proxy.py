@@ -135,6 +135,16 @@ class TransportTest(unittest.TestCase):
             )
         self.assertEqual([], messages)
 
+    def test_empty_202_tool_call_reports_unknown_write_result(self):
+        provider = RotatingProvider(["synthetic-token"])
+        with ProxyFixture([(202, {}, b"")]) as (_, endpoint):
+            proxy = ProcessOnProxy(ProcessOnTransport(endpoint, provider, timeout=2))
+            messages = proxy.handle_line(
+                '{"jsonrpc":"2.0","id":9,"method":"tools/call",'
+                '"params":{"name":"generate_diagram_dsl","arguments":{"prompt":"safe"}}}'
+            )
+        self.assertIn("UNKNOWN_WRITE_RESULT", json.dumps(messages))
+
     def test_401_reloads_once_then_succeeds(self):
         provider = RotatingProvider(["expired-synthetic", "rotated-synthetic"])
         with ProxyFixture(
@@ -269,7 +279,7 @@ class TransportTest(unittest.TestCase):
         self.assertEqual(1, len(fixture.server.received))
         self.assertIn("UNKNOWN_WRITE_RESULT", json.dumps(messages))
 
-    def test_write_like_request_gets_the_generation_timeout(self):
+    def test_empty_tool_content_reports_unknown_write_result(self):
         # A real ProcessOn generation was observed to take 12.0s, 27.3s, and to
         # exceed 30s for the same prompt. The short read timeout must not abort
         # the write path, which cannot be safely replayed.
@@ -281,17 +291,33 @@ class TransportTest(unittest.TestCase):
             transport = ProcessOnTransport(
                 endpoint, provider, timeout=0.2, write_timeout=2.0
             )
-            messages = transport.send(
-                {
-                    "jsonrpc": "2.0",
-                    "id": 6,
-                    "method": "tools/call",
-                    "params": {"name": "generate_diagram_dsl", "arguments": {}},
-                }
-            )
+            with self.assertRaises(ProxyError) as caught:
+                transport.send(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 6,
+                        "method": "tools/call",
+                        "params": {"name": "generate_diagram_dsl", "arguments": {}},
+                    }
+                )
         self.assertEqual(1, len(fixture.server.received))
-        self.assertEqual(1, len(messages))
-        self.assertIn("result", messages[0])
+        self.assertEqual("UNKNOWN_WRITE_RESULT", caught.exception.data_code)
+
+    def test_missing_tool_content_reports_unknown_write_result(self):
+        provider = RotatingProvider(["synthetic-token"])
+        responses = [json_response({"jsonrpc": "2.0", "id": 6, "result": {}})]
+        with ProxyFixture(responses) as (_, endpoint):
+            transport = ProcessOnTransport(endpoint, provider, timeout=2)
+            with self.assertRaises(ProxyError) as caught:
+                transport.send(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 6,
+                        "method": "tools/call",
+                        "params": {"name": "generate_diagram_dsl", "arguments": {}},
+                    }
+                )
+        self.assertEqual("UNKNOWN_WRITE_RESULT", caught.exception.data_code)
 
     def test_read_request_keeps_the_short_timeout(self):
         provider = RotatingProvider(["synthetic-token"])

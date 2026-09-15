@@ -83,6 +83,20 @@ def is_write_like(request: Mapping[str, Any]) -> bool:
     return request.get("method") == "tools/call"
 
 
+def has_empty_tool_content(messages: list[dict[str, Any]]) -> bool:
+    """Return whether a tool-call response has a result but no usable content."""
+    for message in messages:
+        result = message.get("result")
+        if not isinstance(result, dict):
+            continue
+        if result.get("isError") is True:
+            return False
+        content = result.get("content")
+        if not isinstance(content, list) or not content:
+            return True
+    return False
+
+
 def sanitize_rpc_error(
     request_id: object, code: int, message: str, data_code: str
 ) -> dict[str, Any]:
@@ -213,15 +227,23 @@ class ProcessOnTransport:
             if session_id:
                 self.session_id = session_id
             if response.status == 202 and not response_body:
+                if "id" in request:
+                    self._raise_upstream_failure(request)
                 return []
             if not response_body:
                 raise ProxyError(
                     "PROCESSON_UPSTREAM_ERROR",
                     "ProcessOn returned an empty MCP response",
                 )
-            return parse_streamable_messages(
+            messages = parse_streamable_messages(
                 response.headers.get("Content-Type", "application/json"), response_body
             )
+            if is_write_like(request) and has_empty_tool_content(messages):
+                raise ProxyError(
+                    "UNKNOWN_WRITE_RESULT",
+                    "ProcessOn returned no usable generation result; reconcile before retrying",
+                )
+            return messages
 
     def _timeout_for(self, request: Mapping[str, Any]) -> float:
         return self.write_timeout if is_write_like(request) else self.timeout

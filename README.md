@@ -339,7 +339,7 @@ The following artifacts were generated during live Codex acceptance runs:
 | Codex → ProcessOn DSL (pre-stdio) | 2026-09-13 | `graph TD; A([Start]) --> B[Validate]; B --> C([End])` | PASS |
 | Codex → ProcessOn DSL (stdio path) | 2026-09-14 | `arch-data-platform` definition, 751 characters, three-layer architecture (Client / Service / Data) | PASS |
 
-These links prove the recorded acceptance runs; availability remains owned by ProcessOn. Automated tests verify the plugin package and contracts, not the continued lifetime of external image URLs. A small fraction of `generate_diagram_dsl` calls return a successful but empty payload — the proxy forwards that unchanged, so the user gets no artifact and no actionable error; the case is documented in `artifacts/acceptance/acceptance-summary.json` under `emptyPayloadFinding` and is intentionally **not** mapped to an error here, because changing the response contract is a product decision.
+These links prove the recorded acceptance runs; availability remains owned by ProcessOn. Automated tests verify the plugin package and contracts, not the continued lifetime of external image URLs. If a generation call returns `202` without a response, or reports success with missing or empty tool content, the proxy now returns `UNKNOWN_WRITE_RESULT` rather than silently forwarding a blank artifact. This preserves the no-replay rule: reconcile the ProcessOn result before any user-authorized retry.
 
 ## Authentication, retries, and failure semantics
 
