@@ -1,0 +1,39 @@
+name: skills-sync
+
+on:
+  repository_dispatch:
+    types: [skills-updated]
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        # A PAT lets the opened PR trigger CI; without it the PR is still
+        # created but checks must be kicked off manually.
+        token: ${{ secrets.SKILLS_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Vendor skills from pinned sources
+        run: python3 scripts/vendor/skill_vendor.py update
+      - name: Verify the fresh snapshot
+        run: python3 scripts/vendor/skill_vendor.py check
+      - name: Open or update the sync PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/skills-sync
+          delete-branch: true
+          title: "chore: sync vendored skills"
+          commit-message: "chore: sync vendored skills from source packages"
+          body: |
+            Automated refresh of the vendored skill snapshot from `skills.lock.json` sources.
+            All gates (tests, distribution validation, skills-check) must be green before merge.
+          labels: skills-sync
