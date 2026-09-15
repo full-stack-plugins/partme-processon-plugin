@@ -56,7 +56,7 @@ Natural-language request / approved source material
 |:---|:---|
 | Plugin ID | `codex-processon-plugin` |
 | Display name | ProcessOn |
-| Current candidate | `0.1.0+codex.20260914224756` |
+| Current candidate | `0.2.0+codex.20260915160219` |
 | Last installed package acceptance | `0.1.0+codex.20260914224756` |
 | Host tested | Codex CLI `0.154.0-alpha.6.2` |
 | Manifest | `.codex-plugin/plugin.json` |
@@ -93,13 +93,15 @@ flowchart LR
 
 | Skill | Responsibility |
 |:---|:---|
-| `codex-processon-setup` | First-use setup, local Token rotation, and safe credential recovery |
-| `codex-processon-use` | Public router, tool selection, authentication boundary, bounded recovery |
-| `codex-processon-diagram` | Flow, swimlane, sequence, architecture, ER, UML, organization, timeline, SWOT/PEST modeling |
-| `codex-processon-mindmap` | Knowledge hierarchy, WBS, fishbone, logic map, timeline, tree-table modeling |
-| `codex-processon-infographic` | Comparison, cycle, ring, matrix, staircase, pyramid, radial, and grid layouts |
-| `codex-processon-prompt` | Six-part ProcessOn prompt: intent, content, relationships, layout, visual system, constraints |
-| `codex-processon-review` | Semantic, relationship, visual, readability, consistency, and editability review |
+| `processon-setup` | First-use setup, local Token rotation, and safe credential recovery |
+| `processon-use` | Public router, tool selection, authentication boundary, bounded recovery |
+| `processon-diagram` | Flow, swimlane, sequence, architecture, ER, UML, organization, timeline, SWOT/PEST modeling |
+| `processon-mindmap` | Knowledge hierarchy, WBS, fishbone, logic map, timeline, tree-table modeling |
+| `processon-infographic` | Comparison, cycle, ring, matrix, staircase, pyramid, radial, and grid layouts |
+| `processon-prompt` | Six-part ProcessOn prompt: intent, content, relationships, layout, visual system, constraints |
+| `processon-review` | Semantic, relationship, visual, readability, consistency, and editability review |
+
+Skill bodies are vendored verbatim from [full-stack-skills/processon-skills](https://github.com/full-stack-skills/processon-skills), the single source of truth, and pinned by `skills.lock.json` (source repo, ref, commit, per-skill digests). Refresh them with `python3 scripts/vendor/skill_vendor.py update`; never edit `skills/` directly.
 
 ### Component responsibilities
 
@@ -386,8 +388,9 @@ codex-processon-plugin/
 ├── .agents/plugins/marketplace.json # marketplace entry
 ├── assets/                          # official logo derivatives and README hero
 ├── processon_harness/               # credential provider and MCP proxy
-├── skills/                          # seven ProcessOn workflows
-├── scripts/                         # setup, proxy, assets, validation, and smoke test
+├── skills/                          # seven ProcessOn workflows, vendored from full-stack-skills/processon-skills
+├── skills.lock.json                 # pins the vendored snapshot: source repo, ref, commit, per-skill digests
+├── scripts/                         # setup, proxy, assets, validation, vendor tooling, and smoke test
 ├── tests/                           # manifest, Skills, docs, security, and MCP tests
 └── docs/                            # documentation index, architecture, and solution
 ```

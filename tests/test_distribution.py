@@ -45,10 +45,10 @@ class DistributionValidatorTest(unittest.TestCase):
     def test_missing_setup_skill_is_actionable(self):
         with tempfile.TemporaryDirectory() as directory:
             target = self.isolated_distribution(directory)
-            shutil.rmtree(target / "skills/codex-processon-setup")
+            shutil.rmtree(target / "skills/processon-setup")
             errors = validate_distribution(target)
         self.assertIn(
-            "missing required file: skills/codex-processon-setup/SKILL.md", errors
+            "missing required file: skills/processon-setup/SKILL.md", errors
         )
 
     def test_altered_stdio_command_is_rejected(self):

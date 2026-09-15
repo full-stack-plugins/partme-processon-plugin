@@ -56,7 +56,7 @@
 |:---|:---|
 | 插件 ID | `codex-processon-plugin` |
 | 显示名称 | ProcessOn |
-| 当前候选版本 | `0.1.0+codex.20260914224756` |
+| 当前候选版本 | `0.2.0+codex.20260915160219` |
 | 最近一次已安装包验收 | `0.1.0+codex.20260914224756` |
 | 已测试宿主 | Codex CLI `0.154.0-alpha.6.2` |
 | 插件清单 | `.codex-plugin/plugin.json` |
@@ -93,13 +93,15 @@ flowchart LR
 
 | Skill | 职责 |
 |:---|:---|
-| `codex-processon-setup` | 首次设置、本地 Token 轮换与安全认证恢复 |
-| `codex-processon-use` | 公共路由、工具选择、认证边界、有界恢复 |
-| `codex-processon-diagram` | 流程、泳道、时序、架构、ER、UML、组织、时间轴、SWOT/PEST 建模 |
-| `codex-processon-mindmap` | 知识层级、WBS、鱼骨、逻辑图、时间轴、树形表格建模 |
-| `codex-processon-infographic` | 对比、循环、环形、矩阵、阶梯、金字塔、射线和网格布局 |
-| `codex-processon-prompt` | 六段式 ProcessOn Prompt：意图、内容、关系、布局、视觉系统、约束 |
-| `codex-processon-review` | 语义、关系、视觉、可读性、一致性和可编辑性审查 |
+| `processon-setup` | 首次设置、本地 Token 轮换与安全认证恢复 |
+| `processon-use` | 公共路由、工具选择、认证边界、有界恢复 |
+| `processon-diagram` | 流程、泳道、时序、架构、ER、UML、组织、时间轴、SWOT/PEST 建模 |
+| `processon-mindmap` | 知识层级、WBS、鱼骨、逻辑图、时间轴、树形表格建模 |
+| `processon-infographic` | 对比、循环、环形、矩阵、阶梯、金字塔、射线和网格布局 |
+| `processon-prompt` | 六段式 ProcessOn Prompt：意图、内容、关系、布局、视觉系统、约束 |
+| `processon-review` | 语义、关系、视觉、可读性、一致性和可编辑性审查 |
+
+技能本体从 [full-stack-skills/processon-skills](https://github.com/full-stack-skills/processon-skills)（单一事实源）逐字 vendor，由 `skills.lock.json` 钉住来源仓库、ref、commit 与逐技能摘要。刷新请运行 `python3 scripts/vendor/skill_vendor.py update`；切勿直接编辑 `skills/`。
 
 ### 组件职责
 
@@ -382,8 +384,9 @@ codex-processon-plugin/
 ├── .agents/plugins/marketplace.json # marketplace 条目
 ├── assets/                          # 官方 Logo 派生图和 README 宣传图
 ├── processon_harness/               # 凭证提供器与 MCP 代理
-├── skills/                          # 七个 ProcessOn 工作流
-├── scripts/                         # 设置、代理、资产、分发验证和冒烟测试
+├── skills/                          # 七个 ProcessOn 工作流，vendor 自 full-stack-skills/processon-skills
+├── skills.lock.json                 # 钉住 vendor 快照：来源仓库、ref、commit、逐技能摘要
+├── scripts/                         # 设置、代理、资产、分发验证、vendor 工具和冒烟测试
 ├── tests/                           # 清单、Skill、文档、安全和 MCP 测试
 └── docs/                            # 文档索引、架构与技术方案
 ```

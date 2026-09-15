@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "package": "processon-skills",
+      "repo": "https://github.com/full-stack-skills/processon-skills.git",
+      "ref": "v1.0.0",
+      "sha": "ec66bbcf13d4933c5e9eee9a898ef44f329df6e4",
+      "skills": [
+        "processon-use",
+        "processon-diagram",
+        "processon-mindmap",
+        "processon-infographic",
+        "processon-prompt",
+        "processon-review",
+        "processon-setup"
+      ],
+      "dest": "skills/",
+      "sha256": {
+        "processon-use": "16eebfaf6cf693c94fae7631d6e74f25262794f4b059393408451e94fc254e42",
+        "processon-diagram": "d9f348045043a458178a471446ec9e228f5d8ae5ee74d238773d5de176ac6a9e",
+        "processon-mindmap": "33daba7541a929edd7f7610f59e98a334a083dee45654f97bd718dfbba5d3685",
+        "processon-infographic": "887be068d311372199aa8e9c5b7be38dcae25523b5a4de3491a1b30809cc14a4",
+        "processon-prompt": "348bd3d002ec683289a53ab7b4fa31e93bed2a1947d30c96cf25a9e187ffc2ec",
+        "processon-review": "6f6e272d09820f2924b32bfd5830d9c47cf6bb75146d9714e46521acc016b3d5",
+        "processon-setup": "32a32bdde87e557f76b2feb3b9099387457432d779ecd6fe75fcade747510aee"
+      }
+    }
+  ]
+}
