@@ -4,7 +4,7 @@
 
 > Turn natural-language ideas, source context, and business workflows into polished ProcessOn diagrams that remain reviewable and editable.
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin/releases/tag/v0.1.0)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/partme-processon-plugin/releases/tag/v0.1.0)
 [![Tests](https://img.shields.io/badge/tests-81%20passing-18a957)](#development-and-verification)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
@@ -157,7 +157,7 @@ These are repository-local copies of outputs from the recorded live acceptance r
 Recommended — add this GitHub repository, pin `main`, then install ProcessOn:
 
 ```bash
-codex plugin marketplace add partme-ai/codex-processon-plugin --ref main
+codex plugin marketplace add partme-ai/partme-processon-plugin --ref main
 codex plugin add codex-processon-plugin@partme-ai-processon
 ```
 
@@ -165,14 +165,14 @@ Alternative marketplace sources supported by Codex:
 
 ```bash
 # GitHub shorthand using the repository default branch
-codex plugin marketplace add partme-ai/codex-processon-plugin
+codex plugin marketplace add partme-ai/partme-processon-plugin
 
 # Full Git URL with a sparse checkout of the marketplace catalog
-codex plugin marketplace add https://github.com/partme-ai/codex-processon-plugin.git --ref main --sparse .agents/plugins
+codex plugin marketplace add https://github.com/partme-ai/partme-processon-plugin.git --ref main --sparse .agents/plugins
 
 # Local clone for development
-git clone https://github.com/partme-ai/codex-processon-plugin.git
-codex plugin marketplace add ./codex-processon-plugin
+git clone https://github.com/partme-ai/partme-processon-plugin.git
+codex plugin marketplace add ./partme-processon-plugin
 ```
 
 Verify installation:
@@ -382,7 +382,7 @@ See [PRIVACY.md](PRIVACY.md), [TERMS.md](TERMS.md), and [THIRD_PARTY_NOTICES.md]
 ## Project structure
 
 ```text
-codex-processon-plugin/
+partme-processon-plugin/
 ├── .codex-plugin/plugin.json        # identity and UI metadata
 ├── .mcp.json                        # secret-free local stdio entry point
 ├── .agents/plugins/marketplace.json # marketplace entry
@@ -459,8 +459,8 @@ The plugin keeps no run ledger: each generation is a stateless request-response 
 
 ## Contributing and support
 
-Open functional issues at <https://github.com/partme-ai/codex-processon-plugin/issues>. Before proposing a change, state the Codex host version you verified on, whether it alters the MCP tool contract or the credential handling, and which tests cover it. Report security-sensitive findings privately rather than in a public issue.
+Open functional issues at <https://github.com/partme-ai/partme-processon-plugin/issues>. Before proposing a change, state the Codex host version you verified on, whether it alters the MCP tool contract or the credential handling, and which tests cover it. Report security-sensitive findings privately rather than in a public issue.
 
 ## License and support
 
-Licensed under [Apache-2.0](LICENSE). Open issues at <https://github.com/partme-ai/codex-processon-plugin/issues>. Report security-sensitive findings privately to the repository maintainers rather than opening a public issue.
+Licensed under [Apache-2.0](LICENSE). Open issues at <https://github.com/partme-ai/partme-processon-plugin/issues>. Report security-sensitive findings privately to the repository maintainers rather than opening a public issue.

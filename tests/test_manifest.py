@@ -41,7 +41,7 @@ class ManifestContractTest(unittest.TestCase):
         self.assertEqual("Creativity", entry["category"])
         self.assertEqual("url", entry["source"]["source"])
         self.assertEqual(
-            "https://github.com/partme-ai/codex-processon-plugin.git",
+            "https://github.com/partme-ai/partme-processon-plugin.git",
             entry["source"]["url"],
         )
         self.assertEqual("main", entry["source"]["ref"])

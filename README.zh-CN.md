@@ -4,7 +4,7 @@
 
 > 把自然语言想法、源码上下文和业务流程转化为专业、精美、可审查且可继续编辑的 ProcessOn 图表。
 
-[![版本](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/codex-processon-plugin/releases/tag/v0.1.0)
+[![版本](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/partme-processon-plugin/releases/tag/v0.1.0)
 [![测试](https://img.shields.io/badge/tests-81%20passing-18a957)](#开发与验证)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
@@ -157,7 +157,7 @@ flowchart LR
 推荐方式——添加本项目 GitHub 仓库、固定 `main`，然后安装 ProcessOn：
 
 ```bash
-codex plugin marketplace add partme-ai/codex-processon-plugin --ref main
+codex plugin marketplace add partme-ai/partme-processon-plugin --ref main
 codex plugin add codex-processon-plugin@partme-ai-processon
 ```
 
@@ -165,14 +165,14 @@ Codex 官方支持的其他 marketplace 来源写法：
 
 ```bash
 # GitHub 简写，使用仓库默认分支
-codex plugin marketplace add partme-ai/codex-processon-plugin
+codex plugin marketplace add partme-ai/partme-processon-plugin
 
 # 完整 Git URL，仅稀疏检出 marketplace 目录
-codex plugin marketplace add https://github.com/partme-ai/codex-processon-plugin.git --ref main --sparse .agents/plugins
+codex plugin marketplace add https://github.com/partme-ai/partme-processon-plugin.git --ref main --sparse .agents/plugins
 
 # 本地克隆，适合开发调试
-git clone https://github.com/partme-ai/codex-processon-plugin.git
-codex plugin marketplace add ./codex-processon-plugin
+git clone https://github.com/partme-ai/partme-processon-plugin.git
+codex plugin marketplace add ./partme-processon-plugin
 ```
 
 验证安装：
@@ -378,7 +378,7 @@ ProcessOn 文档声明每个 Token 每分钟最多 600 次请求，并支持至 
 ## 项目结构
 
 ```text
-codex-processon-plugin/
+partme-processon-plugin/
 ├── .codex-plugin/plugin.json        # 插件身份和 UI 元数据
 ├── .mcp.json                        # 无密钥的本地 stdio 入口
 ├── .agents/plugins/marketplace.json # marketplace 条目
@@ -455,8 +455,8 @@ git diff --check
 
 ## 贡献与支持
 
-功能问题请提交到 <https://github.com/partme-ai/codex-processon-plugin/issues>。提交变更前，请说明你验证所用的 Codex 宿主版本、是否改动 MCP 工具契约或凭据处理，以及由哪些测试覆盖。涉及安全的敏感问题请私下报告，不要创建公开 Issue。
+功能问题请提交到 <https://github.com/partme-ai/partme-processon-plugin/issues>。提交变更前，请说明你验证所用的 Codex 宿主版本、是否改动 MCP 工具契约或凭据处理，以及由哪些测试覆盖。涉及安全的敏感问题请私下报告，不要创建公开 Issue。
 
 ## 许可证与支持
 
-项目使用 [Apache-2.0](LICENSE)。问题反馈：<https://github.com/partme-ai/codex-processon-plugin/issues>。涉及安全的敏感问题应私下联系仓库维护者，不要创建公开 Issue。
+项目使用 [Apache-2.0](LICENSE)。问题反馈：<https://github.com/partme-ai/partme-processon-plugin/issues>。涉及安全的敏感问题应私下联系仓库维护者，不要创建公开 Issue。

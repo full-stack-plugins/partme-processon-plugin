@@ -142,9 +142,9 @@ class DocumentationTest(unittest.TestCase):
 
     def test_readmes_use_real_marketplace_install_commands(self):
         commands = (
-            "codex plugin marketplace add partme-ai/codex-processon-plugin --ref main",
-            "codex plugin marketplace add https://github.com/partme-ai/codex-processon-plugin.git --ref main --sparse .agents/plugins",
-            "codex plugin marketplace add ./codex-processon-plugin",
+            "codex plugin marketplace add partme-ai/partme-processon-plugin --ref main",
+            "codex plugin marketplace add https://github.com/partme-ai/partme-processon-plugin.git --ref main --sparse .agents/plugins",
+            "codex plugin marketplace add ./partme-processon-plugin",
             "codex plugin add codex-processon-plugin@partme-ai-processon",
         )
         for name in ("README.md", "README.zh-CN.md"):
