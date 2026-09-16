@@ -1,0 +1,42 @@
+{
+  "name": "processon",
+  "version": "0.2.0",
+  "description": "Create polished, editable ProcessOn diagrams, mind maps, and infographics.",
+  "author": {
+    "name": "Full Stack Skills / PartMe.AI"
+  },
+  "homepage": "https://github.com/partme-ai/codex-processon-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "processon",
+    "diagram",
+    "mind-map"
+  ],
+  "interface": {
+    "displayName": "ProcessOn",
+    "shortDescription": "Design polished, editable ProcessOn diagrams",
+    "longDescription": "Operate ProcessOn from your coding agent to create professional flowcharts, swimlanes, UML, architecture and ER diagrams, mind maps, timelines, org charts, and structured infographics with a built-in quality review workflow.",
+    "developerName": "Full Stack Skills / PartMe.AI",
+    "websiteURL": "https://github.com/partme-ai/codex-processon-plugin"
+  },
+  "skills": "./skills/",
+  "commands": "./commands/",
+  "mcpServers": {
+    "processon": {
+      "command": "python3",
+      "args": ["./scripts/processon_mcp_proxy.py"]
+    }
+  },
+  "hooks": [
+    {
+      "event": "SessionStart",
+      "command": "python3 ./hooks/env_check.py",
+      "timeout": 30
+    },
+    {
+      "event": "UserPromptSubmit",
+      "command": "python3 ./hooks/check_processon_intent.py",
+      "timeout": 15
+    }
+  ]
+}
