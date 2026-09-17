@@ -1,7 +1,7 @@
 {
-  "name": "processon",
+  "name": "processon-design",
   "version": "0.2.0",
-  "description": "Create polished, editable ProcessOn diagrams, mind maps, and infographics.",
+  "description": "Create and review editable ProcessOn diagrams, mind maps, and infographics.",
   "author": {
     "name": "Full Stack Skills / PartMe.AI"
   },
@@ -13,7 +13,7 @@
     "mind-map"
   ],
   "interface": {
-    "displayName": "ProcessOn",
+    "displayName": "ProcessOn Design",
     "shortDescription": "Design polished, editable ProcessOn diagrams",
     "longDescription": "Operate ProcessOn from your coding agent to create professional flowcharts, swimlanes, UML, architecture and ER diagrams, mind maps, timelines, org charts, and structured infographics with a built-in quality review workflow.",
     "developerName": "Full Stack Skills / PartMe.AI",
@@ -24,7 +24,9 @@
   "mcpServers": {
     "processon": {
       "command": "python3",
-      "args": ["./scripts/processon_mcp_proxy.py"]
+      "args": [
+        "./scripts/processon_mcp_proxy.py"
+      ]
     }
   },
   "hooks": [

@@ -11,7 +11,7 @@ class ManifestContractTest(unittest.TestCase):
         plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
         mcp = json.loads((ROOT / ".mcp.json").read_text())
 
-        self.assertEqual("codex-processon-plugin", plugin["name"])
+        self.assertEqual("processon-design", plugin["name"])
         self.assertEqual("./skills/", plugin["skills"])
         self.assertEqual("./.mcp.json", plugin["mcpServers"])
 
@@ -32,10 +32,10 @@ class ManifestContractTest(unittest.TestCase):
         )
 
         self.assertEqual("partme-ai-processon", marketplace["name"])
-        self.assertEqual("PartMe.AI ProcessOn", marketplace["interface"]["displayName"])
+        self.assertEqual("ProcessOn Design", marketplace["interface"]["displayName"])
         self.assertEqual(1, len(marketplace["plugins"]))
         entry = marketplace["plugins"][0]
-        self.assertEqual("codex-processon-plugin", entry["name"])
+        self.assertEqual("processon-design", entry["name"])
         self.assertEqual("AVAILABLE", entry["policy"]["installation"])
         self.assertEqual("ON_USE", entry["policy"]["authentication"])
         self.assertEqual("Creativity", entry["category"])
@@ -49,9 +49,9 @@ class ManifestContractTest(unittest.TestCase):
     def test_plugin_uses_official_processon_name_and_icons(self):
         plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
         interface = plugin["interface"]
-        self.assertEqual("ProcessOn", interface["displayName"])
-        self.assertEqual("./assets/logo-light.png", interface["logo"])
-        self.assertEqual("./assets/logo-dark.png", interface["logoDark"])
+        self.assertEqual("ProcessOn Design", interface["displayName"])
+        self.assertEqual("./assets/official-logo.png", interface["logo"])
+        self.assertEqual("./assets/official-logo.png", interface["logoDark"])
         self.assertEqual("./assets/composer-icon.png", interface["composerIcon"])
         self.assertEqual(
             ["./assets/processon-hero.png"],

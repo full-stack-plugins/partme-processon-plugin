@@ -18,7 +18,7 @@
 
 ## 项目定位
 
-`codex-processon-plugin` 是面向 Codex 的 ProcessOn 集成。它把无密钥的本地 stdio 代理、ProcessOn 官方远程 MCP 与七个专用 Agent Skills 组合起来：配置访问、识别图形类型、建立结构模型、增强 Prompt、选择当前最佳工具，并在交付前审查真实结果。
+`processon-design` 是面向 Codex 的 ProcessOn 集成。它把无密钥的本地 stdio 代理、ProcessOn 官方远程 MCP 与七个专用 Agent Skills 组合起来：配置访问、识别图形类型、建立结构模型、增强 Prompt、选择当前最佳工具，并在交付前审查真实结果。
 
 ### 适合谁
 
@@ -54,7 +54,7 @@
 
 | 项目属性 | 已验证值 |
 |:---|:---|
-| 插件 ID | `codex-processon-plugin` |
+| 插件 ID | `processon-design` |
 | 显示名称 | ProcessOn |
 | 当前候选版本 | `0.2.0+codex.20260915160219` |
 | 最近一次已安装包验收 | `0.1.0+codex.20260914224756` |
@@ -158,7 +158,7 @@ flowchart LR
 
 ```bash
 codex plugin marketplace add partme-ai/partme-processon-plugin --ref main
-codex plugin add codex-processon-plugin@partme-ai-processon
+codex plugin add processon-design@partme-ai-processon
 ```
 
 Codex 官方支持的其他 marketplace 来源写法：
@@ -184,7 +184,7 @@ codex plugin list
 预期条目：
 
 ```text
-codex-processon-plugin@partme-ai-processon  installed, enabled
+processon-design@partme-ai-processon  installed, enabled
 ```
 
 安装或升级后请新建 Codex 任务，使新的 Skills 和 MCP 工具进入上下文。
@@ -193,7 +193,7 @@ codex-processon-plugin@partme-ai-processon  installed, enabled
 
 ```bash
 codex plugin marketplace upgrade partme-ai-processon
-codex plugin add codex-processon-plugin@partme-ai-processon
+codex plugin add processon-design@partme-ai-processon
 ```
 
 ## 快速开始
@@ -395,7 +395,7 @@ partme-processon-plugin/
 
 | OpenAI 打包要求 | 本项目实现 |
 |:---|:---|
-| 稳定插件身份 | `codex-processon-plugin` |
+| 稳定插件身份 | `processon-design` |
 | 根目录 Skills | `skills/` 中包含七个专用 Skill |
 | 根目录视觉资产 | `assets/` 中包含官方字标、composer 图标和宣传截图 |
 | Marketplace 目录 | `.agents/plugins/marketplace.json`，Git source 固定到 `main` |
@@ -448,8 +448,8 @@ git diff --check
 - [ProcessOn AI、DSL 与 MCP 文档索引](docs/ProcessOn-Documentation-Index.zh_CN.md)
 - [Architecture](docs/Codex-ProcessOn-Plugin-Architecture.md) · [架构中文版](docs/Codex-ProcessOn-Plugin-Architecture.zh_CN.md)
 - [Technical solution](docs/Codex-ProcessOn-Plugin-Technical-Solution.md) · [技术方案中文版](docs/Codex-ProcessOn-Plugin-Technical-Solution.zh_CN.md)
-- [已批准设计](docs/superpowers/specs/2026-09-12-codex-processon-plugin-design.md)
-- [已完成实施计划](docs/superpowers/plans/2026-09-12-codex-processon-plugin.md)
+- [已批准设计](docs/superpowers/specs/2026-09-12-processon-design-design.md)
+- [已完成实施计划](docs/superpowers/plans/2026-09-12-processon-design.md)
 - [本地凭证设置设计](docs/superpowers/specs/2026-09-14-processon-local-credential-setup-design.md)
 - [本地凭证设置实施计划](docs/superpowers/plans/2026-09-14-processon-local-credential-setup.md)
 

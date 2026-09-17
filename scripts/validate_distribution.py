@@ -27,9 +27,8 @@ REQUIRED_FILES = (
     ".mcp.json",
     ".agents/plugins/marketplace.json",
     "assets/logo.svg",
-    "assets/logo-light.png",
-    "assets/logo.png",
-    "assets/logo-dark.png",
+    "assets/official-logo.png",
+    "assets/official-logo.svg",
     "assets/composer-icon.png",
     "assets/setup/index.html",
     "assets/setup/styles.css",
@@ -153,8 +152,8 @@ def validate_distribution(root: Path = ROOT) -> list[str]:
     marketplace = _load_json(marketplace_path, errors) if marketplace_path.is_file() else {}
 
     if plugin:
-        if plugin.get("name") != "codex-processon-plugin":
-            errors.append("plugin name must be codex-processon-plugin")
+        if plugin.get("name") != "processon-design":
+            errors.append("plugin name must be processon-design")
         for key in ("composerIcon", "logo", "logoDark"):
             value = plugin.get("interface", {}).get(key)
             if not isinstance(value, str) or not (root / value.removeprefix("./")).is_file():
@@ -171,14 +170,12 @@ def validate_distribution(root: Path = ROOT) -> list[str]:
             errors.append("ProcessOn MCP must use the local secret-free stdio proxy")
     if marketplace:
         entries = marketplace.get("plugins", [])
-        if len(entries) != 1 or entries[0].get("name") != "codex-processon-plugin":
+        if len(entries) != 1 or entries[0].get("name") != "processon-design":
             errors.append("marketplace must contain exactly the ProcessOn plugin")
 
     expected_pngs = {
-        "assets/logo-light.png": (873, 250),
-        "assets/logo.png": (873, 250),
-        "assets/logo-dark.png": (873, 250),
-        "assets/composer-icon.png": (64, 64),
+        "assets/official-logo.png": (873, 250),
+        "assets/composer-icon.png": (256, 256),
     }
     for relative, expected in expected_pngs.items():
         path = root / relative

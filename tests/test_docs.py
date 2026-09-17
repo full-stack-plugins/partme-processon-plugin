@@ -145,7 +145,7 @@ class DocumentationTest(unittest.TestCase):
             "codex plugin marketplace add partme-ai/partme-processon-plugin --ref main",
             "codex plugin marketplace add https://github.com/partme-ai/partme-processon-plugin.git --ref main --sparse .agents/plugins",
             "codex plugin marketplace add ./partme-processon-plugin",
-            "codex plugin add codex-processon-plugin@partme-ai-processon",
+            "codex plugin add processon-design@partme-ai-processon",
         )
         for name in ("README.md", "README.zh-CN.md"):
             text = (ROOT / name).read_text()

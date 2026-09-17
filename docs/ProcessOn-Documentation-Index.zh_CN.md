@@ -216,7 +216,7 @@
 
 ### MCP 官方连接契约与插件适配
 
-ProcessOn 页面提供的通用 MCP Client 配置使用远程 HTTP 与内联 Authorization 请求头。`codex-processon-plugin` 不把真实 Token 写入版本化配置；已安装插件使用以下本地 stdio 入口：
+ProcessOn 页面提供的通用 MCP Client 配置使用远程 HTTP 与内联 Authorization 请求头。`processon-design` 不把真实 Token 写入版本化配置；已安装插件使用以下本地 stdio 入口：
 
 ```json
 {

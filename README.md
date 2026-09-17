@@ -18,7 +18,7 @@ The installed plugin exposes three ready-to-run prompts, one ProcessOn MCP serve
 
 ## Positioning
 
-`codex-processon-plugin` is a ProcessOn integration for Codex. It combines a secret-free local stdio proxy, the official remote ProcessOn MCP server, and seven focused Agent Skills that configure access, classify the requested visual, model its structure, improve the prompt, choose the best available tool, and review the result before delivery.
+`processon-design` is a ProcessOn integration for Codex. It combines a secret-free local stdio proxy, the official remote ProcessOn MCP server, and seven focused Agent Skills that configure access, classify the requested visual, model its structure, improve the prompt, choose the best available tool, and review the result before delivery.
 
 ### Who it is for
 
@@ -54,7 +54,7 @@ Natural-language request / approved source material
 
 | Property | Verified value |
 |:---|:---|
-| Plugin ID | `codex-processon-plugin` |
+| Plugin ID | `processon-design` |
 | Display name | ProcessOn |
 | Current candidate | `0.2.0+codex.20260915160219` |
 | Last installed package acceptance | `0.1.0+codex.20260914224756` |
@@ -158,7 +158,7 @@ Recommended — add this GitHub repository, pin `main`, then install ProcessOn:
 
 ```bash
 codex plugin marketplace add partme-ai/partme-processon-plugin --ref main
-codex plugin add codex-processon-plugin@partme-ai-processon
+codex plugin add processon-design@partme-ai-processon
 ```
 
 Alternative marketplace sources supported by Codex:
@@ -184,7 +184,7 @@ codex plugin list
 Expected entry:
 
 ```text
-codex-processon-plugin@partme-ai-processon  installed, enabled
+processon-design@partme-ai-processon  installed, enabled
 ```
 
 Start a new Codex task after installation or upgrade so the new Skills and MCP tools are loaded.
@@ -193,7 +193,7 @@ To refresh a Git-backed marketplace later:
 
 ```bash
 codex plugin marketplace upgrade partme-ai-processon
-codex plugin add codex-processon-plugin@partme-ai-processon
+codex plugin add processon-design@partme-ai-processon
 ```
 
 ## Quick start
@@ -399,7 +399,7 @@ partme-processon-plugin/
 
 | OpenAI packaging requirement | This repository |
 |:---|:---|
-| Stable plugin identity | `codex-processon-plugin` |
+| Stable plugin identity | `processon-design` |
 | Skills under the plugin root | `skills/` with seven focused Skills |
 | Visual assets under the plugin root | Official wordmark, composer icon, hero screenshot under `assets/` |
 | Marketplace catalog | `.agents/plugins/marketplace.json` with Git source pinned to `main` |
@@ -452,8 +452,8 @@ The plugin keeps no run ledger: each generation is a stateless request-response 
 - [ProcessOn AI, DSL, and MCP documentation index](docs/ProcessOn-Documentation-Index.zh_CN.md)
 - [Architecture](docs/Codex-ProcessOn-Plugin-Architecture.md) · [架构中文版](docs/Codex-ProcessOn-Plugin-Architecture.zh_CN.md)
 - [Technical solution](docs/Codex-ProcessOn-Plugin-Technical-Solution.md) · [技术方案中文版](docs/Codex-ProcessOn-Plugin-Technical-Solution.zh_CN.md)
-- [Approved design](docs/superpowers/specs/2026-09-12-codex-processon-plugin-design.md)
-- [Completed implementation plan](docs/superpowers/plans/2026-09-12-codex-processon-plugin.md)
+- [Approved design](docs/superpowers/specs/2026-09-12-processon-design-design.md)
+- [Completed implementation plan](docs/superpowers/plans/2026-09-12-processon-design.md)
 - [Local credential setup design](docs/superpowers/specs/2026-09-14-processon-local-credential-setup-design.md)
 - [Local credential setup implementation plan](docs/superpowers/plans/2026-09-14-processon-local-credential-setup.md)
 

@@ -22,15 +22,13 @@ class AssetContractTest(unittest.TestCase):
             hashlib.sha256((ROOT / "assets/logo.svg").read_bytes()).hexdigest(),
         )
 
-    def test_png_derivatives_have_manifest_dimensions(self):
-        self.assertEqual((873, 250), png_size(ROOT / "assets/logo-light.png"))
-        self.assertEqual((873, 250), png_size(ROOT / "assets/logo.png"))
-        self.assertEqual((873, 250), png_size(ROOT / "assets/logo-dark.png"))
-        self.assertEqual((64, 64), png_size(ROOT / "assets/composer-icon.png"))
+    def test_official_png_and_composer_icon_have_expected_dimensions(self):
+        self.assertEqual((873, 250), png_size(ROOT / "assets/official-logo.png"))
+        self.assertEqual((256, 256), png_size(ROOT / "assets/composer-icon.png"))
 
     def test_setup_uses_the_full_official_wordmark(self):
         html = (ROOT / "assets/setup/index.html").read_text()
-        self.assertIn('src="/logo-light.png"', html)
+        self.assertIn('src="/official-logo.png"', html)
         self.assertIn('width="180"', html)
         self.assertIn('height="52"', html)
 

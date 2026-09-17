@@ -1,7 +1,7 @@
 {
-  "name": "codex-processon-plugin",
+  "name": "processon-design",
   "version": "0.2.0+codex.20260915160219",
-  "description": "Create polished, editable ProcessOn diagrams, mind maps, and infographics from Codex.",
+  "description": "Create and review editable ProcessOn diagrams, mind maps, and infographics.",
   "author": {
     "name": "Full Stack Skills / PartMe.AI",
     "url": "https://github.com/partme-ai"
@@ -20,7 +20,7 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "ProcessOn",
+    "displayName": "ProcessOn Design",
     "shortDescription": "Design polished, editable ProcessOn diagrams",
     "longDescription": "Operate ProcessOn from Codex to create professional flowcharts, swimlanes, UML, architecture and ER diagrams, mind maps, timelines, organization charts, and structured infographics with a built-in quality review workflow.",
     "developerName": "Full Stack Skills / PartMe.AI",
@@ -38,10 +38,10 @@
       "Turn this workflow into a clear cross-functional swimlane",
       "Make an editable mind map or infographic from this content"
     ],
-    "brandColor": "#2F80ED",
+    "brandColor": "#067BEF",
     "composerIcon": "./assets/composer-icon.png",
-    "logo": "./assets/logo-light.png",
-    "logoDark": "./assets/logo-dark.png",
+    "logo": "./assets/official-logo.png",
+    "logoDark": "./assets/official-logo.png",
     "screenshots": [
       "./assets/processon-hero.png"
     ]
