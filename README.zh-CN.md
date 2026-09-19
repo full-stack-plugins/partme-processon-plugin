@@ -468,10 +468,10 @@ git diff --check
 
 ## 文档导航
 - [ProcessOn AI、DSL 与 MCP 文档索引](docs/ProcessOn-Documentation-Index.zh_CN.md)
-- [Architecture](docs/Codex-ProcessOn-Plugin-Architecture.md) · [架构中文版](docs/Codex-ProcessOn-Plugin-Architecture.zh_CN.md)
-- [Technical solution](docs/Codex-ProcessOn-Plugin-Technical-Solution.md) · [技术方案中文版](docs/Codex-ProcessOn-Plugin-Technical-Solution.zh_CN.md)
-- [已批准设计](docs/superpowers/specs/2026-09-12-processon-design-design.md)
-- [已完成实施计划](docs/superpowers/plans/2026-09-12-processon-design.md)
+- [Architecture](docs/ProcessOn-Design-Plugin-Architecture.md) · [架构中文版](docs/ProcessOn-Design-Plugin-Architecture.zh_CN.md)
+- [Technical solution](docs/ProcessOn-Design-Plugin-Technical-Solution.md) · [技术方案中文版](docs/ProcessOn-Design-Plugin-Technical-Solution.zh_CN.md)
+- [已批准设计](docs/superpowers/specs/2026-09-12-processon-design-plugin-design.md)
+- [已完成实施计划](docs/superpowers/plans/2026-09-12-processon-design-plugin.md)
 - [本地凭证设置设计](docs/superpowers/specs/2026-09-14-processon-local-credential-setup-design.md)
 - [本地凭证设置实施计划](docs/superpowers/plans/2026-09-14-processon-local-credential-setup.md)
 

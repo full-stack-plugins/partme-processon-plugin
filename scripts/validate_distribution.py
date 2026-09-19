@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the complete Codex ProcessOn plugin distribution."""
+"""Validate the complete cross-host ProcessOn Design plugin distribution."""
 
 from __future__ import annotations
 
@@ -42,10 +42,10 @@ REQUIRED_FILES = (
     "README.md",
     "README.zh-CN.md",
     "docs/ProcessOn-Documentation-Index.zh_CN.md",
-    "docs/Codex-ProcessOn-Plugin-Architecture.md",
-    "docs/Codex-ProcessOn-Plugin-Architecture.zh_CN.md",
-    "docs/Codex-ProcessOn-Plugin-Technical-Solution.md",
-    "docs/Codex-ProcessOn-Plugin-Technical-Solution.zh_CN.md",
+    "docs/ProcessOn-Design-Plugin-Architecture.md",
+    "docs/ProcessOn-Design-Plugin-Architecture.zh_CN.md",
+    "docs/ProcessOn-Design-Plugin-Technical-Solution.md",
+    "docs/ProcessOn-Design-Plugin-Technical-Solution.zh_CN.md",
     "PRIVACY.md",
     "TERMS.md",
     "LICENSE",

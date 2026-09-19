@@ -1,4 +1,4 @@
-"""Local runtime support for the Codex ProcessOn plugin."""
+"""Local runtime support for the cross-host ProcessOn Design plugin."""
 
 from .secrets import (
     CompositeSecretProvider,

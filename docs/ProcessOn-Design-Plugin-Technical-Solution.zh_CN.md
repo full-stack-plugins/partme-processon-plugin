@@ -1,4 +1,4 @@
-# Codex ProcessOn 插件技术方案
+# ProcessOn Design 插件技术方案
 
 > **文档信息**
 >

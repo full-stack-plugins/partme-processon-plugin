@@ -8,7 +8,7 @@
 
 **Tech Stack:** Codex plugin compatibility manifest, Agent Skills Markdown, MCP Streamable HTTP `2025-06-18`, JSON, Python 3 standard library tests and validators, Pillow/CairoSVG or macOS image tooling for deterministic logo derivatives, Git.
 
-**Spec:** `docs/superpowers/specs/2026-09-12-codex-processon-plugin-design.md`
+**Spec:** `docs/superpowers/specs/2026-09-12-processon-design-plugin-design.md`
 
 ## Global Constraints
 

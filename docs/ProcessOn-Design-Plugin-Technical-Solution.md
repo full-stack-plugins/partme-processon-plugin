@@ -1,4 +1,4 @@
-# Codex ProcessOn Plugin Technical Solution
+# ProcessOn Design Plugin Technical Solution
 
 > **Document control**
 >

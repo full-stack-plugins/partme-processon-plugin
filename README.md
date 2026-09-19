@@ -475,10 +475,10 @@ The plugin keeps no run ledger: each generation is a stateless request-response 
 
 ## Documentation
 - [ProcessOn AI, DSL, and MCP documentation index](docs/ProcessOn-Documentation-Index.zh_CN.md)
-- [Architecture](docs/Codex-ProcessOn-Plugin-Architecture.md) · [架构中文版](docs/Codex-ProcessOn-Plugin-Architecture.zh_CN.md)
-- [Technical solution](docs/Codex-ProcessOn-Plugin-Technical-Solution.md) · [技术方案中文版](docs/Codex-ProcessOn-Plugin-Technical-Solution.zh_CN.md)
-- [Approved design](docs/superpowers/specs/2026-09-12-processon-design-design.md)
-- [Completed implementation plan](docs/superpowers/plans/2026-09-12-processon-design.md)
+- [Architecture](docs/ProcessOn-Design-Plugin-Architecture.md) · [架构中文版](docs/ProcessOn-Design-Plugin-Architecture.zh_CN.md)
+- [Technical solution](docs/ProcessOn-Design-Plugin-Technical-Solution.md) · [技术方案中文版](docs/ProcessOn-Design-Plugin-Technical-Solution.zh_CN.md)
+- [Approved design](docs/superpowers/specs/2026-09-12-processon-design-plugin-design.md)
+- [Completed implementation plan](docs/superpowers/plans/2026-09-12-processon-design-plugin.md)
 - [Local credential setup design](docs/superpowers/specs/2026-09-14-processon-local-credential-setup-design.md)
 - [Local credential setup implementation plan](docs/superpowers/plans/2026-09-14-processon-local-credential-setup.md)
 

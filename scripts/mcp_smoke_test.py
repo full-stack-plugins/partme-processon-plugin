@@ -145,7 +145,7 @@ def initialize(
     params = {
         "protocolVersion": PROTOCOL_VERSION,
         "capabilities": {},
-        "clientInfo": {"name": "codex-processon-smoke", "version": "0.1.0"},
+        "clientInfo": {"name": "processon-smoke", "version": "0.1.0"},
     }
     session_id, payload = _request(
         endpoint,

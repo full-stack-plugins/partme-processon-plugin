@@ -79,8 +79,8 @@ class DocumentationTest(unittest.TestCase):
 
     def test_bilingual_architecture_and_solution_pairs_exist(self):
         stems = (
-            "Codex-ProcessOn-Plugin-Architecture",
-            "Codex-ProcessOn-Plugin-Technical-Solution",
+            "ProcessOn-Design-Plugin-Architecture",
+            "ProcessOn-Design-Plugin-Technical-Solution",
         )
         for stem in stems:
             self.assertTrue((ROOT / "docs" / f"{stem}.md").is_file())
@@ -89,10 +89,10 @@ class DocumentationTest(unittest.TestCase):
     def test_current_technical_docs_use_local_proxy_contract(self):
         names = (
             "ProcessOn-Documentation-Index.zh_CN.md",
-            "Codex-ProcessOn-Plugin-Architecture.md",
-            "Codex-ProcessOn-Plugin-Architecture.zh_CN.md",
-            "Codex-ProcessOn-Plugin-Technical-Solution.md",
-            "Codex-ProcessOn-Plugin-Technical-Solution.zh_CN.md",
+            "ProcessOn-Design-Plugin-Architecture.md",
+            "ProcessOn-Design-Plugin-Architecture.zh_CN.md",
+            "ProcessOn-Design-Plugin-Technical-Solution.md",
+            "ProcessOn-Design-Plugin-Technical-Solution.zh_CN.md",
         )
         combined = "\n".join((ROOT / "docs" / name).read_text() for name in names)
         self.assertNotIn("PROCESSON_MCP_AUTHORIZATION", combined)

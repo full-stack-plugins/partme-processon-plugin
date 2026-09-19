@@ -1,4 +1,4 @@
-# Codex ProcessOn Plugin Architecture
+# ProcessOn Design Plugin Architecture
 
 > **Document control**
 >
