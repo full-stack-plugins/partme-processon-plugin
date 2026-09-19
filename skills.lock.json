@@ -4,8 +4,8 @@
     {
       "package": "processon-skills",
       "repo": "https://github.com/full-stack-skills/processon-skills.git",
-      "ref": "v1.0.1",
-      "sha": "dc554f9956884c85427026024ac9e035af524d90",
+      "ref": "v1.0.2",
+      "sha": "8f2e5a7f2a1bd74f1db76a91ec8b621b60181ac0",
       "skills": [
         "processon-use",
         "processon-diagram",
