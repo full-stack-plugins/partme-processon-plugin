@@ -4,7 +4,7 @@
 
 > Turn natural-language ideas, source context, and business workflows into polished ProcessOn diagrams that remain reviewable and editable.
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/partme-processon-plugin/releases/tag/v0.1.0)
+[![Version](https://img.shields.io/badge/version-0.2.4-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.4)
 [![Tests](https://img.shields.io/badge/tests-81%20passing-18a957)](#development-and-verification)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
@@ -157,7 +157,7 @@ These are repository-local copies of outputs from the recorded live acceptance r
 Recommended — add this GitHub repository, pin `main`, then install ProcessOn:
 
 ```bash
-codex plugin marketplace add partme-ai/partme-processon-plugin --ref main
+codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.4
 codex plugin add processon-design@partme-ai-processon
 ```
 
@@ -165,13 +165,13 @@ Alternative marketplace sources supported by Codex:
 
 ```bash
 # GitHub shorthand using the repository default branch
-codex plugin marketplace add partme-ai/partme-processon-plugin
+codex plugin marketplace add full-stack-plugins/processon-design-plugin
 
 # Full Git URL with a sparse checkout of the marketplace catalog
-codex plugin marketplace add https://github.com/partme-ai/partme-processon-plugin.git --ref main --sparse .agents/plugins
+codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.4 --sparse .agents/plugins
 
 # Local clone for development
-git clone https://github.com/partme-ai/partme-processon-plugin.git
+git clone https://github.com/full-stack-plugins/processon-design-plugin.git
 codex plugin marketplace add ./partme-processon-plugin
 ```
 
@@ -427,7 +427,7 @@ partme-processon-plugin/
 | Stable plugin identity | `processon-design` |
 | Skills under the plugin root | `skills/` with seven focused Skills |
 | Visual assets under the plugin root | Official wordmark, composer icon, hero screenshot under `assets/` |
-| Marketplace catalog | `.agents/plugins/marketplace.json` with Git source pinned to `main` |
+| Marketplace catalog | `.agents/plugins/marketplace.json` with Git source pinned to immutable `v0.2.4` |
 | OpenAI presentation metadata | `.codex-plugin/plugin.json` compatibility manifest |
 | MCP runtime | Secret-free `.mcp.json` starts the local stdio credential proxy |
 
@@ -457,8 +457,8 @@ The first two commands are repository-owned. The final plugin validator belongs 
 
 | Plugin version | Host | Runtime | Transport | Status |
 |---|---|---|---|---|
-| `0.1.0+codex.<cachebuster>` | Codex CLI (verified on `0.154.0-alpha.6.2`) or ChatGPT desktop app | Python 3 on `PATH` | Local stdio proxy to Streamable HTTP | Verified locally, including one authorized live generation |
-| `0.1.0` | any MCP client that supports inline headers | — | Direct HTTPS with an inline `Authorization` header | Documented upstream example, not the Codex plugin configuration |
+| Historical `0.1.0+codex.<cachebuster>` evidence | Codex CLI (verified on `0.154.0-alpha.6.2`) or ChatGPT desktop app | Python 3 on `PATH` | Local stdio proxy to Streamable HTTP | Verified locally, including one authorized live generation; not fresh `0.2.4` runtime proof |
+| Historical `0.1.0` upstream example | any MCP client that supports inline headers | — | Direct HTTPS with an inline `Authorization` header | Documented upstream example, not the current plugin configuration |
 
 The negotiated protocol is `2025-06-18`. ProcessOn documents a limit of 600 requests per token per minute, and the endpoint is exactly `https://smart-hd.processon.com/mcp`.
 
@@ -484,8 +484,8 @@ The plugin keeps no run ledger: each generation is a stateless request-response 
 
 ## Contributing and support
 
-Open functional issues at <https://github.com/partme-ai/partme-processon-plugin/issues>. Before proposing a change, state the Codex host version you verified on, whether it alters the MCP tool contract or the credential handling, and which tests cover it. Report security-sensitive findings privately rather than in a public issue.
+Open functional issues at <https://github.com/full-stack-plugins/processon-design-plugin/issues>. Before proposing a change, state the Codex host version you verified on, whether it alters the MCP tool contract or the credential handling, and which tests cover it. Report security-sensitive findings privately rather than in a public issue.
 
 ## License and support
 
-Licensed under [Apache-2.0](LICENSE). Open issues at <https://github.com/partme-ai/partme-processon-plugin/issues>. Report security-sensitive findings privately to the repository maintainers rather than opening a public issue.
+Licensed under [Apache-2.0](LICENSE). Open issues at <https://github.com/full-stack-plugins/processon-design-plugin/issues>. Report security-sensitive findings privately to the repository maintainers rather than opening a public issue.

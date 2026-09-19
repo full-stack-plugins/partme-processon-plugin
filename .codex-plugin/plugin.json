@@ -6,8 +6,8 @@
     "name": "Full Stack Skills / PartMe.AI",
     "url": "https://github.com/partme-ai"
   },
-  "homepage": "https://github.com/partme-ai/partme-processon-plugin",
-  "repository": "https://github.com/partme-ai/partme-processon-plugin",
+  "homepage": "https://github.com/full-stack-plugins/processon-design-plugin",
+  "repository": "https://github.com/full-stack-plugins/processon-design-plugin",
   "license": "Apache-2.0",
   "keywords": [
     "processon",
@@ -31,8 +31,8 @@
       "Write"
     ],
     "websiteURL": "https://smart.processon.com",
-    "privacyPolicyURL": "https://github.com/partme-ai/partme-processon-plugin/blob/main/PRIVACY.md",
-    "termsOfServiceURL": "https://github.com/partme-ai/partme-processon-plugin/blob/main/TERMS.md",
+    "privacyPolicyURL": "https://github.com/full-stack-plugins/processon-design-plugin/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/full-stack-plugins/processon-design-plugin/blob/main/TERMS.md",
     "defaultPrompt": [
       "Create a polished system architecture diagram in ProcessOn",
       "Turn this workflow into a clear cross-functional swimlane",

@@ -4,7 +4,7 @@
 
 > 把自然语言想法、源码上下文和业务流程转化为专业、精美、可审查且可继续编辑的 ProcessOn 图表。
 
-[![版本](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/partme-ai/partme-processon-plugin/releases/tag/v0.1.0)
+[![版本](https://img.shields.io/badge/version-0.2.4-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.4)
 [![测试](https://img.shields.io/badge/tests-81%20passing-18a957)](#开发与验证)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
@@ -157,7 +157,7 @@ flowchart LR
 推荐方式——添加本项目 GitHub 仓库、固定 `main`，然后安装 ProcessOn：
 
 ```bash
-codex plugin marketplace add partme-ai/partme-processon-plugin --ref main
+codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.4
 codex plugin add processon-design@partme-ai-processon
 ```
 
@@ -165,13 +165,13 @@ Codex 官方支持的其他 marketplace 来源写法：
 
 ```bash
 # GitHub 简写，使用仓库默认分支
-codex plugin marketplace add partme-ai/partme-processon-plugin
+codex plugin marketplace add full-stack-plugins/processon-design-plugin
 
 # 完整 Git URL，仅稀疏检出 marketplace 目录
-codex plugin marketplace add https://github.com/partme-ai/partme-processon-plugin.git --ref main --sparse .agents/plugins
+codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.4 --sparse .agents/plugins
 
 # 本地克隆，适合开发调试
-git clone https://github.com/partme-ai/partme-processon-plugin.git
+git clone https://github.com/full-stack-plugins/processon-design-plugin.git
 codex plugin marketplace add ./partme-processon-plugin
 ```
 
@@ -420,7 +420,7 @@ partme-processon-plugin/
 | 稳定插件身份 | `processon-design` |
 | 根目录 Skills | `skills/` 中包含七个专用 Skill |
 | 根目录视觉资产 | `assets/` 中包含官方字标、composer 图标和宣传截图 |
-| Marketplace 目录 | `.agents/plugins/marketplace.json`，Git source 固定到 `main` |
+| Marketplace 目录 | `.agents/plugins/marketplace.json`，Git source 固定到不可变的 `v0.2.4` |
 | OpenAI 展示元数据 | `.codex-plugin/plugin.json` 兼容清单 |
 | MCP 运行时 | 无密钥 `.mcp.json` 启动本地 stdio 凭证代理 |
 
@@ -450,8 +450,8 @@ git diff --check
 
 | 插件版本 | 宿主 | 运行环境 | 传输 | 状态 |
 |---|---|---|---|---|
-| `0.1.0+codex.<cachebuster>` | Codex CLI（实测于 `0.154.0-alpha.6.2`）或 ChatGPT 桌面应用 | `PATH` 上的 Python 3 | 本地 stdio 代理转发到 Streamable HTTP | 本地已验证，含一次经授权的真实生成 |
-| `0.1.0` | 任何支持内联请求头的 MCP Client | — | 直接 HTTPS 并内联 `Authorization` 头 | 上游文档示例，不是 Codex 插件配置 |
+| 历史 `0.1.0+codex.<cachebuster>` 证据 | Codex CLI（实测于 `0.154.0-alpha.6.2`）或 ChatGPT 桌面应用 | `PATH` 上的 Python 3 | 本地 stdio 代理转发到 Streamable HTTP | 本地已验证，含一次经授权的真实生成；不是新的 `0.2.4` 运行期证明 |
+| 历史 `0.1.0` 上游示例 | 任何支持内联请求头的 MCP Client | — | 直接 HTTPS 并内联 `Authorization` 头 | 上游文档示例，不是当前插件配置 |
 
 协商协议为 `2025-06-18`。ProcessOn 文档声明每个 Token 每分钟最多 600 次请求，端点为 `https://smart-hd.processon.com/mcp`。
 
@@ -477,8 +477,8 @@ git diff --check
 
 ## 贡献与支持
 
-功能问题请提交到 <https://github.com/partme-ai/partme-processon-plugin/issues>。提交变更前，请说明你验证所用的 Codex 宿主版本、是否改动 MCP 工具契约或凭据处理，以及由哪些测试覆盖。涉及安全的敏感问题请私下报告，不要创建公开 Issue。
+功能问题请提交到 <https://github.com/full-stack-plugins/processon-design-plugin/issues>。提交变更前，请说明你验证所用的 Codex 宿主版本、是否改动 MCP 工具契约或凭据处理，以及由哪些测试覆盖。涉及安全的敏感问题请私下报告，不要创建公开 Issue。
 
 ## 许可证与支持
 
-项目使用 [Apache-2.0](LICENSE)。问题反馈：<https://github.com/partme-ai/partme-processon-plugin/issues>。涉及安全的敏感问题应私下联系仓库维护者，不要创建公开 Issue。
+项目使用 [Apache-2.0](LICENSE)。问题反馈：<https://github.com/full-stack-plugins/processon-design-plugin/issues>。涉及安全的敏感问题应私下联系仓库维护者，不要创建公开 Issue。

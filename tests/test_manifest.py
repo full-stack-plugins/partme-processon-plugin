@@ -41,10 +41,10 @@ class ManifestContractTest(unittest.TestCase):
         self.assertEqual("Creativity", entry["category"])
         self.assertEqual("url", entry["source"]["source"])
         self.assertEqual(
-            "https://github.com/partme-ai/partme-processon-plugin.git",
+            "https://github.com/full-stack-plugins/processon-design-plugin.git",
             entry["source"]["url"],
         )
-        self.assertEqual("main", entry["source"]["ref"])
+        self.assertEqual("v0.2.4", entry["source"]["ref"])
 
     def test_plugin_uses_official_processon_name_and_icons(self):
         plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())

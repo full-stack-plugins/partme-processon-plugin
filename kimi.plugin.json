@@ -5,7 +5,7 @@
   "author": {
     "name": "Full Stack Skills / PartMe.AI"
   },
-  "homepage": "https://github.com/partme-ai/partme-processon-plugin",
+  "homepage": "https://github.com/full-stack-plugins/processon-design-plugin",
   "license": "Apache-2.0",
   "keywords": [
     "processon",
@@ -17,7 +17,7 @@
     "shortDescription": "Design polished, editable ProcessOn diagrams",
     "longDescription": "Operate ProcessOn from your coding agent to create professional flowcharts, swimlanes, UML, architecture and ER diagrams, mind maps, timelines, org charts, and structured infographics with a built-in quality review workflow.",
     "developerName": "Full Stack Skills / PartMe.AI",
-    "websiteURL": "https://github.com/partme-ai/partme-processon-plugin"
+    "websiteURL": "https://github.com/full-stack-plugins/processon-design-plugin"
   },
   "skills": "./skills/",
   "commands": "./commands/",
