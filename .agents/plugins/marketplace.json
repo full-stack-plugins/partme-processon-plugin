@@ -16,7 +16,7 @@
         "authentication": "ON_USE"
       },
       "category": "Creativity",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "description": "Create and review editable ProcessOn diagrams, mind maps, and infographics.",
       "icon": "https://raw.githubusercontent.com/partme-ai/partme-processon-plugin/main/assets/official-logo.png",
       "interface": {
