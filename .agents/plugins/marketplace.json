@@ -9,20 +9,20 @@
       "source": {
         "source": "url",
         "url": "https://github.com/full-stack-plugins/processon-design-plugin.git",
-        "ref": "v0.2.4"
+        "ref": "v0.2.5"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_USE"
       },
       "category": "Creativity",
-      "version": "0.2.4",
+      "version": "0.2.5",
       "description": "Create and review editable ProcessOn diagrams, mind maps, and infographics.",
-      "icon": "https://cdn.jsdelivr.net/gh/full-stack-plugins/processon-design-plugin@v0.2.4/assets/official-logo.png",
+      "icon": "https://cdn.jsdelivr.net/gh/full-stack-plugins/processon-design-plugin@v0.2.5/assets/official-logo.png",
       "interface": {
         "displayName": "ProcessOn Design",
         "shortDescription": "Design polished, editable ProcessOn diagrams",
-        "logo": "https://cdn.jsdelivr.net/gh/full-stack-plugins/processon-design-plugin@v0.2.4/assets/official-logo.png"
+        "logo": "https://cdn.jsdelivr.net/gh/full-stack-plugins/processon-design-plugin@v0.2.5/assets/official-logo.png"
       }
     }
   ]

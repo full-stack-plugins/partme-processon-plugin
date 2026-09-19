@@ -1,24 +1,24 @@
-# ProcessOn for Codex
+# ProcessOn Design
 
-![Codex × ProcessOn — Turn ideas into editable diagrams](assets/processon-hero.png)
+![ProcessOn Design — Turn ideas into editable diagrams](assets/processon-hero.png)
 
 > Turn natural-language ideas, source context, and business workflows into polished ProcessOn diagrams that remain reviewable and editable.
 
-[![Version](https://img.shields.io/badge/version-0.2.4-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.4)
+[![Version](https://img.shields.io/badge/version-0.2.5-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.5)
 [![Tests](https://img.shields.io/badge/tests-81%20passing-18a957)](#development-and-verification)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [Quick start](#quick-start) · [Examples](#copyable-examples) · [Troubleshooting](#troubleshooting)
 
-## ProcessOn in Codex
+## Codex host example
 
 ![ProcessOn plugin details in Codex, including starter prompts, MCP server, and seven Skills](assets/processon-plugin-detail.png)
 
-The installed plugin exposes three ready-to-run prompts, one ProcessOn MCP server, and seven focused Skills directly in Codex.
+In Codex, the installed plugin exposes three ready-to-run prompts, one ProcessOn MCP server, and seven focused Skills. ZCode and Kimi load the same public plugin identity through their host manifests.
 
 ## Positioning
 
-`processon-design` is a ProcessOn integration for Codex. It combines a secret-free local stdio proxy, the official remote ProcessOn MCP server, and seven focused Agent Skills that configure access, classify the requested visual, model its structure, improve the prompt, choose the best available tool, and review the result before delivery.
+`processon-design` is a cross-host ProcessOn integration for coding agents. It combines a secret-free local stdio proxy, the official remote ProcessOn MCP server, and seven focused Agent Skills that configure access, classify the requested visual, model its structure, improve the prompt, choose the best available tool, and review the result before delivery.
 
 ### Who it is for
 
@@ -38,7 +38,7 @@ Natural-language request / approved source material
                          │
                          ▼
 ┌──────────────────────────────────────────────────────────┐
-│ ProcessOn plugin for Codex                               │
+│ ProcessOn Design plugin                                 │
 │  1. Route: diagram / mind map / infographic              │
 │  2. Model: nodes, hierarchy, relationships, constraints  │
 │  3. Prompt: layout, notation, palette, readability       │
@@ -157,7 +157,7 @@ These are repository-local copies of outputs from the recorded live acceptance r
 Recommended — add this GitHub repository, pin `main`, then install ProcessOn:
 
 ```bash
-codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.4
+codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.5
 codex plugin add processon-design@partme-ai-processon
 ```
 
@@ -168,7 +168,7 @@ Alternative marketplace sources supported by Codex:
 codex plugin marketplace add full-stack-plugins/processon-design-plugin
 
 # Full Git URL with a sparse checkout of the marketplace catalog
-codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.4 --sparse .agents/plugins
+codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.5 --sparse .agents/plugins
 
 # Local clone for development
 git clone https://github.com/full-stack-plugins/processon-design-plugin.git
@@ -427,7 +427,7 @@ partme-processon-plugin/
 | Stable plugin identity | `processon-design` |
 | Skills under the plugin root | `skills/` with seven focused Skills |
 | Visual assets under the plugin root | Official wordmark, composer icon, hero screenshot under `assets/` |
-| Marketplace catalog | `.agents/plugins/marketplace.json` with Git source pinned to immutable `v0.2.4` |
+| Marketplace catalog | `.agents/plugins/marketplace.json` with Git source pinned to immutable `v0.2.5` |
 | OpenAI presentation metadata | `.codex-plugin/plugin.json` compatibility manifest |
 | MCP runtime | Secret-free `.mcp.json` starts the local stdio credential proxy |
 
@@ -457,7 +457,7 @@ The first two commands are repository-owned. The final plugin validator belongs 
 
 | Plugin version | Host | Runtime | Transport | Status |
 |---|---|---|---|---|
-| Historical `0.1.0+codex.<cachebuster>` evidence | Codex CLI (verified on `0.154.0-alpha.6.2`) or ChatGPT desktop app | Python 3 on `PATH` | Local stdio proxy to Streamable HTTP | Verified locally, including one authorized live generation; not fresh `0.2.4` runtime proof |
+| Historical `0.1.0+codex.<cachebuster>` evidence | Codex CLI (verified on `0.154.0-alpha.6.2`) or ChatGPT desktop app | Python 3 on `PATH` | Local stdio proxy to Streamable HTTP | Verified locally, including one authorized live generation; not fresh `0.2.5` runtime proof |
 | Historical `0.1.0` upstream example | any MCP client that supports inline headers | — | Direct HTTPS with an inline `Authorization` header | Documented upstream example, not the current plugin configuration |
 
 The negotiated protocol is `2025-06-18`. ProcessOn documents a limit of 600 requests per token per minute, and the endpoint is exactly `https://smart-hd.processon.com/mcp`.

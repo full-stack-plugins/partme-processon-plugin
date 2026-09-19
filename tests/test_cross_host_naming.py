@@ -5,7 +5,13 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BANNED_PUBLIC_NAMES = ("codex" + "-processon", "codex" + " ProcessOn", "codex" + "-ProcessOn",)
+BANNED_PUBLIC_NAMES = (
+    "codex" + "-processon",
+    "codex" + " ProcessOn",
+    "codex" + "-ProcessOn",
+    "Codex" + " × ProcessOn",
+    "ProcessOn" + " for Codex",
+)
 TEXT_SUFFIXES = {".md", ".json", ".py", ".mjs", ".js", ".toml", ".yaml", ".yml", ".svg"}
 EXCLUDED_PARTS = {".git", ".mimosa", ".worktrees", ".superpowers", "artifacts", "openspec", "superpowers", "verification", "__pycache__"}
 

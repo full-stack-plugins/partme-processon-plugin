@@ -44,7 +44,7 @@ class ManifestContractTest(unittest.TestCase):
             "https://github.com/full-stack-plugins/processon-design-plugin.git",
             entry["source"]["url"],
         )
-        self.assertEqual("v0.2.4", entry["source"]["ref"])
+        self.assertEqual("v0.2.5", entry["source"]["ref"])
 
     def test_plugin_uses_official_processon_name_and_icons(self):
         plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())

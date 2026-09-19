@@ -1,24 +1,24 @@
-# ProcessOn for Codex
+# ProcessOn Design
 
-![Codex × ProcessOn — 让想法成为可编辑图表](assets/processon-hero.png)
+![ProcessOn Design——让想法成为可编辑图表](assets/processon-hero.png)
 
 > 把自然语言想法、源码上下文和业务流程转化为专业、精美、可审查且可继续编辑的 ProcessOn 图表。
 
-[![版本](https://img.shields.io/badge/version-0.2.4-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.4)
+[![版本](https://img.shields.io/badge/version-0.2.5-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.5)
 [![测试](https://img.shields.io/badge/tests-81%20passing-18a957)](#开发与验证)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [快速开始](#快速开始) · [示例](#可复制示例) · [故障排查](#故障排查)
 
-## Codex 中的 ProcessOn
+## Codex 宿主示例
 
 ![Codex 中的 ProcessOn 插件详情，包括快捷提示、MCP 服务器和七个 Skill](assets/processon-plugin-detail.png)
 
-安装后，Codex 会直接展示三个可运行提示、一个 ProcessOn MCP 服务器和七个专用 Skill。
+在 Codex 中，安装后的插件会展示三个可运行提示、一个 ProcessOn MCP 服务器和七个专用 Skill。ZCode 与 Kimi 通过各自宿主清单加载同一公开插件身份。
 
 ## 项目定位
 
-`processon-design` 是面向 Codex 的 ProcessOn 集成。它把无密钥的本地 stdio 代理、ProcessOn 官方远程 MCP 与七个专用 Agent Skills 组合起来：配置访问、识别图形类型、建立结构模型、增强 Prompt、选择当前最佳工具，并在交付前审查真实结果。
+`processon-design` 是面向多种编码智能体宿主的 ProcessOn 集成。它把无密钥的本地 stdio 代理、ProcessOn 官方远程 MCP 与七个专用 Agent Skills 组合起来：配置访问、识别图形类型、建立结构模型、增强 Prompt、选择当前最佳工具，并在交付前审查真实结果。
 
 ### 适合谁
 
@@ -38,7 +38,7 @@
                   │
                   ▼
 ┌──────────────────────────────────────────────────────┐
-│ ProcessOn for Codex                                  │
+│ ProcessOn Design                                     │
 │  1. 路由：专业图 / 思维导图 / 信息图                 │
 │  2. 建模：节点、层级、关系、约束                     │
 │  3. Prompt：布局、规范、配色、可读性                 │
@@ -157,7 +157,7 @@ flowchart LR
 推荐方式——添加本项目 GitHub 仓库、固定 `main`，然后安装 ProcessOn：
 
 ```bash
-codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.4
+codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.5
 codex plugin add processon-design@partme-ai-processon
 ```
 
@@ -168,7 +168,7 @@ Codex 官方支持的其他 marketplace 来源写法：
 codex plugin marketplace add full-stack-plugins/processon-design-plugin
 
 # 完整 Git URL，仅稀疏检出 marketplace 目录
-codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.4 --sparse .agents/plugins
+codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.5 --sparse .agents/plugins
 
 # 本地克隆，适合开发调试
 git clone https://github.com/full-stack-plugins/processon-design-plugin.git
@@ -420,7 +420,7 @@ partme-processon-plugin/
 | 稳定插件身份 | `processon-design` |
 | 根目录 Skills | `skills/` 中包含七个专用 Skill |
 | 根目录视觉资产 | `assets/` 中包含官方字标、composer 图标和宣传截图 |
-| Marketplace 目录 | `.agents/plugins/marketplace.json`，Git source 固定到不可变的 `v0.2.4` |
+| Marketplace 目录 | `.agents/plugins/marketplace.json`，Git source 固定到不可变的 `v0.2.5` |
 | OpenAI 展示元数据 | `.codex-plugin/plugin.json` 兼容清单 |
 | MCP 运行时 | 无密钥 `.mcp.json` 启动本地 stdio 凭证代理 |
 
@@ -450,7 +450,7 @@ git diff --check
 
 | 插件版本 | 宿主 | 运行环境 | 传输 | 状态 |
 |---|---|---|---|---|
-| 历史 `0.1.0+codex.<cachebuster>` 证据 | Codex CLI（实测于 `0.154.0-alpha.6.2`）或 ChatGPT 桌面应用 | `PATH` 上的 Python 3 | 本地 stdio 代理转发到 Streamable HTTP | 本地已验证，含一次经授权的真实生成；不是新的 `0.2.4` 运行期证明 |
+| 历史 `0.1.0+codex.<cachebuster>` 证据 | Codex CLI（实测于 `0.154.0-alpha.6.2`）或 ChatGPT 桌面应用 | `PATH` 上的 Python 3 | 本地 stdio 代理转发到 Streamable HTTP | 本地已验证，含一次经授权的真实生成；不是新的 `0.2.5` 运行期证明 |
 | 历史 `0.1.0` 上游示例 | 任何支持内联请求头的 MCP Client | — | 直接 HTTPS 并内联 `Authorization` 头 | 上游文档示例，不是当前插件配置 |
 
 协商协议为 `2025-06-18`。ProcessOn 文档声明每个 Token 每分钟最多 600 次请求，端点为 `https://smart-hd.processon.com/mcp`。
