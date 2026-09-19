@@ -4,8 +4,8 @@
     {
       "package": "processon-skills",
       "repo": "https://github.com/full-stack-skills/processon-skills.git",
-      "ref": "v1.0.0",
-      "sha": "ec66bbcf13d4933c5e9eee9a898ef44f329df6e4",
+      "ref": "v1.0.1",
+      "sha": "dc554f9956884c85427026024ac9e035af524d90",
       "skills": [
         "processon-use",
         "processon-diagram",
@@ -17,13 +17,13 @@
       ],
       "dest": "skills/",
       "sha256": {
-        "processon-use": "16eebfaf6cf693c94fae7631d6e74f25262794f4b059393408451e94fc254e42",
-        "processon-diagram": "d9f348045043a458178a471446ec9e228f5d8ae5ee74d238773d5de176ac6a9e",
-        "processon-mindmap": "33daba7541a929edd7f7610f59e98a334a083dee45654f97bd718dfbba5d3685",
-        "processon-infographic": "887be068d311372199aa8e9c5b7be38dcae25523b5a4de3491a1b30809cc14a4",
-        "processon-prompt": "348bd3d002ec683289a53ab7b4fa31e93bed2a1947d30c96cf25a9e187ffc2ec",
-        "processon-review": "6f6e272d09820f2924b32bfd5830d9c47cf6bb75146d9714e46521acc016b3d5",
-        "processon-setup": "32a32bdde87e557f76b2feb3b9099387457432d779ecd6fe75fcade747510aee"
+        "processon-use": "e39676fc45f52af3e3fb6c72707d9b54109f21ebd3651bdbde6ff0bf0554f7ad",
+        "processon-diagram": "7ee1598cd8370255c7ef1bd2cdf7ffb29644afcfed886d78fc79d3fb1504ea6f",
+        "processon-mindmap": "a291031cf4f55b6837a0ecbe73f66bf762b24cfa3cb26b57714f41285f77048c",
+        "processon-infographic": "d79926f9609f05aa43d55b5c3fa34352329d36527b3fb346204f3d9f2a566a2d",
+        "processon-prompt": "5aa30a813687e78a8aa013f8dd8b8e44f727fdc0462f0819814d37a9de6e0900",
+        "processon-review": "57b1d81e9fdcc3e8a2e60e9e4ee6294fef9f1f2e44e9976a0815b0611adb14c7",
+        "processon-setup": "b23704fd38c39b78a5866872dd23cb025b45960fa7fde75ee22d3fc043323e65"
       }
     }
   ]
