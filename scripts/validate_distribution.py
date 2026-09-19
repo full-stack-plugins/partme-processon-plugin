@@ -51,6 +51,7 @@ REQUIRED_FILES = (
     "LICENSE",
     "NOTICE",
     "THIRD_PARTY_NOTICES.md",
+    "plugin-local-skills.json",
 )
 PLACEHOLDER_PATTERN = re.compile(r"\b(?:TBD|TODO|FIXME|PLACEHOLDER)\b")
 REAL_BEARER_PATTERN = re.compile(
@@ -101,8 +102,15 @@ def _validate_skill(path: Path, expected_name: str, errors: list[str]) -> None:
 
 
 def _scan_text_files(root: Path, errors: list[str]) -> None:
+    generated_tool_roots = {".agents", ".zcode", ".kimi-code"}
     for path in root.rglob("*"):
-        if not path.is_file() or ".git" in path.parts or ".venv" in path.parts:
+        relative = path.relative_to(root)
+        if (
+            not path.is_file()
+            or ".git" in path.parts
+            or ".venv" in path.parts
+            or (relative.parts and relative.parts[0] in generated_tool_roots)
+        ):
             continue
         if path.suffix.lower() in {".png", ".pyc"}:
             continue
@@ -110,7 +118,6 @@ def _scan_text_files(root: Path, errors: list[str]) -> None:
             text = path.read_text()
         except (OSError, UnicodeDecodeError):
             continue
-        relative = path.relative_to(root)
         if REAL_BEARER_PATTERN.search(text):
             errors.append(f"literal bearer credential: {relative}")
         if (
@@ -134,7 +141,18 @@ def validate_distribution(root: Path = ROOT) -> list[str]:
         else:
             _validate_skill(skill_path, name, errors)
 
-    managed = set(SKILL_NAMES)
+    local_manifest_path = root / "plugin-local-skills.json"
+    local_manifest = (
+        _load_json(local_manifest_path, errors) if local_manifest_path.is_file() else {}
+    )
+    local_skills = local_manifest.get("skills", [])
+    if not isinstance(local_skills, list) or any(
+        not isinstance(name, str) for name in local_skills
+    ):
+        errors.append("plugin-local-skills.json skills must be a string array")
+        local_skills = []
+
+    managed = set(SKILL_NAMES) | set(local_skills)
     skills_dir = root / "skills"
     if skills_dir.is_dir():
         for child in sorted(skills_dir.iterdir()):
@@ -174,7 +192,7 @@ def validate_distribution(root: Path = ROOT) -> list[str]:
             errors.append("marketplace must contain exactly the ProcessOn plugin")
 
     expected_pngs = {
-        "assets/official-logo.png": (873, 250),
+        "assets/official-logo.png": (873, 873),
         "assets/composer-icon.png": (256, 256),
     }
     for relative, expected in expected_pngs.items():

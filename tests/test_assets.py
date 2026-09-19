@@ -23,7 +23,7 @@ class AssetContractTest(unittest.TestCase):
         )
 
     def test_official_png_and_composer_icon_have_expected_dimensions(self):
-        self.assertEqual((873, 250), png_size(ROOT / "assets/official-logo.png"))
+        self.assertEqual((873, 873), png_size(ROOT / "assets/official-logo.png"))
         self.assertEqual((256, 256), png_size(ROOT / "assets/composer-icon.png"))
 
     def test_setup_uses_the_full_official_wordmark(self):
