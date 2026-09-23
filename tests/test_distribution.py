@@ -55,7 +55,7 @@ class DistributionValidatorTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             target = self.isolated_distribution(directory)
             path = target / ".mcp.json"
-            payload = json.loads(path.read_text())
+            payload = json.loads(path.read_text(encoding="utf-8"))
             payload["mcpServers"]["processon"]["command"] = "unsafe-runner"
             path.write_text(json.dumps(payload))
             errors = validate_distribution(target)
@@ -65,7 +65,7 @@ class DistributionValidatorTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             target = self.isolated_distribution(directory)
             path = target / ".mcp.json"
-            payload = json.loads(path.read_text())
+            payload = json.loads(path.read_text(encoding="utf-8"))
             payload["mcpServers"]["processon"]["token"] = "fixture-value"
             path.write_text(json.dumps(payload))
             errors = validate_distribution(target)

@@ -10,7 +10,7 @@ REAL_BEARER = re.compile(r"Bearer\s+(?!<|TOKEN_VALUE|test-secret-value)[A-Za-z0-
 
 class SecurityContractTest(unittest.TestCase):
     def test_mcp_contains_only_a_secret_free_stdio_command(self):
-        server = json.loads((ROOT / ".mcp.json").read_text())["mcpServers"]["processon"]
+        server = json.loads((ROOT / ".mcp.json").read_text(encoding="utf-8"))["mcpServers"]["processon"]
         self.assertEqual(
             {"type", "command", "args", "cwd"},
             set(server),
@@ -27,7 +27,7 @@ class SecurityContractTest(unittest.TestCase):
             if path.suffix.lower() in {".png", ".pyc"}:
                 continue
             try:
-                text = path.read_text()
+                text = path.read_text(encoding="utf-8")
             except UnicodeDecodeError:
                 continue
             if REAL_BEARER.search(text):

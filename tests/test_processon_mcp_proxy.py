@@ -195,7 +195,7 @@ class TransportTest(unittest.TestCase):
                 transport.send(
                     {"jsonrpc": "2.0", "id": 8, "method": "initialize", "params": {}}
                 )
-            self.assertEqual("requested", requested.read_text())
+            self.assertEqual("requested", requested.read_text(encoding="utf-8"))
 
     def test_business_invalid_token_becomes_authentication_error(self):
         provider = RotatingProvider(["private-synthetic"])
@@ -254,7 +254,7 @@ class TransportTest(unittest.TestCase):
                         "params": {"name": "generate_chart", "arguments": {}},
                     }
                 )
-            self.assertEqual("requested", requested.read_text())
+            self.assertEqual("requested", requested.read_text(encoding="utf-8"))
 
     def test_write_like_server_failure_is_not_retried(self):
         provider = RotatingProvider(["synthetic-token"])
@@ -333,7 +333,7 @@ class TransportTest(unittest.TestCase):
                 transport.send(
                     {"jsonrpc": "2.0", "id": 5, "method": "tools/list", "params": {}}
                 )
-            self.assertEqual("requested", requested.read_text())
+            self.assertEqual("requested", requested.read_text(encoding="utf-8"))
     def test_non_loopback_http_endpoint_is_rejected(self):
         with self.assertRaises(ValueError):
             ProcessOnTransport("http://example.com/mcp", RotatingProvider(["x"]))

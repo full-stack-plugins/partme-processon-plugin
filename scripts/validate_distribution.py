@@ -61,7 +61,7 @@ REAL_BEARER_PATTERN = re.compile(
 
 def _load_json(path: Path, errors: list[str]) -> dict:
     try:
-        payload = json.loads(path.read_text())
+        payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"invalid JSON: {path.name}: {type(exc).__name__}")
         return {}
@@ -83,7 +83,7 @@ def _png_size(path: Path) -> tuple[int, int] | None:
 
 def _validate_skill(path: Path, expected_name: str, errors: list[str]) -> None:
     try:
-        text = path.read_text()
+        text = path.read_text(encoding="utf-8")
     except OSError:
         return
     if not text.startswith("---\n") or "\n---\n" not in text[4:]:
@@ -115,7 +115,7 @@ def _scan_text_files(root: Path, errors: list[str]) -> None:
         if path.suffix.lower() in {".png", ".pyc"}:
             continue
         try:
-            text = path.read_text()
+            text = path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
         if REAL_BEARER_PATTERN.search(text):

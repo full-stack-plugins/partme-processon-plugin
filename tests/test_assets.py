@@ -27,7 +27,7 @@ class AssetContractTest(unittest.TestCase):
         self.assertEqual((256, 256), png_size(ROOT / "assets/composer-icon.png"))
 
     def test_setup_uses_the_full_official_wordmark(self):
-        html = (ROOT / "assets/setup/index.html").read_text()
+        html = (ROOT / "assets/setup/index.html").read_text(encoding="utf-8")
         self.assertIn('src="/official-logo.png"', html)
         self.assertIn('width="180"', html)
         self.assertIn('height="52"', html)

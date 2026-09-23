@@ -131,7 +131,7 @@ class SkillVendorTest(unittest.TestCase):
         self.assertTrue((local / "SKILL.md").is_file())
         self.assertNotIn(
             "plugin-local",
-            json.loads((consumer / "skills.lock.json").read_text())["sources"][0]["sha256"],
+            json.loads((consumer / "skills.lock.json").read_text(encoding="utf-8"))["sources"][0]["sha256"],
         )
 
     def test_update_rejects_undeclared_plugin_local_skill(self) -> None:
@@ -178,7 +178,7 @@ class SkillVendorTest(unittest.TestCase):
         lock = json.loads((consumer / "skills.lock.json").read_text(encoding="utf-8"))
         self.assertEqual(lock["sources"][0]["ref"], "v1.1.0")
         self.assertEqual(lock["sources"][0]["sha"], expected_sha)
-        self.assertIn("second release", (consumer / "skills" / "demo-one" / "SKILL.md").read_text())
+        self.assertIn("second release", (consumer / "skills" / "demo-one" / "SKILL.md").read_text(encoding="utf-8"))
 
     def test_update_rejects_dispatched_sha_mismatch_without_rewriting_lock(self) -> None:
         upstream = make_upstream(self.base, {"demo-one": "first release"})

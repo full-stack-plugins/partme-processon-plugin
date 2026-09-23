@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class DocumentationTest(unittest.TestCase):
     def test_index_lists_all_ai_and_mcp_primary_sections(self):
-        text = (ROOT / "docs/ProcessOn-Documentation-Index.zh_CN.md").read_text()
+        text = (ROOT / "docs/ProcessOn-Documentation-Index.zh_CN.md").read_text(encoding="utf-8")
         required = (
             "生成可编辑图形",
             "生成图片",
@@ -40,7 +40,7 @@ class DocumentationTest(unittest.TestCase):
             self.assertIn(heading, text)
 
     def test_index_records_every_ai_faq_and_best_practice(self):
-        text = (ROOT / "docs/ProcessOn-Documentation-Index.zh_CN.md").read_text()
+        text = (ROOT / "docs/ProcessOn-Documentation-Index.zh_CN.md").read_text(encoding="utf-8")
         required = (
             "visual 使用哪个编辑器",
             "visual 的 update() 是直接改原图吗",
@@ -66,7 +66,7 @@ class DocumentationTest(unittest.TestCase):
 
     def test_readmes_document_local_setup_and_advanced_override(self):
         for name in ("README.md", "README.zh-CN.md"):
-            text = (ROOT / name).read_text()
+            text = (ROOT / name).read_text(encoding="utf-8")
             self.assertNotIn("PROCESSON_MCP_AUTHORIZATION", text)
             self.assertIn("PROCESSON_MCP_TOKEN", text)
             self.assertIn("processon_setup.py ui", text)
@@ -95,14 +95,14 @@ class DocumentationTest(unittest.TestCase):
             "ProcessOn-Design-Plugin-Technical-Solution.md",
             "ProcessOn-Design-Plugin-Technical-Solution.zh_CN.md",
         )
-        combined = "\n".join((ROOT / "docs" / name).read_text() for name in names)
+        combined = "\n".join((ROOT / "docs" / name).read_text(encoding="utf-8") for name in names)
         self.assertNotIn("PROCESSON_MCP_AUTHORIZATION", combined)
         self.assertNotIn("env_http_headers", combined)
         self.assertIn("scripts/processon_mcp_proxy.py", combined)
         self.assertIn("UNKNOWN_WRITE_RESULT", combined)
 
     def test_index_distinguishes_live_tool_discovery_from_page_docs(self):
-        text = (ROOT / "docs/ProcessOn-Documentation-Index.zh_CN.md").read_text()
+        text = (ROOT / "docs/ProcessOn-Documentation-Index.zh_CN.md").read_text(encoding="utf-8")
         self.assertIn("实时发现差异", text)
         self.assertIn("generate_chart", text)
         self.assertIn("页面未列出", text)
@@ -130,8 +130,8 @@ class DocumentationTest(unittest.TestCase):
             "安全与隐私",
             "故障排查",
         )
-        english = (ROOT / "README.md").read_text()
-        chinese = (ROOT / "README.zh-CN.md").read_text()
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
         self.assertIn("assets/processon-hero.png", "\n".join(english.splitlines()[:12]))
         self.assertIn("assets/processon-hero.png", "\n".join(chinese.splitlines()[:12]))
         self.assertIn("assets/processon-plugin-detail.png", "\n".join(english.splitlines()[:30]))
@@ -142,7 +142,7 @@ class DocumentationTest(unittest.TestCase):
             self.assertIn(heading, chinese)
 
     def test_readmes_use_real_marketplace_install_commands(self):
-        version = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())["version"].split("+", 1)[0]
+        version = json.loads((ROOT / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))["version"].split("+", 1)[0]
         commands = (
             f"codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v{version}",
             f"codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v{version} --sparse .agents/plugins",
@@ -150,7 +150,7 @@ class DocumentationTest(unittest.TestCase):
             "codex plugin add processon-design@partme-ai-processon",
         )
         for name in ("README.md", "README.zh-CN.md"):
-            text = (ROOT / name).read_text()
+            text = (ROOT / name).read_text(encoding="utf-8")
             for command in commands:
                 self.assertIn(command, text)
 
@@ -163,7 +163,7 @@ class DocumentationTest(unittest.TestCase):
         for asset in gallery_assets:
             self.assertTrue((ROOT / "assets" / asset).is_file())
         for name in ("README.md", "README.zh-CN.md"):
-            text = (ROOT / name).read_text()
+            text = (ROOT / name).read_text(encoding="utf-8")
             self.assertIn("<img", text)
             self.assertGreaterEqual(text.count("<img"), 3)
             self.assertIn("Agent Harness", text)
@@ -173,7 +173,7 @@ class DocumentationTest(unittest.TestCase):
 
     def test_readmes_distinguish_official_mcp_example_from_installed_stdio_proxy(self):
         for name in ("README.md", "README.zh-CN.md"):
-            text = (ROOT / name).read_text()
+            text = (ROOT / name).read_text(encoding="utf-8")
             self.assertIn('"smart-mcp"', text)
             self.assertIn('"Authorization": "Bearer YOUR_MCP_TOKEN"', text)
             self.assertIn('"type": "stdio"', text)
@@ -182,8 +182,8 @@ class DocumentationTest(unittest.TestCase):
             self.assertIn("HTTP 202", text)
 
     def test_readmes_keep_the_same_three_step_first_use_order(self):
-        english = (ROOT / "README.md").read_text()
-        chinese = (ROOT / "README.zh-CN.md").read_text()
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
         english_steps = [
             english.index("Open the ProcessOn user center"),
             english.index("Paste and save the Token"),
@@ -198,7 +198,7 @@ class DocumentationTest(unittest.TestCase):
         self.assertEqual(sorted(chinese_steps), chinese_steps)
 
     def test_privacy_discloses_local_storage_and_official_upstream(self):
-        text = (ROOT / "PRIVACY.md").read_text()
+        text = (ROOT / "PRIVACY.md").read_text(encoding="utf-8")
         self.assertIn("credentials.json", text)
         self.assertIn("https://smart-hd.processon.com/mcp", text)
         self.assertIn("Authorization", text)

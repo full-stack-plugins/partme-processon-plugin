@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SkillContractTest(unittest.TestCase):
     def read_skill(self, name: str) -> str:
-        return (ROOT / "skills" / name / "SKILL.md").read_text()
+        return (ROOT / "skills" / name / "SKILL.md").read_text(encoding="utf-8")
 
     def test_router_names_every_route_and_tool(self):
         text = self.read_skill("processon-use")
@@ -53,7 +53,7 @@ class SkillContractTest(unittest.TestCase):
 
     def test_setup_skill_has_progressive_disclosure_resources(self):
         skill_dir = ROOT / "skills" / "processon-setup"
-        text = (skill_dir / "SKILL.md").read_text()
+        text = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
         for name in (
             "workflow.md",
             "security.md",
@@ -66,7 +66,7 @@ class SkillContractTest(unittest.TestCase):
 
     def test_setup_skill_never_routes_secrets_into_project_or_shell_files(self):
         setup_dir = ROOT / "skills" / "processon-setup"
-        combined = "\n".join(path.read_text() for path in setup_dir.rglob("*.md"))
+        combined = "\n".join(path.read_text(encoding="utf-8") for path in setup_dir.rglob("*.md"))
         prohibited = ("写入 .mcp.json", "写入 .zshrc", "打印 Token 值")
         for phrase in prohibited:
             self.assertNotIn(phrase, combined)

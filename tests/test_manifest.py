@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class ManifestContractTest(unittest.TestCase):
     def test_plugin_exposes_skills_and_processon_mcp(self):
-        plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
-        mcp = json.loads((ROOT / ".mcp.json").read_text())
+        plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
+        mcp = json.loads((ROOT / ".mcp.json").read_text(encoding="utf-8"))
 
         self.assertEqual("processon-design", plugin["name"])
         self.assertEqual("./skills/", plugin["skills"])
@@ -28,7 +28,7 @@ class ManifestContractTest(unittest.TestCase):
 
     def test_marketplace_exposes_installable_creativity_plugin(self):
         marketplace = json.loads(
-            (ROOT / ".agents/plugins/marketplace.json").read_text()
+            (ROOT / ".agents/plugins/marketplace.json").read_text(encoding="utf-8")
         )
 
         self.assertEqual("partme-ai-processon", marketplace["name"])
@@ -44,11 +44,11 @@ class ManifestContractTest(unittest.TestCase):
             "https://github.com/full-stack-plugins/processon-design-plugin.git",
             entry["source"]["url"],
         )
-        version = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())["version"].split("+", 1)[0]
+        version = json.loads((ROOT / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))["version"].split("+", 1)[0]
         self.assertEqual(f"v{version}", entry["source"]["ref"])
 
     def test_plugin_uses_official_processon_name_and_icons(self):
-        plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+        plugin = json.loads((ROOT / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
         interface = plugin["interface"]
         self.assertEqual("ProcessOn Design", interface["displayName"])
         self.assertEqual("./assets/official-logo.png", interface["logo"])
