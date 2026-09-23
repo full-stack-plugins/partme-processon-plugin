@@ -4,7 +4,7 @@
 
 > 把自然语言想法、源码上下文和业务流程转化为专业、精美、可审查且可继续编辑的 ProcessOn 图表。
 
-[![版本](https://img.shields.io/badge/version-0.2.9-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.9)
+[![版本](https://img.shields.io/badge/version-0.2.10-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.10)
 [![测试](https://img.shields.io/badge/tests-98%20passing-18a957)](#开发与验证)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
@@ -157,7 +157,7 @@ flowchart LR
 推荐方式——添加本项目 GitHub 仓库、固定 `main`，然后安装 ProcessOn：
 
 ```bash
-codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.9
+codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.10
 codex plugin add processon-design@partme-ai-processon
 ```
 
@@ -168,7 +168,7 @@ Codex 官方支持的其他 marketplace 来源写法：
 codex plugin marketplace add full-stack-plugins/processon-design-plugin
 
 # 完整 Git URL，仅稀疏检出 marketplace 目录
-codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.9 --sparse .agents/plugins
+codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.10 --sparse .agents/plugins
 
 # 本地克隆，适合开发调试
 git clone https://github.com/full-stack-plugins/processon-design-plugin.git
@@ -420,7 +420,7 @@ partme-processon-plugin/
 | 稳定插件身份 | `processon-design` |
 | 根目录 Skills | `skills/` 中包含七个专用 Skill |
 | 根目录视觉资产 | `assets/` 中包含官方字标、composer 图标和宣传截图 |
-| Marketplace 目录 | `.agents/plugins/marketplace.json`，Git source 固定到不可变的 `v0.2.5` |
+| Marketplace 目录 | `.agents/plugins/marketplace.json`，Git source 固定到不可变的 `v<version>` 发布标签 |
 | OpenAI 展示元数据 | `.codex-plugin/plugin.json` 兼容清单 |
 | MCP 运行时 | 无密钥 `.mcp.json` 启动本地 stdio 凭证代理 |
 
@@ -450,7 +450,7 @@ git diff --check
 
 | 插件版本 | 宿主 | 运行环境 | 传输 | 状态 |
 |---|---|---|---|---|
-| 历史 `0.1.0+codex.<cachebuster>` 证据 | Codex CLI（实测于 `0.154.0-alpha.6.2`）或 ChatGPT 桌面应用 | `PATH` 上的 Python 3 | 本地 stdio 代理转发到 Streamable HTTP | 本地已验证，含一次经授权的真实生成；不是新的 `0.2.5` 运行期证明 |
+| 历史 `0.1.0+codex.<cachebuster>` 证据 | Codex CLI（实测于 `0.154.0-alpha.6.2`）或 ChatGPT 桌面应用 | `PATH` 上的 Python 3 | 本地 stdio 代理转发到 Streamable HTTP | 本地已验证，含一次经授权的真实生成；不是当前版本的新运行期证明 |
 | 历史 `0.1.0` 上游示例 | 任何支持内联请求头的 MCP Client | — | 直接 HTTPS 并内联 `Authorization` 头 | 上游文档示例，不是当前插件配置 |
 
 协商协议为 `2025-06-18`。ProcessOn 文档声明每个 Token 每分钟最多 600 次请求，端点为 `https://smart-hd.processon.com/mcp`。
