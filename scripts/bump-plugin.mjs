@@ -87,16 +87,25 @@ if (!plugin) {
 
 const oldVersion = plugin.version;
 const newVersion = bump(oldVersion);
-const today = new Date().toISOString().slice(0, 10).replaceAll("-", "");
+const today = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Shanghai",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+}).format(new Date()).replaceAll("-", "");
 const repoDir = path.join(workspace, plugin.localDirectory);
 
 const edits = [{ file: catalogPath, description: `${pluginId}: ${oldVersion} -> ${newVersion}` }];
-const plainManifestRels = [".zcode-plugin/plugin.json", "kimi.plugin.json", ".agents/plugins/marketplace.json"];
+const plainManifestRels = [".zcode-plugin/plugin.json", "kimi.plugin.json"];
 if (fs.existsSync(path.join(repoDir, "plugin.json"))) plainManifestRels.push("plugin.json");
 
 for (const rel of plainManifestRels) {
   edits.push({ file: path.join(repoDir, rel), description: `${rel}: ${oldVersion} -> ${newVersion}` });
 }
+edits.push({
+  file: path.join(repoDir, ".agents/plugins/marketplace.json"),
+  description: `.agents/plugins/marketplace.json: ${oldVersion} -> ${newVersion} + release URLs`,
+});
 // codex manifest 允许 <version>+codex.<date> 后缀（sync 校验认可的形状）
 edits.push({
   file: path.join(repoDir, ".codex-plugin/plugin.json"),
@@ -126,12 +135,40 @@ for (const rel of plainManifestRels) {
   const manifest = path.join(repoDir, rel);
   fs.writeFileSync(manifest, bumpPlain(fs.readFileSync(manifest, "utf8")));
 }
+const repositoryMarketplace = path.join(repoDir, ".agents/plugins/marketplace.json");
+const marketplace = JSON.parse(fs.readFileSync(repositoryMarketplace, "utf8"));
+if (!Array.isArray(marketplace.plugins) || marketplace.plugins.length !== 1) {
+  throw new Error(`${pluginId}: repository marketplace must contain exactly one plugin`);
+}
+const marketplacePlugin = marketplace.plugins[0];
+const releaseRef = `v${newVersion}`;
+const logoUrl = `https://cdn.jsdelivr.net/gh/${plugin.repository}@${releaseRef}/${plugin.logo}`;
+marketplacePlugin.version = newVersion;
+marketplacePlugin.source.ref = releaseRef;
+marketplacePlugin.icon = logoUrl;
+marketplacePlugin.interface.logo = logoUrl;
+fs.writeFileSync(repositoryMarketplace, `${JSON.stringify(marketplace, null, 2)}\n`);
 const codexManifest = path.join(repoDir, ".codex-plugin/plugin.json");
 fs.writeFileSync(codexManifest, bumpCodex(fs.readFileSync(codexManifest, "utf8")));
 
+// 2b) README 版本形态同步：徽章、tag 链接、--ref、Current candidate 构建戳、裸版本号。
+// 历史锚（如 0.1.0+codex.<旧戳>）不含旧版本号，不会被误改。
+const escapedNew = newVersion.replace(/\./g, "\\.");
+const bumpReadme = (text) => {
+  let next = text.split(`v${oldVersion}`).join(`v${newVersion}`);
+  next = next.split(oldVersion).join(newVersion);
+  next = next.replace(new RegExp(`${escapedNew}\\+codex\\.\\d+`, "g"), `${newVersion}+codex.${today}`);
+  return next;
+};
+for (const name of ["README.md", "README.zh-CN.md"]) {
+  const file = path.join(repoDir, name);
+  if (fs.existsSync(file)) fs.writeFileSync(file, bumpReadme(fs.readFileSync(file, "utf8")));
+}
+
 // 3) 重新生成三平台清单 + 全量校验
-execFileSync(process.execPath, [path.join(root, "scripts/sync-marketplaces.mjs"), "--write"], { stdio: "inherit" });
-execFileSync(process.execPath, [path.join(root, "scripts/sync-marketplaces.mjs")], { stdio: "inherit" });
+const pluginFilter = `--plugin=${pluginId}`;
+execFileSync(process.execPath, [path.join(root, "scripts/sync-marketplaces.mjs"), "--write", pluginFilter], { stdio: "inherit" });
+execFileSync(process.execPath, [path.join(root, "scripts/sync-marketplaces.mjs"), pluginFilter], { stdio: "inherit" });
 
 // 4) 提交提示
 console.log(`

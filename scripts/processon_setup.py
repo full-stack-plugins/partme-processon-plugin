@@ -137,7 +137,7 @@ class _SetupHandler(BaseHTTPRequestHandler):
             self._json(400, {"ok": False, "error": "Token could not be saved"})
             return
         if self.path == "/api/launch":
-            launched = self.server.launch_codex()
+            launched = self.server.launch_agent()
             payload = {"ok": True} if launched else {"ok": False, "error": "The coding agent could not be opened"}
             self._json(200 if launched else 500, payload)
             return
@@ -146,7 +146,7 @@ class _SetupHandler(BaseHTTPRequestHandler):
 
 def create_setup_server(
     provider: UserConfigSecretProvider,
-    launch_codex: Callable[[], bool] | None = None,
+    launch_agent: Callable[[], bool] | None = None,
 ) -> tuple[ThreadingHTTPServer, str]:
     """Create a loopback-only setup server on an ephemeral port."""
     import secrets
@@ -154,14 +154,20 @@ def create_setup_server(
     server = ThreadingHTTPServer(("127.0.0.1", 0), _SetupHandler)
     host, port = server.server_address
     server.provider = provider
-    server.launch_codex = _launch_codex if launch_codex is None else launch_codex
+    server.launch_agent = _launch_agent if launch_agent is None else launch_agent
     server.csrf_token = secrets.token_urlsafe(32)
     server.expected_origin = f"http://{host}:{port}"
     return server, f"{server.expected_origin}/"
 
 
-def _launch_codex() -> bool:
-    """Open Codex without waiting for the desktop process to exit."""
+def _launch_agent() -> bool:
+    """Launch the coding agent without waiting for its desktop process to exit.
+
+    Only host launchers verified against a real installation belong in the
+    candidate list below (currently the Codex desktop app and the ``codex``
+    CLI). Extend this list when another host has a verified launcher; until
+    then other hosts (ZCode, Kimi, ...) restart their agent manually.
+    """
     commands = (
         ["open", "-a", "Codex"] if sys.platform == "darwin" else None,
         ["cmd", "/c", "start", "", "codex"] if os.name == "nt" else None,

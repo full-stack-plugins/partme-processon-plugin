@@ -4,7 +4,7 @@
 
 > Turn natural-language ideas, source context, and business workflows into polished ProcessOn diagrams that remain reviewable and editable.
 
-[![Version](https://img.shields.io/badge/version-0.2.11-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.11)
+[![Version](https://img.shields.io/badge/version-0.2.12-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.12)
 [![Tests](https://img.shields.io/badge/tests-98%20passing-18a957)](#development-and-verification)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
@@ -56,7 +56,7 @@ Natural-language request / approved source material
 |:---|:---|
 | Plugin ID | `processon-design` |
 | Display name | ProcessOn |
-| Current candidate | `0.2.11+codex.20260923` |
+| Current candidate | `0.2.12+codex.20260924` |
 | Last installed package acceptance | `0.1.0+codex.20260914224756` |
 | Host tested | Codex CLI `0.154.0-alpha.6.2` |
 | Manifest | `.codex-plugin/plugin.json` |
@@ -157,7 +157,7 @@ These are repository-local copies of outputs from the recorded live acceptance r
 Recommended — add this GitHub repository, pin `main`, then install ProcessOn:
 
 ```bash
-codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.11
+codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.12
 codex plugin add processon-design@partme-ai-processon
 ```
 
@@ -168,7 +168,7 @@ Alternative marketplace sources supported by Codex:
 codex plugin marketplace add full-stack-plugins/processon-design-plugin
 
 # Full Git URL with a sparse checkout of the marketplace catalog
-codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.11 --sparse .agents/plugins
+codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.12 --sparse .agents/plugins
 
 # Local clone for development
 git clone https://github.com/full-stack-plugins/processon-design-plugin.git

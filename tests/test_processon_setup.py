@@ -107,7 +107,7 @@ class SetupServerTest(unittest.TestCase):
         self.provider = UserConfigSecretProvider(path)
         self.launches = []
         self.server, self.url = create_setup_server(
-            self.provider, launch_codex=lambda: self.launches.append("codex") or True
+            self.provider, launch_agent=lambda: self.launches.append("agent") or True
         )
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
@@ -185,7 +185,7 @@ class SetupServerTest(unittest.TestCase):
                 self.assertEqual(400, caught.exception.code)
                 caught.exception.close()
 
-    def test_launch_requires_same_security_contract_and_opens_codex(self):
+    def test_launch_requires_same_security_contract_and_opens_the_agent(self):
         body = b"{}"
         headers = {
             "Content-Type": "application/json",
@@ -194,7 +194,7 @@ class SetupServerTest(unittest.TestCase):
         }
         with self.request("/api/launch", data=body, headers=headers) as response:
             self.assertEqual({"ok": True}, json.loads(response.read()))
-        self.assertEqual(["codex"], self.launches)
+        self.assertEqual(["agent"], self.launches)
 
 
 if __name__ == "__main__":
