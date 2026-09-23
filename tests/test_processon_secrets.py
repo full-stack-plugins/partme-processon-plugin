@@ -41,6 +41,7 @@ class CredentialPathTest(unittest.TestCase):
         )
         self.assertEqual(expected, actual)
 
+    @unittest.skipIf(os.name == "nt", "Unix config path contract")
     def test_xdg_config_path_is_used_on_unix(self):
         with mock.patch("os.name", "posix"):
             actual = default_config_path({"XDG_CONFIG_HOME": "/tmp/example-xdg"})

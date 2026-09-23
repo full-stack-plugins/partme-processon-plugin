@@ -4,7 +4,7 @@
 
 > Turn natural-language ideas, source context, and business workflows into polished ProcessOn diagrams that remain reviewable and editable.
 
-[![Version](https://img.shields.io/badge/version-0.2.8-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.8)
+[![Version](https://img.shields.io/badge/version-0.2.9-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.9)
 [![Tests](https://img.shields.io/badge/tests-98%20passing-18a957)](#development-and-verification)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
@@ -157,7 +157,7 @@ These are repository-local copies of outputs from the recorded live acceptance r
 Recommended — add this GitHub repository, pin `main`, then install ProcessOn:
 
 ```bash
-codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.8
+codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.9
 codex plugin add processon-design@partme-ai-processon
 ```
 
@@ -168,7 +168,7 @@ Alternative marketplace sources supported by Codex:
 codex plugin marketplace add full-stack-plugins/processon-design-plugin
 
 # Full Git URL with a sparse checkout of the marketplace catalog
-codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.8 --sparse .agents/plugins
+codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.9 --sparse .agents/plugins
 
 # Local clone for development
 git clone https://github.com/full-stack-plugins/processon-design-plugin.git
