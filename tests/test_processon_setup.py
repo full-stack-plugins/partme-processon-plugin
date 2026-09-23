@@ -90,6 +90,15 @@ class SetupCliTest(unittest.TestCase):
             self.assertEqual("hidden-private-synthetic", provider.get_token())
             self.assertNotIn("hidden-private-synthetic", output.getvalue())
 
+    def test_hidden_setup_output_is_host_neutral(self):
+        with tempfile.TemporaryDirectory() as directory:
+            provider = UserConfigSecretProvider(Path(directory) / "credentials.json")
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                run_hidden_setup(provider, lambda _: "neutral-private-synthetic")
+            self.assertNotIn("Codex", output.getvalue())
+            self.assertIn("Reopen your coding agent", output.getvalue())
+
 
 class SetupServerTest(unittest.TestCase):
     def setUp(self):

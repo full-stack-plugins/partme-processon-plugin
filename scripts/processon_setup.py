@@ -138,7 +138,7 @@ class _SetupHandler(BaseHTTPRequestHandler):
             return
         if self.path == "/api/launch":
             launched = self.server.launch_codex()
-            payload = {"ok": True} if launched else {"ok": False, "error": "Codex could not be opened"}
+            payload = {"ok": True} if launched else {"ok": False, "error": "The coding agent could not be opened"}
             self._json(200 if launched else 500, payload)
             return
         self._json(200, {"ok": True})
@@ -214,7 +214,7 @@ def run_hidden_setup(
     except CredentialError as exc:
         print(str(exc), file=sys.stderr)
         return 1
-    print("ProcessOn credential saved. Reopen Codex to continue.")
+    print("ProcessOn credential saved. Reopen your coding agent to continue.")
     return 0
 
 

@@ -1,3 +1,4 @@
+import json
 import unittest
 from pathlib import Path
 
@@ -141,9 +142,10 @@ class DocumentationTest(unittest.TestCase):
             self.assertIn(heading, chinese)
 
     def test_readmes_use_real_marketplace_install_commands(self):
+        version = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())["version"].split("+", 1)[0]
         commands = (
-            "codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.5",
-            "codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.5 --sparse .agents/plugins",
+            f"codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v{version}",
+            f"codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v{version} --sparse .agents/plugins",
             "codex plugin marketplace add ./partme-processon-plugin",
             "codex plugin add processon-design@partme-ai-processon",
         )

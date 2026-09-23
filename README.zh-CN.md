@@ -4,8 +4,8 @@
 
 > 把自然语言想法、源码上下文和业务流程转化为专业、精美、可审查且可继续编辑的 ProcessOn 图表。
 
-[![版本](https://img.shields.io/badge/version-0.2.5-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.5)
-[![测试](https://img.shields.io/badge/tests-81%20passing-18a957)](#开发与验证)
+[![版本](https://img.shields.io/badge/version-0.2.6-blue)](https://github.com/full-stack-plugins/processon-design-plugin/releases/tag/v0.2.6)
+[![测试](https://img.shields.io/badge/tests-98%20passing-18a957)](#开发与验证)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 [English](README.md) | [简体中文](README.zh-CN.md) · [快速开始](#快速开始) · [示例](#可复制示例) · [故障排查](#故障排查)
@@ -157,7 +157,7 @@ flowchart LR
 推荐方式——添加本项目 GitHub 仓库、固定 `main`，然后安装 ProcessOn：
 
 ```bash
-codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.5
+codex plugin marketplace add full-stack-plugins/processon-design-plugin --ref v0.2.6
 codex plugin add processon-design@partme-ai-processon
 ```
 
@@ -168,7 +168,7 @@ Codex 官方支持的其他 marketplace 来源写法：
 codex plugin marketplace add full-stack-plugins/processon-design-plugin
 
 # 完整 Git URL，仅稀疏检出 marketplace 目录
-codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.5 --sparse .agents/plugins
+codex plugin marketplace add https://github.com/full-stack-plugins/processon-design-plugin.git --ref v0.2.6 --sparse .agents/plugins
 
 # 本地克隆，适合开发调试
 git clone https://github.com/full-stack-plugins/processon-design-plugin.git
